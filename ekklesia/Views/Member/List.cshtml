@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Member>
+
+<div class="row container">
+    <div class="col-md-8">
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Cargo</th>
+
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Cargo</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (var member in Model)
+                {
+                <tr>
+                    <td>@member.Name</td>
+                    <td>@member.Phone</td>
+                    <td>@member.Phone</td>
+                </tr>
+
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        Opções
+        <a asp-controller="member" asp-action="create" class="btn btn-primary">Novo</a>
+        <a asp-controller="member" asp-action="search" class="btn btn-primary">Buscar</a>
+    </div>
+
+</div>
