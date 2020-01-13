@@ -41,8 +41,10 @@ namespace ekklesia
             }
 
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
-
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default","{controller=member}/{action=list}/{id?}");
+            });
         }
     }
 }

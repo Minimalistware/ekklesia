@@ -16,5 +16,7 @@ namespace ekklesia.Models.Member
         public string Phone { get; set; }
         [Required]
         public Position Position { get; set; }
+        public string PhotoPath { get; set; }
+
     }
 }
