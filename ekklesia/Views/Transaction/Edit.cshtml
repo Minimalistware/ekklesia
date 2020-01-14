@@ -1,12 +1,14 @@
-﻿@model TransactionCreateViewModel
+﻿@model TransactionEditViewModel
 
 
 @{
-    ViewBag.Title = "Criar";
+    ViewBag.Title = Model.PageTitle;
 }
 
 
-<form enctype="multipart/form-data" asp-controller="transaction" asp-action="create" method="post" class="mt-3">
+<form enctype="multipart/form-data" asp-controller="transaction" asp-action="edit" method="post" class="mt-3">
+
+    <input hidden asp-for="Id" />
 
     <div class="form-group row">
         <label asp-for="Date" class="col-sm-2 col-form-label"></label>

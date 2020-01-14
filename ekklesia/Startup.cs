@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ekklesia.Models.Member;
+using ekklesia.Models.Transaction;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,8 @@ namespace ekklesia
             });
             services.AddMvc();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
