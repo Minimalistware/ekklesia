@@ -16,6 +16,8 @@ namespace ekklesia.Models.ViewModels
         public Money Value { get; set; }
         [Required]
         public TransactionType Type { get; set; }
+        [Required]
+        public string Category { get; set; }
         public string PageTitle { get; set; }
     }
 }

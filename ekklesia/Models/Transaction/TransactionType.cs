@@ -7,7 +7,6 @@ namespace ekklesia.Models.Transaction
 {
     public enum TransactionType
     {
-        Receita,
-        Despesa
+        RECEITA, DESPESA
     }
 }

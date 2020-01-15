@@ -22,7 +22,7 @@ namespace ekklesia.Controlers
         }
 
         
-        public IActionResult List()
+        public ViewResult List()
         {
             var members = repository.GetMembers();
             return View(members);

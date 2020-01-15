@@ -14,7 +14,9 @@ namespace ekklesia.Models.Transaction
         public DateTime Date { get; set; }
         [Required]
         public Money Value { get; set; }
+        [Required]
         public TransactionType Type { get; set; }
-
+        [Required]
+        public string Category { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace ekklesia.Models.Transaction
                 applicationContext.SaveChanges();
 
             }
-            return transaction
+            return transaction;
         }
 
         public Transaction GetTransaction(int id)
