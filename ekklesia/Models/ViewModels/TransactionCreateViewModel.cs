@@ -1,19 +1,28 @@
-﻿using Caelum.Stella.CSharp.Vault;
-using ekklesia.Models.Transaction;
+﻿using ekklesia.Models.TransactionModel;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Models.ViewModels
 {
     public class TransactionCreateViewModel
     {
+        public TransactionCreateViewModel()
+        {
+        }
+
+        public TransactionCreateViewModel(Transaction transaction, string title = "Criar")
+        {
+            Date = transaction.Date;
+            Value = transaction.Value;
+            Type = transaction.Type;
+            Category = transaction.Category;
+            PageTitle = title;
+        }
+
         [Required]
         public DateTime Date { get; set; }
         [Required]
-        public Money Value { get; set; }
+        public decimal Value { get; set; }
         [Required]
         public TransactionType Type { get; set; }
         [Required]

@@ -1,6 +1,8 @@
-﻿using ekklesia.Models.Member;
-using ekklesia.Models.Transaction;
+﻿using Caelum.Stella.CSharp.Vault;
+using ekklesia.Models.Member;
+using ekklesia.Models.TransactionModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ekklesia
 {
+
     public class ApplicationContext : DbContext
     {
         public DbSet<Member> Members { get; set; }
@@ -20,7 +23,12 @@ namespace ekklesia
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            modelBuilder
+        .Entity<Transaction>()
+        .Property(t => t.Value)
+        .HasConversion(
+            v => (decimal)v,
+            v => new Money(v));
         }
     }
 }

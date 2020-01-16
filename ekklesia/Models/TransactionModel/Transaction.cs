@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ekklesia.Models.Transaction
+namespace ekklesia.Models.TransactionModel
 {
     public class Transaction
     {
