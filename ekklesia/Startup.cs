@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ekklesia.Models.Member;
+using ekklesia.Models.MemberModel;
 using ekklesia.Models.TransactionModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

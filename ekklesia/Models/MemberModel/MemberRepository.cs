@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ekklesia.Models.Member
+namespace ekklesia.Models.MemberModel
 {
     public interface IMemberRepository
     {

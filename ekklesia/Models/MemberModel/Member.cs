@@ -1,10 +1,8 @@
-﻿using System;
+﻿using ekklesia.Models.EventModel;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ekklesia.Models.Member
+namespace ekklesia.Models.MemberModel
 {
     public class Member : BaseModel
     {
@@ -17,6 +15,7 @@ namespace ekklesia.Models.Member
         [Required]
         public Position Position { get; set; }
         public string PhotoPath { get; set; }
+        public ICollection<Event> Events { get; set; }
 
     }
 }

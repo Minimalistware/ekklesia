@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200112224349_Member.cs" />
     <Compile Remove="Migrations\20200112224349_Member.Designer.cs" />
+    <Compile Remove="Migrations\20200117212618_Event.cs" />
+    <Compile Remove="Migrations\20200117212618_Event.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
