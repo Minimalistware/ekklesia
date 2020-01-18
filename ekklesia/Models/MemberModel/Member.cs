@@ -6,6 +6,11 @@ namespace ekklesia.Models.MemberModel
 {
     public class Member : BaseModel
     {
+        public Member()
+        {
+            this.Meetings = new List<MeetingMember>();
+        }
+
         [Required]
         [MaxLength(50, ErrorMessage = "Nome não pode exceder mais de 50 caracteres.")]
         public string Name { get; set; }
@@ -15,7 +20,7 @@ namespace ekklesia.Models.MemberModel
         [Required]
         public Position Position { get; set; }
         public string PhotoPath { get; set; }
-        public ICollection<Event> Events { get; set; }
+        public virtual ICollection<MeetingMember> Meetings { get; set; }
 
     }
 }
