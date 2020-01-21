@@ -12,6 +12,14 @@
     <Compile Remove="Migrations\20200117212618_Event.Designer.cs" />
     <Compile Remove="Migrations\20200118194210_MeetingsMigration.cs" />
     <Compile Remove="Migrations\20200118194210_MeetingsMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200120185944_MeetingMigration.cs" />
+    <Compile Remove="Migrations\20200120185944_MeetingMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200120190858_MeetingMigration.cs" />
+    <Compile Remove="Migrations\20200120190858_MeetingMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200121203804_EventMemberMigration.cs" />
+    <Compile Remove="Migrations\20200121203804_EventMemberMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200121205019_EventMemberMigration.cs" />
+    <Compile Remove="Migrations\20200121205019_EventMemberMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

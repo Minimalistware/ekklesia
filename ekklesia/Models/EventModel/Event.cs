@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.EventModel
 {
-    public abstract class Event
+    public class Event
     {
 
         public int Id { get; set; }
         [Required]
         public DateTime Date { get; set; }
+        public EventType EventType { get; set; }
 
     }
 }

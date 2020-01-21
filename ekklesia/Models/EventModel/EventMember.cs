@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.EventModel
 {
-    public class MeetingMember
+    public class EventMember
     {
         public int MemberId { get; set; }
         public Member Member { get; set; }
-        public int MeetingId { get; set; }
-        public Meeting Meeting { get; set; }
+        public int EventId { get; set; }
+        public Event Event { get; set; }
     }
 }

@@ -13,10 +13,9 @@ namespace ekklesia
         public DbSet<Member> Members { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<Meeting> Meetings { get; set; }
-        public DbSet<SundaySchool> SundaySchools { get; set; }
-        public DbSet<Reunion> Reunions { get; set; }
-        public DbSet<Cult> Cults { get; set; }
+        //public DbSet<SundaySchool> SundaySchools { get; set; }
+        //public DbSet<Reunion> Reunions { get; set; }
+        //public DbSet<Cult> Cults { get; set; }
 
 
         public ApplicationContext(DbContextOptions options) : base(options)
@@ -26,9 +25,9 @@ namespace ekklesia
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<MeetingMember>().HasKey(
+            modelBuilder.Entity<EventMember>().HasKey(
                 mm =>
-                    new { mm.MemberId, mm.MeetingId }
+                    new { mm.MemberId, mm.EventId }
                     );
 
 

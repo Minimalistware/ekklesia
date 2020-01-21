@@ -5,11 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ekklesia.Models.EventModel
 {
-    public class SundaySchool
+
+    [Table("SundaySchools")]
+    public class SundaySchool:Event
     {
-        [ForeignKey(nameof(Meeting))]
-        public int MeetingId { get; set; }
-        public Meeting Meeting { get; set; }
+        //[ForeignKey(nameof(Event))]
+        //public int Id { get; set; } // PK and FK pointing to Event
+        //public Event Event { get; set; }
+
+
+        public int MemberId { get; set; }
+        public Member Teacher { get; set; }
 
         [Required]
         public string Theme { get; set; }
@@ -18,5 +24,12 @@ namespace ekklesia.Models.EventModel
         [Required]
         public int NumberOfBibles { get; set; }
 
+        public ICollection<EventMember> Members { get; set; }
+
+        public SundaySchool()
+        {
+            this.Members = new List<EventMember>();
+
+        }
     }
 }
