@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.MemberModel;
+using ekklesia.Models.ViewModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,6 +31,16 @@ namespace ekklesia.Models.EventModel
         {
             this.Members = new List<EventMember>();
 
+        }
+
+        public SundaySchool(CreateSundaySchoolViewModel model)
+        {
+            Date = model.Date;
+            EventType = EventType.Escola_Dominical;
+            Teacher = model.Teacher;
+            Theme = model.Theme;
+            Verse = model.Verse;
+            NumberOfBibles = model.NumberOfBibles;
         }
     }
 }

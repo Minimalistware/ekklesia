@@ -1,4 +1,4 @@
-﻿using ekklesia.Migrations;
+﻿using ekklesia.Models.MemberModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +8,7 @@ namespace ekklesia.Models.ViewModels
     public class CreateReunionViewModel: CreateEventViewModel
     {
 
+        
         public Member Speaker { get; set; }
 
         [Required]

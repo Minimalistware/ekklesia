@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ekklesia.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,6 +11,14 @@ namespace ekklesia.Models.EventModel
     [Table("Cults")]
     public class Cult:Event
     {
+        public Cult(CreateCultViewModel model)
+        {
+            Date = model.Date;
+            EventType = EventType.Culto;
+            NumberOfPeople = model.NumberOfPeople;
+            MainVerse = model.MainVerse;
+        }
+
         //[ForeignKey(nameof(Event))]
         //public int Id { get; set; } // PK and FK pointing to Event
         //public Event Event { get; set; }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Models.EventModel
 {
@@ -14,7 +12,7 @@ namespace ekklesia.Models.EventModel
         Event Delete(int id);
 
     }
-    public class EventRepository:IEventRepository
+    public class EventRepository : IEventRepository
     {
         private readonly ApplicationContext applicationContext;
 
@@ -25,27 +23,38 @@ namespace ekklesia.Models.EventModel
 
         public Event Add(Event Event)
         {
-            throw new NotImplementedException();
+            applicationContext.Add(Event);
+            applicationContext.SaveChanges();
+            return Event;
         }
 
         public Event Delete(int id)
         {
-            throw new NotImplementedException();
+            Event occasion = applicationContext.Events.Find(id);
+            if (occasion != null)
+            {
+                applicationContext.Events.Remove(occasion);
+                applicationContext.SaveChanges();
+            }
+            return occasion;
         }
 
         public Event GetEvent(int Id)
         {
-            throw new NotImplementedException();
+            return applicationContext.Events.Find(Id);
         }
 
         public IEnumerable<Event> GetEvents()
         {
-            throw new NotImplementedException();
+            return applicationContext.Events;
         }
 
-        public Event Update(Event Event)
+        public Event Update(Event alteredEvent)
         {
-            throw new NotImplementedException();
+            var occasion = applicationContext.Events.Attach(alteredEvent);
+            occasion.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            applicationContext.SaveChanges();
+            return alteredEvent;
         }
-    }
+}
 }

@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.MemberModel;
+using ekklesia.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,15 +8,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ekklesia.Models.EventModel
 {
     [Table("Reunions")]
-    public class Reunion
+    public class Reunion : Event
     {
-        //[ForeignKey(nameof(Event))]
-        //public int Id { get; set; } // PK and FK pointing to Event
-        //public Event Event { get; set; }
 
-
-
-        public int MemberId { get; set; }
         public Member Speaker { get; set; }
 
         [Required]
@@ -26,12 +21,14 @@ namespace ekklesia.Models.EventModel
 
         public ICollection<EventMember> Members { get; set; }
 
-        public Reunion()
+        public Reunion(CreateReunionViewModel model)
         {
-            this.Members = new List<EventMember>();
+            Date = model.Date;
+            EventType = EventType.Reunião;
+            Speaker = model.Speaker;
+            Topic = model.Topic;
+            EndTime = model.EndTime;
 
         }
-
-
     }
 }

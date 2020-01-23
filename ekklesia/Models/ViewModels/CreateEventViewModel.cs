@@ -11,8 +11,6 @@ namespace ekklesia.Models.ViewModels
     {
         [Required]
         public DateTime Date { get; set; }
-        [Required]
-        public EventType EventType { get; set; }
     }
 }
 

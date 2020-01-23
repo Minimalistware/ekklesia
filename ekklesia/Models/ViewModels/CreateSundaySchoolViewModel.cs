@@ -1,4 +1,4 @@
-﻿using ekklesia.Migrations;
+﻿using ekklesia.Models.MemberModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
