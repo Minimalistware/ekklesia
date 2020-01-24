@@ -8,7 +8,7 @@ namespace ekklesia.Models.MemberModel
     {
         public Member()
         {
-            this.Meetings = new List<EventMember>();
+            this.Meetings = new List<MeetingMember>();
         }
 
         [Required]
@@ -20,7 +20,7 @@ namespace ekklesia.Models.MemberModel
         [Required]
         public Position Position { get; set; }
         public string PhotoPath { get; set; }
-        public virtual ICollection<EventMember> Meetings { get; set; }
+        public virtual ICollection<MeetingMember> Meetings { get; set; }
 
     }
 }

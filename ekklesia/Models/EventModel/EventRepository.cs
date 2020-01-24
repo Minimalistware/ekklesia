@@ -56,5 +56,5 @@ namespace ekklesia.Models.EventModel
             applicationContext.SaveChanges();
             return alteredEvent;
         }
-}
+    }
 }

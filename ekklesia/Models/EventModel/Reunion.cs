@@ -8,10 +8,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ekklesia.Models.EventModel
 {
     [Table("Reunions")]
-    public class Reunion : Event
+    public class Reunion : Meeting
     {
-
-        public Member Speaker { get; set; }
 
         [Required]
         public string Topic { get; set; }
@@ -19,7 +17,10 @@ namespace ekklesia.Models.EventModel
         [Required]
         public DateTime EndTime { get; set; }
 
-        public ICollection<EventMember> Members { get; set; }
+
+        public Reunion()
+        {
+        }
 
         public Reunion(CreateReunionViewModel model)
         {
@@ -30,5 +31,7 @@ namespace ekklesia.Models.EventModel
             EndTime = model.EndTime;
 
         }
+
+
     }
 }

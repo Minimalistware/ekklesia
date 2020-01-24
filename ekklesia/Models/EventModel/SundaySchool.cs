@@ -8,15 +8,8 @@ namespace ekklesia.Models.EventModel
 {
 
     [Table("SundaySchools")]
-    public class SundaySchool:Event
+    public class SundaySchool : Meeting
     {
-        //[ForeignKey(nameof(Event))]
-        //public int Id { get; set; } // PK and FK pointing to Event
-        //public Event Event { get; set; }
-
-
-        public int MemberId { get; set; }
-        public Member Teacher { get; set; }
 
         [Required]
         public string Theme { get; set; }
@@ -25,22 +18,20 @@ namespace ekklesia.Models.EventModel
         [Required]
         public int NumberOfBibles { get; set; }
 
-        public ICollection<EventMember> Members { get; set; }
 
         public SundaySchool()
         {
-            this.Members = new List<EventMember>();
-
         }
 
         public SundaySchool(CreateSundaySchoolViewModel model)
         {
             Date = model.Date;
             EventType = EventType.Escola_Dominical;
-            Teacher = model.Teacher;
+            Speaker = model.Teacher;
             Theme = model.Theme;
             Verse = model.Verse;
             NumberOfBibles = model.NumberOfBibles;
         }
+
     }
 }

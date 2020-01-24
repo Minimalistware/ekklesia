@@ -1,15 +1,10 @@
 ﻿using ekklesia.Models.EventModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace ekklesia.Models.ViewModels
 {
-    public class EditCulViewModel : CreateCultViewModel
+    public class EditCultViewModel : CreateCultViewModel
     {
-        
-        public EditCulViewModel(Cult cult)
+
+        public EditCultViewModel(Cult cult)
         {
             Id = cult.Id;
             Date = cult.Date;

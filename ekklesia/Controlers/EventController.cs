@@ -1,6 +1,9 @@
 ﻿using ekklesia.Models.EventModel;
+using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ekklesia.Controlers
 {
@@ -8,10 +11,12 @@ namespace ekklesia.Controlers
     {
 
         private readonly IEventRepository repository;
+        private readonly IMemberRepository memberRepository;
 
-        public EventController(IEventRepository repository)
+        public EventController(IEventRepository repository, IMemberRepository memberRepository)
         {
             this.repository = repository;
+            this.memberRepository = memberRepository;
         }
 
         public ViewResult List()
@@ -24,6 +29,9 @@ namespace ekklesia.Controlers
         [HttpGet]
         public ViewResult Create()
         {
+            var memberList = new List<Member>();
+            memberList = (from member in memberRepository.GetMembers() select member).ToList();
+            ViewBag.MemberList = memberList;
             return View();
         }
 
@@ -62,15 +70,25 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
-        public ViewResult EditCult(int Id)
+        public ViewResult Edit(int Id)
         {
-            var cult = (Cult)repository.GetEvent(Id);
-            var editCulViewModel = new EditCulViewModel(cult);
-            return View(editCulViewModel);
+            var occasion = repository.GetEvent(Id);
+            switch (occasion.EventType)
+            {
+                case EventType.Culto:
+                    var editCulViewModel = new EditCultViewModel(occasion as Cult);
+                    return View("editcult", editCulViewModel);
+                case EventType.Escola_Dominical:
+                    var editSundaySchoolViewModel = new EditSundaySchoolViewModel(occasion as SundaySchool);
+                    return View("editSundaySchool", editSundaySchoolViewModel);
+                default:
+                    return View();
+            }
+
         }
 
         [HttpPost]
-        public IActionResult EditCult(EditCulViewModel model)
+        public IActionResult EditCult(EditCultViewModel model)
         {
             if (ModelState.IsValid)
             {

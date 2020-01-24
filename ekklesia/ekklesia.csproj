@@ -20,6 +20,16 @@
     <Compile Remove="Migrations\20200121203804_EventMemberMigration.Designer.cs" />
     <Compile Remove="Migrations\20200121205019_EventMemberMigration.cs" />
     <Compile Remove="Migrations\20200121205019_EventMemberMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200124185124_CultMigration.cs" />
+    <Compile Remove="Migrations\20200124185124_CultMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200124191938_EventMember.cs" />
+    <Compile Remove="Migrations\20200124191938_EventMember.Designer.cs" />
+    <Compile Remove="Migrations\20200124192032_EventMemberMigration.cs" />
+    <Compile Remove="Migrations\20200124192032_EventMemberMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200124200928_Employees.cs" />
+    <Compile Remove="Migrations\20200124200928_Employees.Designer.cs" />
+    <Compile Remove="Migrations\20200124214355_EventMemberMigration.cs" />
+    <Compile Remove="Migrations\20200124214355_EventMemberMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

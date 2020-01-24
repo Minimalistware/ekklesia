@@ -27,11 +27,16 @@ namespace ekklesia.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<int>("EventType");
 
                     b.HasKey("Id");
 
                     b.ToTable("Events");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Event");
                 });
 
             modelBuilder.Entity("ekklesia.Models.EventModel.EventMember", b =>
@@ -40,9 +45,17 @@ namespace ekklesia.Migrations
 
                     b.Property<int>("EventId");
 
+                    b.Property<int?>("ReunionId");
+
+                    b.Property<int?>("SundaySchoolId");
+
                     b.HasKey("MemberId", "EventId");
 
                     b.HasIndex("EventId");
+
+                    b.HasIndex("ReunionId");
+
+                    b.HasIndex("SundaySchoolId");
 
                     b.ToTable("EventMember");
                 });
@@ -90,6 +103,60 @@ namespace ekklesia.Migrations
                     b.ToTable("Transactions");
                 });
 
+            modelBuilder.Entity("ekklesia.Models.EventModel.Cult", b =>
+                {
+                    b.HasBaseType("ekklesia.Models.EventModel.Event");
+
+                    b.Property<string>("MainVerse")
+                        .IsRequired();
+
+                    b.Property<int>("NumberOfPeople");
+
+                    b.ToTable("Cults");
+
+                    b.HasDiscriminator().HasValue("Cult");
+                });
+
+            modelBuilder.Entity("ekklesia.Models.EventModel.Reunion", b =>
+                {
+                    b.HasBaseType("ekklesia.Models.EventModel.Event");
+
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<int?>("SpeakerId");
+
+                    b.Property<string>("Topic")
+                        .IsRequired();
+
+                    b.HasIndex("SpeakerId");
+
+                    b.ToTable("Reunions");
+
+                    b.HasDiscriminator().HasValue("Reunion");
+                });
+
+            modelBuilder.Entity("ekklesia.Models.EventModel.SundaySchool", b =>
+                {
+                    b.HasBaseType("ekklesia.Models.EventModel.Event");
+
+                    b.Property<int>("NumberOfBibles");
+
+                    b.Property<int?>("SpeakerId")
+                        .HasColumnName("SundaySchool_SpeakerId");
+
+                    b.Property<string>("Theme")
+                        .IsRequired();
+
+                    b.Property<string>("Verse")
+                        .IsRequired();
+
+                    b.HasIndex("SpeakerId");
+
+                    b.ToTable("SundaySchools");
+
+                    b.HasDiscriminator().HasValue("SundaySchool");
+                });
+
             modelBuilder.Entity("ekklesia.Models.EventModel.EventMember", b =>
                 {
                     b.HasOne("ekklesia.Models.EventModel.Event", "Event")
@@ -101,6 +168,28 @@ namespace ekklesia.Migrations
                         .WithMany("Meetings")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ekklesia.Models.EventModel.Reunion")
+                        .WithMany("Members")
+                        .HasForeignKey("ReunionId");
+
+                    b.HasOne("ekklesia.Models.EventModel.SundaySchool")
+                        .WithMany("Members")
+                        .HasForeignKey("SundaySchoolId");
+                });
+
+            modelBuilder.Entity("ekklesia.Models.EventModel.Reunion", b =>
+                {
+                    b.HasOne("ekklesia.Models.MemberModel.Member", "Speaker")
+                        .WithMany()
+                        .HasForeignKey("SpeakerId");
+                });
+
+            modelBuilder.Entity("ekklesia.Models.EventModel.SundaySchool", b =>
+                {
+                    b.HasOne("ekklesia.Models.MemberModel.Member", "Speaker")
+                        .WithMany()
+                        .HasForeignKey("SpeakerId");
                 });
 #pragma warning restore 612, 618
         }

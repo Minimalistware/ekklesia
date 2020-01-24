@@ -9,8 +9,12 @@ using System.Threading.Tasks;
 namespace ekklesia.Models.EventModel
 {
     [Table("Cults")]
-    public class Cult:Event
+    public class Cult : Event
     {
+        public Cult()
+        {
+        }
+
         public Cult(CreateCultViewModel model)
         {
             Date = model.Date;
