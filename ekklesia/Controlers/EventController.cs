@@ -2,6 +2,7 @@
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,9 +30,29 @@ namespace ekklesia.Controlers
         [HttpGet]
         public ViewResult Create()
         {
-            var memberList = new List<Member>();
-            memberList = (from member in memberRepository.GetMembers() select member).ToList();
-            ViewBag.MemberList = memberList;
+            var memberList = memberRepository
+                .GetMembers()
+                .OrderBy(m => m.Name)
+                .ToList();
+
+            // First, initialize the array to number of teams in playerTeams
+            string[] memberListIds = new string[memberList.Count()];
+
+            // Then, set the value of platerTeams.Count so the for loop doesn't need to work it out every iteration
+            int length = memberListIds.Count();
+
+            // Now loop over each of the playerTeams and store the Id in the playerTeamsId array
+            for (int i = 0; i < length; i++)
+            {
+                // Note that we employ the ToString() method to convert the Guid to the string
+                memberListIds[i] = memberList[i].Id.ToString();
+            }
+
+            ViewBag.MemberSelectList = new SelectList(memberList, "Id", "Name");
+    
+            var MemberMultiSelectList = new MultiSelectList(memberList, "Id", "Name", memberListIds);
+
+
             return View();
         }
 
@@ -62,6 +83,7 @@ namespace ekklesia.Controlers
         {
             if (ModelState.IsValid)
             {
+
                 var sundaySchool = new SundaySchool(model.CreateSundaySchoolView);
                 repository.Add(sundaySchool);
                 return RedirectToAction("list", "event");

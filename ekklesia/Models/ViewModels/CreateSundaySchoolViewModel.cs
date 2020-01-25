@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.MemberModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,8 +10,9 @@ namespace ekklesia.Models.ViewModels
 {
     public class CreateSundaySchoolViewModel : CreateEventViewModel
     {
-        [Required]
-        public Member Teacher { get; set; }
+
+        public int TeacherId { get; set; }
+        public int[] MemberIds { get; set; }
 
         [Required]
         public string Theme { get; set; }
@@ -19,8 +21,8 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public int NumberOfBibles { get; set; }
 
-        public ICollection<Member> Members { get; set; }
-
+        
+        
 
     }
 }

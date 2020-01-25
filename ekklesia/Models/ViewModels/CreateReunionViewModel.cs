@@ -1,15 +1,16 @@
 ﻿using ekklesia.Models.MemberModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ekklesia.Models.ViewModels
 {
-    public class CreateReunionViewModel: CreateEventViewModel
+    public class CreateReunionViewModel : CreateEventViewModel
     {
 
-        
-        public Member Speaker { get; set; }
+        public int SpeakerId { get; set; }
+        public int[] MemberIds { get; set; }
 
         [Required]
         public string Topic { get; set; }
@@ -17,6 +18,5 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public DateTime EndTime { get; set; }
 
-        public ICollection<Member> Members { get; set; }
     }
 }

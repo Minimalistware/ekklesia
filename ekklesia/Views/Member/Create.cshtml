@@ -1,48 +1,69 @@
-﻿@model TransactionCreateViewModel
-
+﻿@model MemberCreateViewModel
 
 @{
-    ViewBag.Title = "Criar";
+    ViewBag.Title = "Criar Membro";
 }
 
+<form enctype="multipart/form-data" asp-controller="member" asp-action="create" method="post" class="mt-3">
 
-<form enctype="multipart/form-data" asp-controller="transaction" asp-action="create" method="post" class="mt-3">
-
+    
     <div class="form-group row">
-        <label asp-for="Date" class="col-sm-2 col-form-label"></label>
+        <label asp-for="Name" class="col-sm-2 col-form-label">Nome</label>
         <div class="col-sm-10">
-            <input asp-for="Date" class="form-control" placeholder="Data">
-            <span asp-validation-for="Date" class="text-danger"></span>
+            <input asp-for="Name" class="form-control" placeholder="Nome">
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
     </div>
 
     <div class="form-group row">
-        <label asp-for="Value" class="col-sm-2 col-form-label"></label>
+        <label asp-for="Phone" class="col-sm-2 col-form-label">Telefone</label>
         <div class="col-sm-10">
-            <input asp-for="Value" class="form-control" placeholder="Valor">
-            <span asp-validation-for="Value" class="text-danger"></span>
+            <input asp-for="Phone" class="form-control" placeholder="(00) 00000-0000">
+            <span asp-validation-for="Phone" class="text-danger"></span>
         </div>
     </div>
 
 
     <div class="form-group row">
-        <label asp-for="Type" class="col-sm-2 col-form-label"></label>
+        <label asp-for="Position" class="col-sm-2 col-form-label">Cargo</label>
         <div class="col-sm-10">
-            <select asp-for="Type" class="custom-select mr-sm-2" asp-items="Html.GetEnumSelectList<TransactionType>()">
+            <select asp-for="Position" class="custom-select mr-sm-2" asp-items="Html.GetEnumSelectList<Position>()">
                 <option value="">Please Select</option>
             </select>
-            <span asp-validation-for="Type" class="text-danger"></span>
+            <span asp-validation-for="Position" class="text-danger"></span>
         </div>
     </div>
-
-
 
     <div class="form-group row">
+        <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Criar</button>
+            <div class="custom-file">
+                <input asp-for="Photo" class="form-control custom-file-input">
+                <label class="custom-file-label">Clique aqui para selecionar uma foto...</label>
+            </div>
         </div>
     </div>
 
+    
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a asp-controller="member" asp-action="list" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                });
+            });
+
+        </script>
+    }
 
 </form>
-<script src="~/lib/jquery/jquery.slim.min.js" type="text/javascript"></script>
+
+

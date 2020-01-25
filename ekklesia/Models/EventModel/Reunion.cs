@@ -26,7 +26,7 @@ namespace ekklesia.Models.EventModel
         {
             Date = model.Date;
             EventType = EventType.Reunião;
-            Speaker = model.Speaker;
+           // Speaker = model.Speaker;
             Topic = model.Topic;
             EndTime = model.EndTime;
 

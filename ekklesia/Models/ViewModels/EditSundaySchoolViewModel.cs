@@ -11,7 +11,7 @@ namespace ekklesia.Models.ViewModels
         public EditSundaySchoolViewModel(SundaySchool occasion)
         {
             Id = occasion.Id;
-            Teacher = occasion.Speaker;
+            //Teacher = occasion.Speaker;
             Theme = occasion.Theme;
             Verse = occasion.Verse;
 
