@@ -6,11 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ekklesia.Models.ViewModels
 {
-    public class CreateReunionViewModel : CreateEventViewModel
+    public class CreateReunionViewModel : CreateMeetingViewModel
     {
-
-        public int SpeakerId { get; set; }
-        public int[] MemberIds { get; set; }
+        public CreateReunionViewModel() { }
+        public CreateReunionViewModel(List<SelectListItem> members)
+        {
+            Members = members;
+        }
 
         [Required]
         public string Topic { get; set; }

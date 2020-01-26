@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.ViewModels
 {
-    public class CreateSundaySchoolViewModel : CreateEventViewModel
+    public class CreateSundaySchoolViewModel : CreateMeetingViewModel
     {
+        public CreateSundaySchoolViewModel() { }
 
-        public int TeacherId { get; set; }
-        public int[] MemberIds { get; set; }
+        public CreateSundaySchoolViewModel(List<SelectListItem> members)
+        {
+            this.Members = members;
+        }
 
         [Required]
         public string Theme { get; set; }
         [Required]
         public string Verse { get; set; }
         [Required]
-        public int NumberOfBibles { get; set; }
-
-        
-        
+        public int NumberOfBibles { get; set; }        
 
     }
 }

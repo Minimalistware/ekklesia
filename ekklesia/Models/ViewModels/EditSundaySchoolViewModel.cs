@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.EventModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace ekklesia.Models.ViewModels
 {
     public class EditSundaySchoolViewModel : CreateSundaySchoolViewModel
     {
-        public EditSundaySchoolViewModel(SundaySchool occasion)
+        public EditSundaySchoolViewModel(List<SelectListItem> members):base(members)
         {
-            Id = occasion.Id;
+            //Id = occasion.Id;
             //Teacher = occasion.Speaker;
-            Theme = occasion.Theme;
-            Verse = occasion.Verse;
+            //Theme = occasion.Theme;
+            //Verse = occasion.Verse;
 
         }
 

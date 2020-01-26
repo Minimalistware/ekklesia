@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace ekklesia.Controlers
 {
@@ -35,27 +36,33 @@ namespace ekklesia.Controlers
                 .OrderBy(m => m.Name)
                 .ToList();
 
-            // First, initialize the array to number of teams in playerTeams
-            string[] memberListIds = new string[memberList.Count()];
-
-            // Then, set the value of platerTeams.Count so the for loop doesn't need to work it out every iteration
-            int length = memberListIds.Count();
-
-            // Now loop over each of the playerTeams and store the Id in the playerTeamsId array
-            for (int i = 0; i < length; i++)
+            ViewBag.MemberSelectList = new SelectList(memberList, "Id", "Name");
+            
+            List<SelectListItem> members = new List<SelectListItem>();
+            foreach (var item in memberList)
             {
-                // Note that we employ the ToString() method to convert the Guid to the string
-                memberListIds[i] = memberList[i].Id.ToString();
+                members.Add(new SelectListItem {Value = item.Id.ToString(), Text = item.Name });
             }
 
-            ViewBag.MemberSelectList = new SelectList(memberList, "Id", "Name");
-    
-            var MemberMultiSelectList = new MultiSelectList(memberList, "Id", "Name", memberListIds);
+            var model = new CompoundCreateEventViewModel(members);
 
-
-            return View();
+            return View(model);
         }
 
+        [HttpPost]
+        public string Create(CompoundCreateEventViewModel model)
+        {
+            if (model.CreateSundaySchoolView.SelectedMembers == null)
+            {
+                return "Selecione um membro";
+            }
+            else {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("You selected - " + string.Join(",", model.CreateSundaySchoolView.SelectedMembers));
+                return sb.ToString();
+            }
+            
+        }
         [HttpPost]
         public IActionResult CreateCult(CompoundCreateEventViewModel model)
         {
@@ -100,9 +107,9 @@ namespace ekklesia.Controlers
                 case EventType.Culto:
                     var editCulViewModel = new EditCultViewModel(occasion as Cult);
                     return View("editcult", editCulViewModel);
-                case EventType.Escola_Dominical:
-                    var editSundaySchoolViewModel = new EditSundaySchoolViewModel(occasion as SundaySchool);
-                    return View("editSundaySchool", editSundaySchoolViewModel);
+                //case EventType.Escola_Dominical:
+                //    var editSundaySchoolViewModel = new EditSundaySchoolViewModel(occasion as SundaySchool);
+                //    return View("editSundaySchool", editSundaySchoolViewModel);
                 default:
                     return View();
             }
