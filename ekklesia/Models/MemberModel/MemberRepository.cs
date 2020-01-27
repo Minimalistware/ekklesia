@@ -8,6 +8,7 @@ namespace ekklesia.Models.MemberModel
     public interface IMemberRepository
     {
         Member GetMember(int id);
+        Member GetMember(string id);
         IEnumerable<Member> GetMembers();
         Member Add(Member member);
         Member Update(Member member);
@@ -43,6 +44,11 @@ namespace ekklesia.Models.MemberModel
         }
 
         public Member GetMember(int id)
+        {
+            return applicationContext.Members.Find(id);
+        }
+
+        public Member GetMember(string id)
         {
             return applicationContext.Members.Find(id);
         }

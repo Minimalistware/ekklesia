@@ -1,5 +1,6 @@
 ﻿using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,11 +28,11 @@ namespace ekklesia.Models.EventModel
         {
             Date = model.Date;
             EventType = EventType.Escola_Dominical;
-           // Speaker = model.Teacher;
             Theme = model.Theme;
             Verse = model.Verse;
             NumberOfBibles = model.NumberOfBibles;
         }
 
+        
     }
 }

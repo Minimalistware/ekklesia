@@ -37,63 +37,87 @@ namespace ekklesia.Controlers
                 .ToList();
 
             ViewBag.MemberSelectList = new SelectList(memberList, "Id", "Name");
-            
+
             List<SelectListItem> members = new List<SelectListItem>();
             foreach (var item in memberList)
             {
-                members.Add(new SelectListItem {Value = item.Id.ToString(), Text = item.Name });
+                members.Add(new SelectListItem { Value = item.Id.ToString(), Text = item.Name });
             }
-
-            var model = new CompoundCreateEventViewModel(members);
-
-            return View(model);
+            
+            ViewBag.CreateReunionView = new CreateReunionViewModel(members);
+            ViewBag.CreateSundaySchoolView = new CreateSundaySchoolViewModel(members);
+                        
+            return View();
         }
 
         [HttpPost]
-        public string Create(CompoundCreateEventViewModel model)
+        public string Create(CreateSundaySchoolViewModel model)
         {
-            if (model.CreateSundaySchoolView.SelectedMembers == null)
+            if (model.SelectedMembers == null)
             {
                 return "Selecione um membro";
             }
-            else {
+            else
+            {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("You selected - " + string.Join(",", model.CreateSundaySchoolView.SelectedMembers));
+                sb.Append("You selected - " + string.Join(",", model.SelectedMembers));
                 return sb.ToString();
             }
-            
+
         }
+
+                
+        public PartialViewResult RenderCultForm()
+        {
+            CreateCultViewModel model = new CreateCultViewModel();
+            return PartialView("_CultForm", model);
+        }
+
         [HttpPost]
-        public IActionResult CreateCult(CompoundCreateEventViewModel model)
+        public IActionResult Create(CreateCultViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var cult = new Cult(model.CreateCultView);
+                var cult = new Cult(model);
                 repository.Add(cult);
                 return RedirectToAction("list", "event");
             }
             return View("Create");
         }
+
         [HttpPost]
-        public IActionResult CreateReunion(CompoundCreateEventViewModel model)
+        public IActionResult Create(CreateReunionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var reunion = new Reunion(model.CreateReunionView);
+                var reunion = new Reunion(model);
                 repository.Add(reunion);
                 return RedirectToAction("list", "event");
             }
             return View("Create");
         }
         [HttpPost]
-        public IActionResult CreateSundaySchool(CompoundCreateEventViewModel model)
+        public IActionResult CreateA(CreateSundaySchoolViewModel model)
         {
             if (ModelState.IsValid)
             {
+                if (model.SelectedMembers != null)
+                {
+                    if (model.TeacherId != null)
+                    {                        
+                        var sundaySchool = new SundaySchool(model);
+                        foreach (var id in model.SelectedMembers)
+                        {
+                            var member = memberRepository.GetMember(id);
+                            sundaySchool.AddMember(member);
+                        }
+                        sundaySchool.Speaker = memberRepository.GetMember(model.TeacherId);
+                        repository.Add(sundaySchool);
+                        return RedirectToAction("list", "event");
+                    }
 
-                var sundaySchool = new SundaySchool(model.CreateSundaySchoolView);
-                repository.Add(sundaySchool);
-                return RedirectToAction("list", "event");
+                }
+
             }
             return View("Create");
         }

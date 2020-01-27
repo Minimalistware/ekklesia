@@ -1,8 +1,4 @@
-﻿@model CompoundCreateEventViewModel
-
-
-
-<ul class="nav nav-tabs" id="eventsTab" role="tablist">
+﻿<ul class="nav nav-tabs" id="eventsTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="cult-tab" data-toggle="tab" href="#cult" role="tab"
            aria-controls="cult" aria-selected="true">Culto</a>
@@ -20,145 +16,14 @@
 <div class="tab-content">
 
     <div class="tab-pane active" id="cult" role="tabpanel" aria-labelledby="cult-tab">
-
-        @using (@Html.BeginForm("create","event"))
-        {
-            @Html.ListBoxFor(x => x.CreateSundaySchoolView.SelectedMembers, Model.CreateSundaySchoolView.Members);
-            <br />
-            <input type="submit" value="Submit" />
-        }
-
-    
-        @*<form enctype="multipart/form-data" asp-controller="event" asp-action="CreateCult" method="post" class="mt-3">
-
-            <div class="form-group row">
-                <label asp-for="CreateCultView.Date" class="col-sm-2 col-form-label"></label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateCultView.Date" class="form-control" placeholder="Data">
-                    <span asp-validation-for="CreateCultView.Date" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="CreateCultView.MainVerse" class="col-sm-2 col-form-label">Versículo</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateCultView.MainVerse" class="form-control" placeholder="Versículo">
-                    <span asp-validation-for="CreateCultView.MainVerse" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="CreateCultView.NumberOfPeople" class="col-sm-2 col-form-label">Número de pessoas</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateCultView.NumberOfPeople" class="form-control" placeholder="Número de pessoas">
-                    <span asp-validation-for="CreateCultView.NumberOfPeople" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                </div>
-            </div>
-        </form>*@
+        <partial name="_CultForm" />
     </div>
     <div class="tab-pane" id="reunion" role="tabpanel" aria-labelledby="reunion-tab">
-        <form enctype="multipart/form-data" asp-controller="event" asp-action="create" method="post" class="mt-3">
-
-            <div class="form-group row">
-                <label asp-for="CreateReunionView.Date" class="col-sm-2 col-form-label">Data</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateReunionView.Date" class="form-control" placeholder="Data">
-                    <span asp-validation-for="CreateReunionView.Date" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="CreateReunionView.Topic" class="col-sm-2 col-form-label">Tópico</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateReunionView.Topic" class="form-control" placeholder="Tópico">
-                    <span asp-validation-for="CreateReunionView.Topic" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="CreateReunionView.Date" class="col-sm-2 col-form-label">Horário de término</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateReunionView.Date" class="form-control" placeholder="Horário de término">
-                    <span asp-validation-for="CreateReunionView.Date" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Criar</button>
-                </div>
-            </div>
-        </form>
+        <partial name="_ReunionForm" model="ViewBag.CreateReunionView" />
     </div>
+
     <div class="tab-pane" id="school-sunday" role="tabpanel" aria-labelledby="school-sunday-tab">
-        <form enctype="multipart/form-data" asp-controller="event" asp-action="create" method="post" class="mt-3">
-
-            <div class="form-group row">
-                <label asp-for="CreateSundaySchoolView.Date" class="col-sm-2 col-form-label">Data</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateSundaySchoolView.Date" class="form-control" placeholder="Data">
-                    <span asp-validation-for="CreateSundaySchoolView.Date" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="CreateSundaySchoolView.Verse" class="col-sm-2 col-form-label">Versículo usado</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateSundaySchoolView.Verse" class="form-control" placeholder="Versículo">
-                    <span asp-validation-for="CreateSundaySchoolView.Verse" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="CreateSundaySchoolView.Theme" class="col-sm-2 col-form-label">Tema do estudo</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateSundaySchoolView.Theme" class="form-control" placeholder="Tema">
-                    <span asp-validation-for="CreateSundaySchoolView.Theme" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label asp-for="CreateSundaySchoolView.TeacherId" class="col-sm-2 col-form-label">Professor</label>
-                <div class="col-sm-10">
-                    <select asp-for="CreateSundaySchoolView.TeacherId" class="custom-select mr-sm-2"
-                            asp-items="@ViewBag.MemberSelectList">
-                        <option value="">Selesione um membro</option>
-                    </select>
-                    <span asp-validation-for="CreateSundaySchoolView.TeacherId" class="text-danger"></span>
-                </div>
-            </div>
-
-
-            <div class="form-group row">
-
-                <label asp-for="CreateSundaySchoolView.SelectedMembers" class="col-sm-2 col-form-label">Membros presentes</label>
-                <div class="col-sm-10">
-
-                    <select asp-for="CreateSundaySchoolView.SelectedMembers" class="custom-select mr-sm-2"
-                            asp-items="@ViewBag.MemberMultiSelectList">
-                        <option value="">Selesione um membro</option>
-                    </select>
-                    <span asp-validation-for="CreateSundaySchoolView.SelectedMembers" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="CreateSundaySchoolView.NumberOfBibles" class="col-sm-2 col-form-label">Número de Bíblias</label>
-                <div class="col-sm-10">
-                    <input asp-for="CreateSundaySchoolView.NumberOfBibles" class="form-control" placeholder="Número">
-                    <span asp-validation-for="CreateSundaySchoolView.NumberOfBibles" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Criar</button>
-                </div>
-            </div>
-        </form>
+        <partial name="_SundaySchoolForm" model="ViewBag.CreateSundaySchoolView" />
     </div>
 
 </div>

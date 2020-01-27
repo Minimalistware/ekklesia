@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ekklesia.Models.MemberModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,10 @@ namespace ekklesia.Models.ViewModels
 {
     public abstract class CreateMeetingViewModel : CreateEventViewModel
     {
-        public int TeacherId { get; set; }
+        public string TeacherId { get; set; }
         public IEnumerable<SelectListItem> Members { get; set; }
         public IEnumerable<string> SelectedMembers { get; set; }
 
+        
     }
 }
