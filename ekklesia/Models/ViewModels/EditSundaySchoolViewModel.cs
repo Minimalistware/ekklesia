@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.EventModel;
+using ekklesia.Models.MemberModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;

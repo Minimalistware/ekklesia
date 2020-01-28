@@ -8,10 +8,8 @@ namespace ekklesia.Models.ViewModels
 {
     public class CreateReunionViewModel : CreateMeetingViewModel
     {
-        public CreateReunionViewModel() { }
-        public CreateReunionViewModel(List<SelectListItem> members)
+        public CreateReunionViewModel(List<SelectListItem> members) : base(members)
         {
-            Members = members;
         }
 
         [Required]

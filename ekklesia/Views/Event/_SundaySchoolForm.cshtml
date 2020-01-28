@@ -30,8 +30,8 @@
         <label asp-for="TeacherId" class="col-sm-2 col-form-label">Professor</label>
         <div class="col-sm-10">
             <select asp-for="TeacherId" class="custom-select mr-sm-2"
-                    asp-items="@ViewBag.MemberSelectList">
-                <option value="">Selesione um membro</option>
+                    asp-items="@Model.Members">                    
+                <option value="0">Selecione um membro</option>
             </select>
             <span asp-validation-for="TeacherId" class="text-danger"></span>
         </div>
@@ -45,7 +45,7 @@
 
             <select asp-for="SelectedMembers" class="custom-select mr-sm-2"
                     asp-items="@Model.Members">
-                <option value="">Selesione um membro</option>
+                <option value="0">Selecione um membro</option>
             </select>
             <span asp-validation-for="SelectedMembers" class="text-danger"></span>
         </div>

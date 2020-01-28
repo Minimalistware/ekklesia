@@ -12,9 +12,8 @@ namespace ekklesia.Models.ViewModels
     {
         public CreateSundaySchoolViewModel() { }
 
-        public CreateSundaySchoolViewModel(List<SelectListItem> members)
+        public CreateSundaySchoolViewModel(List<SelectListItem> members) : base(members)
         {
-            this.Members = members;
         }
 
         [Required]
@@ -22,7 +21,7 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public string Verse { get; set; }
         [Required]
-        public int NumberOfBibles { get; set; }        
+        public int NumberOfBibles { get; set; }
 
     }
 }
