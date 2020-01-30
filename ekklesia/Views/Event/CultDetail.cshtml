@@ -1,0 +1,11 @@
+﻿@model CultDetailViewModel
+
+@{
+    ViewBag.Title = Model.PageTitle;
+    var culture = new System.Globalization.CultureInfo("pt-BR");
+}
+<h3>@Model.PageTitle</h3>
+
+<div>Data: @Model.Cult.Date.ToString("D", culture)</div>
+<div>Número de pessoas: @Model.Cult.NumberOfPeople</div>
+<div>Vésiculo: @Model.Cult.MainVerse</div>

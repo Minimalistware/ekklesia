@@ -1,0 +1,12 @@
+﻿@model int
+
+@{ViewBag.Title = "Erro 404"; }
+
+<div class="alert alert-danger mt-1 mb-1">
+    <h4>Erro 404. Não página encontrada.</h4>
+    <hr />
+    <h5>Evento com Id @Model não pode ser encontado.</h5>
+</div>
+<a asp-action="list" asp-controller="event" class="btn btn-outline-success">
+    Pressione aqui para ver a lista de eventos.
+</a>
