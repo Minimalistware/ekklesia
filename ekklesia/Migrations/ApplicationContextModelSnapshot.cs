@@ -19,7 +19,7 @@ namespace ekklesia.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ekklesia.Models.EventModel.Event", b =>
+            modelBuilder.Entity("ekklesia.Models.EventModel.Occasion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,30 +34,30 @@ namespace ekklesia.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Occasions");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Event");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Occasion");
                 });
 
-            modelBuilder.Entity("ekklesia.Models.EventModel.EventMember", b =>
+            modelBuilder.Entity("ekklesia.Models.EventModel.OccasionMember", b =>
                 {
                     b.Property<int>("MemberId");
 
-                    b.Property<int>("EventId");
+                    b.Property<int>("OccasionId");
 
                     b.Property<int?>("ReunionId");
 
                     b.Property<int?>("SundaySchoolId");
 
-                    b.HasKey("MemberId", "EventId");
+                    b.HasKey("MemberId", "OccasionId");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("OccasionId");
 
                     b.HasIndex("ReunionId");
 
                     b.HasIndex("SundaySchoolId");
 
-                    b.ToTable("EventMember");
+                    b.ToTable("OccasionMember");
                 });
 
             modelBuilder.Entity("ekklesia.Models.MemberModel.Member", b =>
@@ -105,7 +105,7 @@ namespace ekklesia.Migrations
 
             modelBuilder.Entity("ekklesia.Models.EventModel.Cult", b =>
                 {
-                    b.HasBaseType("ekklesia.Models.EventModel.Event");
+                    b.HasBaseType("ekklesia.Models.EventModel.Occasion");
 
                     b.Property<string>("MainVerse")
                         .IsRequired();
@@ -119,11 +119,11 @@ namespace ekklesia.Migrations
 
             modelBuilder.Entity("ekklesia.Models.EventModel.Reunion", b =>
                 {
-                    b.HasBaseType("ekklesia.Models.EventModel.Event");
+                    b.HasBaseType("ekklesia.Models.EventModel.Occasion");
 
                     b.Property<DateTime>("EndTime");
 
-                    b.Property<int?>("SpeakerId");
+                    b.Property<int>("SpeakerId");
 
                     b.Property<string>("Topic")
                         .IsRequired();
@@ -137,12 +137,11 @@ namespace ekklesia.Migrations
 
             modelBuilder.Entity("ekklesia.Models.EventModel.SundaySchool", b =>
                 {
-                    b.HasBaseType("ekklesia.Models.EventModel.Event");
+                    b.HasBaseType("ekklesia.Models.EventModel.Occasion");
 
                     b.Property<int>("NumberOfBibles");
 
-                    b.Property<int?>("SpeakerId")
-                        .HasColumnName("SundaySchool_SpeakerId");
+                    b.Property<int>("TeacherId");
 
                     b.Property<string>("Theme")
                         .IsRequired();
@@ -150,27 +149,27 @@ namespace ekklesia.Migrations
                     b.Property<string>("Verse")
                         .IsRequired();
 
-                    b.HasIndex("SpeakerId");
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("SundaySchools");
 
                     b.HasDiscriminator().HasValue("SundaySchool");
                 });
 
-            modelBuilder.Entity("ekklesia.Models.EventModel.EventMember", b =>
+            modelBuilder.Entity("ekklesia.Models.EventModel.OccasionMember", b =>
                 {
-                    b.HasOne("ekklesia.Models.EventModel.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ekklesia.Models.MemberModel.Member", "Member")
                         .WithMany("Meetings")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("ekklesia.Models.EventModel.Occasion", "Occasion")
+                        .WithMany()
+                        .HasForeignKey("OccasionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ekklesia.Models.EventModel.Reunion")
-                        .WithMany("Members")
+                        .WithMany("PresentMembers")
                         .HasForeignKey("ReunionId");
 
                     b.HasOne("ekklesia.Models.EventModel.SundaySchool")
@@ -182,14 +181,16 @@ namespace ekklesia.Migrations
                 {
                     b.HasOne("ekklesia.Models.MemberModel.Member", "Speaker")
                         .WithMany()
-                        .HasForeignKey("SpeakerId");
+                        .HasForeignKey("SpeakerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ekklesia.Models.EventModel.SundaySchool", b =>
                 {
-                    b.HasOne("ekklesia.Models.MemberModel.Member", "Speaker")
+                    b.HasOne("ekklesia.Models.MemberModel.Member", "Teacher")
                         .WithMany()
-                        .HasForeignKey("SpeakerId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

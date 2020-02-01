@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Event>
+﻿@model IEnumerable<Occasion>
 
 <div class="container">
     <div class="row">
@@ -11,13 +11,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @{
-                            var culture = new System.Globalization.CultureInfo("pt-BR");
-                        }
 
-                        @foreach (var occasion in Model)
-                        {
+                    @{
+                        var culture = new System.Globalization.CultureInfo("pt-BR");
+                    }
+
+                    @foreach (var occasion in Model)
+                    {
+                        <tr>
                             <td>@occasion.Date.ToString("D", culture)</td>
                             <td>@occasion.EventType</td>
                             <td>
@@ -34,8 +35,9 @@
                                 </div>
 
                             </td>
-                        }
-                    </tr>
+
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

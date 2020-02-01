@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ekklesia.Models.EventModel
 {
     
-    public abstract class Event
+    public abstract class Occasion
     {
         public int Id { get; set; }
         [Required]

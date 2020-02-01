@@ -1,6 +1,5 @@
 ﻿using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +8,7 @@ namespace ekklesia.Models.EventModel
 {
 
     [Table("SundaySchools")]
-    public class SundaySchool : Meeting
+    public class SundaySchool : Occasion
     {
 
         [Required]
@@ -18,10 +17,13 @@ namespace ekklesia.Models.EventModel
         public string Verse { get; set; }
         [Required]
         public int NumberOfBibles { get; set; }
-
+        [Required]
+        public Member Teacher { get; set; }
+        public ICollection<OccasionMember> Members { get; set; }
 
         public SundaySchool()
         {
+            this.Members = new List<OccasionMember>();
         }
 
         public SundaySchool(CreateSundaySchoolViewModel model)
@@ -31,8 +33,13 @@ namespace ekklesia.Models.EventModel
             Theme = model.Theme;
             Verse = model.Verse;
             NumberOfBibles = model.NumberOfBibles;
+            this.Members = new List<OccasionMember>();
         }
 
-        
+        public void AddMember(Member member)
+        {
+            this.Members.Add(new OccasionMember() { Member = member, Occasion = this });
+        }
+
     }
 }

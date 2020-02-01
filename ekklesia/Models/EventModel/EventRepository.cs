@@ -5,11 +5,11 @@ namespace ekklesia.Models.EventModel
 {
     public interface IEventRepository
     {
-        IEnumerable<Event> GetEvents();
-        Event GetEvent(int Id);
-        Event Add(Event Event);
-        Event Update(Event Event);
-        Event Delete(int id);
+        IEnumerable<Occasion> GetEvents();
+        Occasion GetEvent(int Id);
+        Occasion Add(Occasion Event);
+        Occasion Update(Occasion Event);
+        Occasion Delete(int id);
 
     }
     public class EventRepository : IEventRepository
@@ -21,37 +21,37 @@ namespace ekklesia.Models.EventModel
             this.applicationContext = applicationContext;
         }
 
-        public Event Add(Event Event)
+        public Occasion Add(Occasion Event)
         {
             applicationContext.Add(Event);
             applicationContext.SaveChanges();
             return Event;
         }
 
-        public Event Delete(int id)
+        public Occasion Delete(int id)
         {
-            Event occasion = applicationContext.Events.Find(id);
+            Occasion occasion = applicationContext.Occasions.Find(id);
             if (occasion != null)
             {
-                applicationContext.Events.Remove(occasion);
+                applicationContext.Occasions.Remove(occasion);
                 applicationContext.SaveChanges();
             }
             return occasion;
         }
 
-        public Event GetEvent(int Id)
+        public Occasion GetEvent(int Id)
         {
-            return applicationContext.Events.Find(Id);
+            return applicationContext.Occasions.Find(Id);
         }
 
-        public IEnumerable<Event> GetEvents()
+        public IEnumerable<Occasion> GetEvents()
         {
-            return applicationContext.Events;
+            return applicationContext.Occasions;
         }
 
-        public Event Update(Event alteredEvent)
+        public Occasion Update(Occasion alteredEvent)
         {
-            var occasion = applicationContext.Events.Attach(alteredEvent);
+            var occasion = applicationContext.Occasions.Attach(alteredEvent);
             occasion.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             applicationContext.SaveChanges();
             return alteredEvent;

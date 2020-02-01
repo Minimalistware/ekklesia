@@ -52,14 +52,59 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateReunionViewModel model)
+        public IActionResult CreateReunion(CreateReunionViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var reunion = new Reunion(model);
-                repository.Add(reunion);
+                foreach (var id in model.SelectedMembers)
+                {
+                    var member = memberRepository.GetMember(int.Parse(id));
+                    if (member != null)
+                    {
+                        try
+                        {
+                            reunion.AddMember(member);
+
+                        }
+                        catch (System.Exception ex)
+                        {
+                            throw new System.Exception("Erro ao adicionar membros presentes.", ex);
+                        }
+                    }
+
+                }
+
+                var speaker = memberRepository.GetMember(int.Parse(model.TeacherId));
+                if (speaker != null)
+                {
+                    try
+                    {
+                        reunion.Speaker = speaker;
+
+                    }
+                    catch (System.Exception ex)
+                    {
+                        throw new System.Exception("Erro ao adicionar pregador.", ex);
+                    }
+
+                }
+
+                try
+                {
+                    repository.Add(reunion);
+                }
+                catch (System.Exception ex)
+                {
+                    throw new System.Exception("Erro ao salvar Escola Dominical", ex);
+                }
+
                 return RedirectToAction("list", "event");
             }
+
+            List<SelectListItem> members = GetMembers();
+            ViewBag.reunionViewModel = new CreateReunionViewModel(members);
+            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
             return View("Create");
         }
 
@@ -75,26 +120,35 @@ namespace ekklesia.Controlers
                 var sundaySchool = new SundaySchool(model);
                 foreach (var id in model.SelectedMembers)
                 {
+                    var member = memberRepository.GetMember(int.Parse(id));
+                    if (member != null)
+                    {
+                        try
+                        {
+                            sundaySchool.AddMember(member);
+
+                        }
+                        catch (System.Exception ex)
+                        {
+                            throw new System.Exception("Erro ao adicionar membros presentes.", ex);
+                        }
+                    }
+
+                }
+
+                var teacher = memberRepository.GetMember(int.Parse(model.TeacherId));
+                if (teacher != null)
+                {
                     try
                     {
-                        var member = memberRepository.GetMember(id);
-                        sundaySchool.AddMember(member);
+                        sundaySchool.Teacher = teacher;
+
                     }
                     catch (System.Exception ex)
                     {
-                        throw ex;
+                        throw new System.Exception("Erro ao adicionar pregador.", ex);
                     }
 
-                }
-                
-                try
-                {
-                    sundaySchool.Speaker = memberRepository.GetMember(model.TeacherId);
-
-                }
-                catch (System.Exception ex)
-                {
-                    throw ex;
                 }
 
                 try
@@ -103,7 +157,7 @@ namespace ekklesia.Controlers
                 }
                 catch (System.Exception ex)
                 {
-                    throw ex;
+                    throw new System.Exception("Erro ao salvar Escola Dominical", ex);
                 }
 
                 return RedirectToAction("list", "event");

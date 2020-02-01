@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ekklesia.Models.EventModel
 {
     [Table("Cults")]
-    public class Cult : Event
+    public class Cult : Occasion
     {
         public Cult()
         {

@@ -25,7 +25,6 @@ namespace ekklesia.Models.ViewModels
         public IEnumerable<string> SelectedMembers { get; set; }
                 
         public List<SelectListItem> Members { get; set; }
-        //public List<Member> MembersList { get; set; }
-
+       
     }
 }

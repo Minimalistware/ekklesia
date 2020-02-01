@@ -8,7 +8,7 @@ namespace ekklesia.Models.MemberModel
     {
         public Member()
         {
-            this.Meetings = new List<MeetingMember>();
+            this.Meetings = new List<OccasionMember>();
         }
 
         [Required]
@@ -20,7 +20,13 @@ namespace ekklesia.Models.MemberModel
         [Required]
         public Position Position { get; set; }
         public string PhotoPath { get; set; }
-        public virtual ICollection<MeetingMember> Meetings { get; set; }
+        public virtual ICollection<OccasionMember> Meetings { get; set; }
+
+
+        public void AddMeeting(Occasion occasion)
+        {
+            Meetings.Add(new OccasionMember() { Occasion = occasion });
+        }
 
     }
 }

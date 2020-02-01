@@ -34,6 +34,12 @@
     <Compile Remove="Migrations\20200124200928_Employees.Designer.cs" />
     <Compile Remove="Migrations\20200124214355_EventMemberMigration.cs" />
     <Compile Remove="Migrations\20200124214355_EventMemberMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200130202822_MeetingMember.cs" />
+    <Compile Remove="Migrations\20200130202822_MeetingMember.Designer.cs" />
+    <Compile Remove="Migrations\20200130203045_MeetingMember.cs" />
+    <Compile Remove="Migrations\20200130203045_MeetingMember.Designer.cs" />
+    <Compile Remove="Migrations\20200130214504_OccasionMember.cs" />
+    <Compile Remove="Migrations\20200130214504_OccasionMember.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,25 +1,23 @@
 ﻿using ekklesia.Models.MemberModel;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Models.EventModel
 {
-    public abstract class Meeting : Event
+    public abstract class Meeting : Occasion
     {
         protected Meeting()
         {
-            this.Members = new List<MeetingMember>();
+            this.Members = new List<OccasionMember>();
         }
 
-        public ICollection<MeetingMember> Members { get; set; }
+        public ICollection<OccasionMember> Members { get; set; }
         [Required]
         public Member Speaker { get; set; }
+        
         public void AddMember(Member member)
         {
-            Members.Add(new MeetingMember() { Member = member });
+            this.Members.Add(new OccasionMember() { Member = member });
         }
     }
 }
