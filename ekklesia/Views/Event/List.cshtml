@@ -8,6 +8,7 @@
                     <tr>
                         <th>Data</th>
                         <th>Evento</th>
+                        <th>Tema</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,6 +22,19 @@
                         <tr>
                             <td>@occasion.Date.ToString("D", culture)</td>
                             <td>@occasion.EventType</td>
+                            @switch (occasion.EventType)
+                            {
+                                case EventType.Escola_Dominical:
+                                    <td>@((occasion as SundaySchool).Theme)</td>
+                                    break;
+                                case EventType.Reunião:
+                                    var reunion = occasion as Reunion;
+                                    <td>@reunion.Topic</td>
+                                    break;
+                                default:
+                                    <td>@((occasion as Cult).MainVerse)</td>
+                                    break;
+                            }
                             <td>
 
                                 <div class="btn-group">

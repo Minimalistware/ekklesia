@@ -14,9 +14,9 @@ namespace ekklesia.Models.ViewModels
         {
 
         }
-        public CreateMeetingViewModel(List<SelectListItem> members)
+        public CreateMeetingViewModel(List<SelectListItem> allMembers)
         {
-            Members = members;
+            AllMembers = allMembers;
         }
 
         [Required]
@@ -24,7 +24,7 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public IEnumerable<string> SelectedMembers { get; set; }
                 
-        public List<SelectListItem> Members { get; set; }
+        public List<SelectListItem> AllMembers { get; set; }
        
     }
 }

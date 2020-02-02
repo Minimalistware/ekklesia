@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ekklesia.Models.EventModel
 {
@@ -48,7 +47,7 @@ namespace ekklesia.Models.EventModel
         {
             return applicationContext.Occasions;
         }
-
+                
         public Occasion Update(Occasion alteredEvent)
         {
             var occasion = applicationContext.Occasions.Attach(alteredEvent);

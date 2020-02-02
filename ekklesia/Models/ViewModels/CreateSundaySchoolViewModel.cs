@@ -12,7 +12,7 @@ namespace ekklesia.Models.ViewModels
     {
         public CreateSundaySchoolViewModel() { }
 
-        public CreateSundaySchoolViewModel(List<SelectListItem> members) : base(members)
+        public CreateSundaySchoolViewModel(List<SelectListItem> allMembers) : base(allMembers)
         {
         }
 

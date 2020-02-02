@@ -10,12 +10,13 @@ namespace ekklesia.Models.ViewModels
 {
     public class EditSundaySchoolViewModel : CreateSundaySchoolViewModel
     {
-        public EditSundaySchoolViewModel(List<SelectListItem> members):base(members)
+        public EditSundaySchoolViewModel(SundaySchool sunday, List<SelectListItem> allMembers)
+            :base(allMembers)
         {
-            //Id = occasion.Id;
+            Id = sunday.Id;
             //Teacher = occasion.Speaker;
-            //Theme = occasion.Theme;
-            //Verse = occasion.Verse;
+            Theme = sunday.Theme;
+            Verse = sunday.Verse;
 
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace ekklesia.Models.MemberModel
     {
         Member GetMember(int id);
         IEnumerable<Member> GetMembers();
+        IEnumerable<Member> GetMembersInEvent(int id);
         Member Add(Member member);
         Member Update(Member member);
         Member Delete(int id);
@@ -46,11 +48,19 @@ namespace ekklesia.Models.MemberModel
         {
             return applicationContext.Members.Find(id);
         }
-                
+
 
         public IEnumerable<Member> GetMembers()
         {
             return applicationContext.Members;
+        }
+
+        public IEnumerable<Member> GetMembersInEvent(int id)
+        {
+            return applicationContext.Members
+                .Include(m => m.Meetings)
+                .ThenInclude(oc => oc.Occasion)
+                .Where(oc => oc.Id == id);
         }
 
         public Member Update(Member alteredMember)

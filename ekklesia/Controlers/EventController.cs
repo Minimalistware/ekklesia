@@ -3,6 +3,7 @@ using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace ekklesia.Controlers
         [HttpGet]
         public ViewResult Create()
         {
-            List<SelectListItem> members = GetMembers();
+            List<SelectListItem> members = GetAllMembers();
             ViewBag.reunionViewModel = new CreateReunionViewModel(members);
             ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
             return View();
@@ -39,7 +40,7 @@ namespace ekklesia.Controlers
 
 
         [HttpPost]
-        public IActionResult Create(CreateCultViewModel model)
+        public IActionResult CreateCult(CreateCultViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +103,7 @@ namespace ekklesia.Controlers
                 return RedirectToAction("list", "event");
             }
 
-            List<SelectListItem> members = GetMembers();
+            List<SelectListItem> members = GetAllMembers();
             ViewBag.reunionViewModel = new CreateReunionViewModel(members);
             ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
             return View("Create");
@@ -162,9 +163,9 @@ namespace ekklesia.Controlers
 
                 return RedirectToAction("list", "event");
             }
-            List<SelectListItem> members = GetMembers();
-            ViewBag.reunionViewModel = new CreateReunionViewModel(members);
-            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
+            List<SelectListItem> allMembers = GetAllMembers();
+            ViewBag.reunionViewModel = new CreateReunionViewModel(allMembers);
+            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(allMembers);
             return View("Create");
         }
 
@@ -177,14 +178,19 @@ namespace ekklesia.Controlers
                 case EventType.Culto:
                     var editCulViewModel = new EditCultViewModel(occasion as Cult);
                     return View("editcult", editCulViewModel);
-                //case EventType.Escola_Dominical:
-                //    var editSundaySchoolViewModel = new EditSundaySchoolViewModel(occasion as SundaySchool);
-                //    return View("editSundaySchool", editSundaySchoolViewModel);
+                case EventType.Escola_Dominical:
+                    var school = occasion as SundaySchool;
+                    List<SelectListItem> membersList =
+                        SetMemberAtOccasion(memberRepository.GetMembersInEvent(school.Id));
+                    var editSundaySchoolViewModel = new EditSundaySchoolViewModel(
+                        school, membersList);
+                    return View("editSundaySchool", editSundaySchoolViewModel);
                 default:
                     return View();
             }
 
         }
+
 
         [HttpPost]
         public IActionResult EditCult(EditCultViewModel model)
@@ -201,23 +207,7 @@ namespace ekklesia.Controlers
 
         }
 
-        private List<SelectListItem> GetMembers()
-        {
-            var memberList = memberRepository
-                            .GetMembers()
-                            .OrderBy(m => m.Name)
-                            .ToList();
 
-
-
-            List<SelectListItem> members = new List<SelectListItem>();
-            foreach (var item in memberList)
-            {
-                members.Add(new SelectListItem { Value = item.Id.ToString(), Text = item.Name });
-            }
-
-            return members;
-        }
 
         public ViewResult Detail(int? id)
         {
@@ -229,6 +219,48 @@ namespace ekklesia.Controlers
             }
             CultDetailViewModel model = new CultDetailViewModel((Cult)occasion);
             return View("CultDetail", model);
+        }
+
+        private List<SelectListItem> GetAllMembers()
+        {
+            var memberList = memberRepository
+                            .GetMembers()
+                            .OrderBy(m => m.Name)
+                            .ToList();
+
+
+
+            List<SelectListItem> members = new List<SelectListItem>();
+            foreach (var item in memberList)
+            {
+                members.Add(new SelectListItem
+                {
+                    Value = item.Id.ToString(),
+                    Text = item.Name
+
+                });
+            }
+
+            return members;
+        }
+
+        private List<SelectListItem> SetMemberAtOccasion(IEnumerable<Member> selectedMembers)
+        {
+            var memberList = memberRepository
+                            .GetMembers()
+                            .ToList();
+
+            List<SelectListItem> members = new List<SelectListItem>();
+            foreach (var item in memberList)
+            {
+                members.Add(new SelectListItem
+                {
+                    Value = item.Id.ToString(),
+                    Text = item.Name                    
+                });
+            }
+
+            return members;
         }
     }
 }
