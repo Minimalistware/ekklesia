@@ -129,9 +129,9 @@ namespace ekklesia.Controlers
                             sundaySchool.AddMember(member);
 
                         }
-                        catch (System.Exception ex)
+                        catch (Exception ex)
                         {
-                            throw new System.Exception("Erro ao adicionar membros presentes.", ex);
+                            throw new Exception("Erro ao adicionar membros presentes.", ex);
                         }
                     }
 
@@ -145,9 +145,9 @@ namespace ekklesia.Controlers
                         sundaySchool.Teacher = teacher;
 
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
-                        throw new System.Exception("Erro ao adicionar pregador.", ex);
+                        throw new Exception("Erro ao adicionar pregador.", ex);
                     }
 
                 }
@@ -156,17 +156,18 @@ namespace ekklesia.Controlers
                 {
                     repository.Add(sundaySchool);
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    throw new System.Exception("Erro ao salvar Escola Dominical", ex);
+                    throw new Exception("Erro ao salvar Escola Dominical", ex);
                 }
 
                 return RedirectToAction("list", "event");
             }
-            List<SelectListItem> allMembers = GetAllMembers();
-            ViewBag.reunionViewModel = new CreateReunionViewModel(allMembers);
-            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(allMembers);
-            return View("Create");
+
+            List<SelectListItem> members = GetAllMembers();
+            ViewBag.reunionViewModel = new CreateReunionViewModel(members);
+            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
+            return View("Create");            
         }
 
         [HttpGet]
@@ -180,11 +181,10 @@ namespace ekklesia.Controlers
                     return View("editcult", editCulViewModel);
                 case EventType.Escola_Dominical:
                     var school = occasion as SundaySchool;
-                    List<SelectListItem> membersList =
-                        SetMemberAtOccasion(memberRepository.GetMembersInEvent(school.Id));
-                    var editSundaySchoolViewModel = new EditSundaySchoolViewModel(
-                        school, membersList);
-                    return View("editSundaySchool", editSundaySchoolViewModel);
+                    var membersList = SetMemberAtOccasion(
+                        memberRepository.GetMembersInEvent(school.Id));
+                    var model = new EditSundaySchoolViewModel(school, membersList);
+                    return View("editSundaySchool", model);
                 default:
                     return View();
             }
@@ -205,6 +205,64 @@ namespace ekklesia.Controlers
             }
             return View();
 
+        }
+
+        [HttpPost]
+        public IActionResult EditSundaySchool(EditSundaySchoolViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var sundaySchool = (SundaySchool) repository.GetEvent(model.Id);
+                sundaySchool.Date = model.Date;
+                sundaySchool.NumberOfBibles = model.NumberOfBibles;
+                sundaySchool.Theme = model.Theme;
+                sundaySchool.Verse = model.Verse;
+
+                foreach (var id in model.SelectedMembers)
+                {
+                    var member = memberRepository.GetMember(int.Parse(id));
+                    if (member != null)
+                    {
+                        try
+                        {
+                            sundaySchool.AddMember(member);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception("Erro ao adicionar membros presentes.", ex);
+                        }
+                    }
+
+                }
+
+                var teacher = memberRepository.GetMember(int.Parse(model.TeacherId));
+                if (teacher != null)
+                {
+                    try
+                    {
+                        sundaySchool.Teacher = teacher;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Erro ao adicionar pregador.", ex);
+                    }
+
+                }
+
+                try
+                {
+                    repository.Update(sundaySchool);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao salvar Escola Dominical", ex);
+                }
+
+                return RedirectToAction("list", "event");
+            }
+            return View("EditSundaySchool", model);           
         }
 
 
@@ -244,20 +302,27 @@ namespace ekklesia.Controlers
             return members;
         }
 
-        private List<SelectListItem> SetMemberAtOccasion(IEnumerable<Member> selectedMembers)
+        private List<SelectListItem> SetMemberAtOccasion(IEnumerable<int> membersPresents)
         {
             var memberList = memberRepository
                             .GetMembers()
                             .ToList();
 
             List<SelectListItem> members = new List<SelectListItem>();
-            foreach (var item in memberList)
+            foreach (var member in memberList)
             {
-                members.Add(new SelectListItem
+                var item = new SelectListItem
                 {
-                    Value = item.Id.ToString(),
-                    Text = item.Name                    
-                });
+                    Value = member.Id.ToString(),
+                    Text = member.Name
+                };
+
+                if (membersPresents.Contains(member.Id))
+                {
+                    item.Selected = true;
+                }
+
+                members.Add(item);
             }
 
             return members;

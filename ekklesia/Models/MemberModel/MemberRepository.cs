@@ -10,7 +10,7 @@ namespace ekklesia.Models.MemberModel
     {
         Member GetMember(int id);
         IEnumerable<Member> GetMembers();
-        IEnumerable<Member> GetMembersInEvent(int id);
+        IEnumerable<int> GetMembersInEvent(int id);
         Member Add(Member member);
         Member Update(Member member);
         Member Delete(int id);
@@ -55,12 +55,13 @@ namespace ekklesia.Models.MemberModel
             return applicationContext.Members;
         }
 
-        public IEnumerable<Member> GetMembersInEvent(int id)
+        public IEnumerable<int> GetMembersInEvent(int id)
         {
             return applicationContext.Members
                 .Include(m => m.Meetings)
                 .ThenInclude(oc => oc.Occasion)
-                .Where(oc => oc.Id == id);
+                .Where(m => m.Meetings.Any(oc => oc.OccasionId == id))
+                .Select(m => m.Id);
         }
 
         public Member Update(Member alteredMember)

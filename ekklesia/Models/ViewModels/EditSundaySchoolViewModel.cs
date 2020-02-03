@@ -1,22 +1,22 @@
 ﻿using ekklesia.Models.EventModel;
-using ekklesia.Models.MemberModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Models.ViewModels
 {
     public class EditSundaySchoolViewModel : CreateSundaySchoolViewModel
     {
-        public EditSundaySchoolViewModel(SundaySchool sunday, List<SelectListItem> allMembers)
-            :base(allMembers)
+        public EditSundaySchoolViewModel() { }
+
+        public EditSundaySchoolViewModel(SundaySchool school, List<SelectListItem> allMembers)
+            : base(allMembers)
         {
-            Id = sunday.Id;
-            //Teacher = occasion.Speaker;
-            Theme = sunday.Theme;
-            Verse = sunday.Verse;
+            Date = school.Date;
+            Id = school.Id;
+            TeacherId = school.Teacher.Id.ToString();
+            Theme = school.Theme;
+            Verse = school.Verse;
+            NumberOfBibles = school.NumberOfBibles;
 
         }
 

@@ -5,6 +5,7 @@
 }
 
     <form enctype="multipart/form-data" asp-controller="event" asp-action="EditCult" method="post" class="mt-3">
+        <input hidden asp-for="Id" />
 
         <div class="form-group row">
             <label asp-for="Date" class="col-sm-2 col-form-label"></label>
@@ -32,7 +33,7 @@
         <div class="form-group row">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Salvar</button>
-                <a asp-controller="event" asp-action="list" class="btn btn-primary">Cancel</a>
+                <a asp-controller="event" asp-action="list" class="btn btn-primary">Cancelar</a>
             </div>
         </div>
     </form>
