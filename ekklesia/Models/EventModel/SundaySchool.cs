@@ -23,7 +23,7 @@ namespace ekklesia.Models.EventModel
 
         public SundaySchool()
         {
-            this.Members = new List<OccasionMember>();
+            this.Members = new HashSet<OccasionMember>();
         }
 
         public SundaySchool(CreateSundaySchoolViewModel model)
@@ -33,7 +33,7 @@ namespace ekklesia.Models.EventModel
             Theme = model.Theme;
             Verse = model.Verse;
             NumberOfBibles = model.NumberOfBibles;
-            this.Members = new List<OccasionMember>();
+            this.Members = new HashSet<OccasionMember>();
         }
 
         public void AddMember(Member member)

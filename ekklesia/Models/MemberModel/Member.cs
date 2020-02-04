@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.EventModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -28,5 +29,20 @@ namespace ekklesia.Models.MemberModel
             Meetings.Add(new OccasionMember() { Occasion = occasion });
         }
 
+        public override bool Equals(object obj)
+        {
+            Member member = obj as Member;
+
+            if (member == null)
+            {
+                return false;
+            }
+            return this.Id.Equals(member.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }

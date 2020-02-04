@@ -226,7 +226,6 @@ namespace ekklesia.Controlers
                         try
                         {
                             sundaySchool.AddMember(member);
-
                         }
                         catch (Exception ex)
                         {

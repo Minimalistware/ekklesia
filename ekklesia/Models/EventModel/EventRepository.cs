@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ekklesia.Models.EventModel
 {
     public interface IEventRepository
     {
         IEnumerable<Occasion> GetEvents();
+        Occasion GetEventWithItsMembers(Occasion occasion);
         Occasion GetEvent(int Id);
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
@@ -47,13 +50,36 @@ namespace ekklesia.Models.EventModel
         {
             return applicationContext.Occasions;
         }
-                
+
         public Occasion Update(Occasion alteredEvent)
         {
             var occasion = applicationContext.Occasions.Attach(alteredEvent);
-            occasion.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            occasion.State = EntityState.Modified;
             applicationContext.SaveChanges();
             return alteredEvent;
+        }
+
+        public Occasion GetEventWithItsMembers(Occasion occasion)
+        {
+            if (occasion.EventType == EventType.Escola_Dominical)
+            {
+                return applicationContext.Occasions
+                .OfType<SundaySchool>()
+                .Include(oc => oc.Members)
+                .ThenInclude(om => om.Member)
+                .Where(oc => oc.Id == occasion.Id)
+                .FirstOrDefault();
+            }
+            else
+            {
+                return applicationContext.Occasions
+                .OfType<Reunion>()
+                .Include(oc => oc.PresentMembers)
+                .ThenInclude(om => om.Member)
+                .Where(oc => oc.Id == occasion.Id)
+                .FirstOrDefault();
+            }
+
         }
     }
 }
