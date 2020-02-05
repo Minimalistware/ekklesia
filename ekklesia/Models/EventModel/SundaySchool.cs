@@ -17,7 +17,7 @@ namespace ekklesia.Models.EventModel
         public string Verse { get; set; }
         [Required]
         public int NumberOfBibles { get; set; }
-        [Required]
+        public int TeacherId { get; set; }
         public Member Teacher { get; set; }
         public ICollection<OccasionMember> Members { get; set; }
 

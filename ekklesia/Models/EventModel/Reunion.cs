@@ -15,7 +15,7 @@ namespace ekklesia.Models.EventModel
         public string Topic { get; set; }
         [Required]
         public DateTime EndTime { get; set; }
-        [Required]
+        public int SpeakerId { get; set; }
         public Member Speaker { get; set; }
         public ICollection<OccasionMember> PresentMembers { get; set; }
 

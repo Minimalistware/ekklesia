@@ -10,7 +10,7 @@ namespace ekklesia.Models.MemberModel
     {
         Member GetMember(int id);
         IEnumerable<Member> GetMembers();
-        IEnumerable<int> GetMembersInEvent(int id);
+        IEnumerable<Member> GetMembersInEvent(int id);
         Member Add(Member member);
         Member Update(Member member);
         Member Delete(int id);
@@ -55,19 +55,19 @@ namespace ekklesia.Models.MemberModel
             return applicationContext.Members;
         }
 
-        public IEnumerable<int> GetMembersInEvent(int id)
+        public IEnumerable<Member> GetMembersInEvent(int id)
         {
             return applicationContext.Members
-                .Include(m => m.Meetings)
-                .ThenInclude(oc => oc.Occasion)
-                .Where(m => m.Meetings.Any(oc => oc.OccasionId == id))
-                .Select(m => m.Id);
+              .Include(m => m.Meetings)
+              .ThenInclude(oc => oc.Occasion)
+              .Where(m => m.Meetings.Any(oc => oc.OccasionId == id));
         }
+
 
         public Member Update(Member alteredMember)
         {
             var member = applicationContext.Members.Attach(alteredMember);
-            member.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            member.State = EntityState.Modified;
             applicationContext.SaveChanges();
             return alteredMember;
 

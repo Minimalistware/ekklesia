@@ -41,20 +41,7 @@
             <span asp-validation-for="TeacherId" class="text-danger"></span>
         </div>
     </div>
-
-
-    <div class="form-group row">
-
-        <label asp-for="SelectedMembers" class="col-sm-2 col-form-label">Membros presentes</label>
-        <div class="col-sm-10">
-
-            <select asp-for="SelectedMembers" class="custom-select mr-sm-2"
-                    asp-items="@Model.AllMembers">
-                <option value="0">Selecione um membro</option>
-            </select>
-            <span asp-validation-for="SelectedMembers" class="text-danger"></span>
-        </div>
-    </div>
+    
     <div class="form-group row">
         <label asp-for="NumberOfBibles" class="col-sm-2 col-form-label">Número de Bíblias</label>
         <div class="col-sm-10">
@@ -66,6 +53,30 @@
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">Savlar</button>
             <a asp-controller="event" asp-action="list" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </div>
+
+
+    <div class="cars">
+        <div class="card-header">
+            <h4>Membros Pesentes</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.AllMembers.Any())
+            {
+                foreach (var member in Model.AllMembers)
+                {
+                    <h6 class="card-title">@member.Text</h6>
+                }
+            }
+            else
+            {
+                <h6 class="card-title">Nenhum membro no momento.</h6>
+            }
+        </div>
+        <div class="card-footer">
+            <a href="#" class="btn btn-primary" style="width:auto">Adicionar membros</a>
+            <a href="#" class="btn btn-primary" style="width:auto">Remover membros</a>
         </div>
     </div>
 </form>

@@ -84,9 +84,9 @@ namespace ekklesia.Controlers
                         reunion.Speaker = speaker;
 
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
-                        throw new System.Exception("Erro ao adicionar pregador.", ex);
+                        throw new Exception("Erro ao adicionar pregador.", ex);
                     }
 
                 }
@@ -95,9 +95,9 @@ namespace ekklesia.Controlers
                 {
                     repository.Add(reunion);
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    throw new System.Exception("Erro ao salvar Escola Dominical", ex);
+                    throw new Exception("Erro ao salvar Escola Dominical", ex);
                 }
 
                 return RedirectToAction("list", "event");
@@ -167,13 +167,18 @@ namespace ekklesia.Controlers
             List<SelectListItem> members = GetAllMembers();
             ViewBag.reunionViewModel = new CreateReunionViewModel(members);
             ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
-            return View("Create");            
+            return View("Create");
         }
 
         [HttpGet]
         public ViewResult Edit(int Id)
         {
             var occasion = repository.GetEvent(Id);
+            if (occasion == null)
+            {
+                ViewBag.ErrorMessage = $"Evento com Id: {Id} não pode ser encontrado";
+                return View("NotFound");
+            }
             switch (occasion.EventType)
             {
                 case EventType.Culto:
@@ -181,9 +186,8 @@ namespace ekklesia.Controlers
                     return View("editcult", editCulViewModel);
                 case EventType.Escola_Dominical:
                     var school = occasion as SundaySchool;
-                    var membersList = SetMemberAtOccasion(
-                        memberRepository.GetMembersInEvent(school.Id));
-                    var model = new EditSundaySchoolViewModel(school, membersList);
+                    var model = new EditSundaySchoolViewModel(occasion as SundaySchool);
+                    model = ConfigureLists(model);
                     return View("editSundaySchool", model);
                 default:
                     return View();
@@ -212,28 +216,11 @@ namespace ekklesia.Controlers
         {
             if (ModelState.IsValid)
             {
-                var sundaySchool = (SundaySchool) repository.GetEvent(model.Id);
+                var sundaySchool = (SundaySchool)repository.GetEvent(model.Id);
                 sundaySchool.Date = model.Date;
                 sundaySchool.NumberOfBibles = model.NumberOfBibles;
                 sundaySchool.Theme = model.Theme;
                 sundaySchool.Verse = model.Verse;
-
-                foreach (var id in model.SelectedMembers)
-                {
-                    var member = memberRepository.GetMember(int.Parse(id));
-                    if (member != null)
-                    {
-                        try
-                        {
-                            sundaySchool.AddMember(member);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("Erro ao adicionar membros presentes.", ex);
-                        }
-                    }
-
-                }
 
                 var teacher = memberRepository.GetMember(int.Parse(model.TeacherId));
                 if (teacher != null)
@@ -245,7 +232,7 @@ namespace ekklesia.Controlers
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Erro ao adicionar pregador.", ex);
+                        ModelState.AddModelError("Erro ao adicionar pregador.", ex.Message);
                     }
 
                 }
@@ -256,15 +243,13 @@ namespace ekklesia.Controlers
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Erro ao salvar Escola Dominical", ex);
+                    ModelState.AddModelError("Erro ao salvar Escola Dominical", ex.Message);
                 }
 
                 return RedirectToAction("list", "event");
             }
-            return View("EditSundaySchool", model);           
+            return View("EditSundaySchool", model);
         }
-
-
 
         public ViewResult Detail(int? id)
         {
@@ -301,14 +286,12 @@ namespace ekklesia.Controlers
             return members;
         }
 
-        private List<SelectListItem> SetMemberAtOccasion(IEnumerable<int> membersPresents)
+        private EditSundaySchoolViewModel ConfigureLists(EditSundaySchoolViewModel model)
         {
-            var memberList = memberRepository
-                            .GetMembers()
-                            .ToList();
+            var presentsMembers = memberRepository.GetMembersInEvent(model.Id);
 
-            List<SelectListItem> members = new List<SelectListItem>();
-            foreach (var member in memberList)
+            List<SelectListItem> allMembersList = new List<SelectListItem>();
+            foreach (var member in memberRepository.GetMembers().ToList())
             {
                 var item = new SelectListItem
                 {
@@ -316,15 +299,12 @@ namespace ekklesia.Controlers
                     Text = member.Name
                 };
 
-                if (membersPresents.Contains(member.Id))
-                {
-                    item.Selected = true;
-                }
-
-                members.Add(item);
+                allMembersList.Add(item);
             }
 
-            return members;
+            model.PresentMembers = presentsMembers;
+            model.AllMembers = allMembersList;
+            return model;
         }
     }
 }

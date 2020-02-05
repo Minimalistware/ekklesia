@@ -12,8 +12,9 @@ namespace ekklesia.Models.ViewModels
         {
         }
 
-        public CreateReunionViewModel(List<SelectListItem> members) : base(members)
+        public CreateReunionViewModel(List<SelectListItem> allMembers)
         {
+            AllMembers = allMembers;
         }
 
         [Required]

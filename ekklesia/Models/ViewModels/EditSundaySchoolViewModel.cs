@@ -1,6 +1,4 @@
 ﻿using ekklesia.Models.EventModel;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
 
 namespace ekklesia.Models.ViewModels
 {
@@ -8,16 +6,16 @@ namespace ekklesia.Models.ViewModels
     {
         public EditSundaySchoolViewModel() { }
 
-        public EditSundaySchoolViewModel(SundaySchool school, List<SelectListItem> allMembers)
-            : base(allMembers)
+        public EditSundaySchoolViewModel(SundaySchool school,
+            string pageTitle = "Editar Escola Dominical")
         {
-            Date = school.Date;
             Id = school.Id;
-            TeacherId = school.Teacher.Id.ToString();
+            Date = school.Date;
+            TeacherId = school.TeacherId.ToString();
             Theme = school.Theme;
             Verse = school.Verse;
             NumberOfBibles = school.NumberOfBibles;
-
+            PageTitle = pageTitle;
         }
 
         public int Id { get; set; }
