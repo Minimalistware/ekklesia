@@ -286,6 +286,49 @@ namespace ekklesia.Controlers
             return members;
         }
 
+        [HttpGet]
+        public IActionResult EditMembersInEvent(string eventId)
+        {
+            
+            var occasion = repository.GetEvent(int.Parse(eventId));
+            if (occasion == null)
+            {
+                ViewBag.ErrorMessage = $"Evento com Id: {eventId} não pode ser encontrado";
+                return View("NotFound");
+            }
+
+            if (occasion.EventType == EventType.Culto)
+            {
+                ViewBag.ErrorMessage = $"Evento com Id: {eventId} incompatível com ação";
+                return View("EventNotFound");
+            }
+            else
+            {
+                ViewBag.EventId = eventId;
+                var model = GetMemberAtOccasionModel(occasion.Id);
+                return View(model);
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult EditMembersInEvent(List<MemberEventViewModel> model, string eventId)
+        {
+            if (eventId == null)
+            {
+                ViewBag.ErrorMessage = $"Evento com Id: {eventId} incompatível com ação";
+                return View("EventNotFound");
+            }
+
+            for (int i = 0; i < model.Count; i++)
+            {
+
+            }
+
+            return View();
+        }
+
+
         private EditSundaySchoolViewModel ConfigureLists(EditSundaySchoolViewModel model)
         {
             var presentsMembers = memberRepository.GetMembersInEvent(model.Id);
@@ -304,6 +347,30 @@ namespace ekklesia.Controlers
 
             model.PresentMembers = presentsMembers;
             model.AllMembers = allMembersList;
+            return model;
+        }
+
+        private List<MemberEventViewModel> GetMemberAtOccasionModel(int Id)
+        {
+            var presentsMembers = memberRepository.GetMembersInEvent(Id);
+
+            var model = new List<MemberEventViewModel>();
+            foreach (var member in memberRepository.GetMembers().ToList())
+            {
+                var memberEventViewModel = new MemberEventViewModel
+                {
+                    MemberId = member.Id,
+                    MemberName = member.Name
+                };
+
+                if (presentsMembers.Contains(member))
+                {
+                    memberEventViewModel.IsSelected = true;
+                }
+
+                model.Add(memberEventViewModel);
+            }
+
             return model;
         }
     }
