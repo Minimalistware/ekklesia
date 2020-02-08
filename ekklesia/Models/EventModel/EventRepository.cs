@@ -8,6 +8,8 @@ namespace ekklesia.Models.EventModel
     {
         IEnumerable<Occasion> GetEvents();
         Occasion GetEventWithItsMembers(EventType eventType, int Id);
+        SundaySchool GetSundaySchoolWithItsMembers(int Id);
+        Reunion GetReunionWithItsMembers(int Id);
         Occasion GetEvent(int Id);
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
@@ -59,7 +61,7 @@ namespace ekklesia.Models.EventModel
             return alteredEvent;
         }
 
-        public Occasion GetEventWithItsMembers(EventType eventType,int Id)
+        public Occasion GetEventWithItsMembers(EventType eventType, int Id)
         {
             if (eventType == EventType.Escola_Dominical)
             {
@@ -79,6 +81,27 @@ namespace ekklesia.Models.EventModel
                 .Where(oc => oc.Id == Id)
                 .FirstOrDefault();
             }
+
+        }
+        public SundaySchool GetSundaySchoolWithItsMembers(int Id)
+        {
+            return applicationContext.Occasions
+            .OfType<SundaySchool>()
+            .Include(oc => oc.Members)
+            .ThenInclude(om => om.Member)
+            .Where(oc => oc.Id == Id)
+            .FirstOrDefault();
+
+        }
+
+        public Reunion GetReunionWithItsMembers(int Id)
+        {
+            return applicationContext.Occasions
+            .OfType<Reunion>()
+            .Include(oc => oc.PresentMembers)
+            .ThenInclude(om => om.Member)
+            .Where(oc => oc.Id == Id)
+            .FirstOrDefault();
 
         }
     }

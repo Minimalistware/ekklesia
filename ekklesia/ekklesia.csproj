@@ -44,6 +44,8 @@
     <Compile Remove="Migrations\20200201184441_OccasionMember.Designer.cs" />
     <Compile Remove="Migrations\20200205215555_OccasionMember.cs" />
     <Compile Remove="Migrations\20200205215555_OccasionMember.Designer.cs" />
+    <Compile Remove="Migrations\20200208190038_EventMembers.cs" />
+    <Compile Remove="Migrations\20200208190038_EventMembers.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

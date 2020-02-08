@@ -41,5 +41,16 @@ namespace ekklesia.Models.EventModel
             this.Members.Add(new OccasionMember() { Member = member, Occasion = this });
         }
 
+        public bool Contains(Member member)
+        {
+            var om = new OccasionMember() { Member = member, Occasion = this };
+            return this.Members.Contains(om);
+        }
+
+        public bool Remove(Member member)
+        {
+            var om = new OccasionMember() { Member = member, Occasion = this };
+            return this.Members.Remove(om);
+        }
     }
 }

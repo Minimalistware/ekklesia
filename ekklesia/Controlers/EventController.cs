@@ -263,33 +263,12 @@ namespace ekklesia.Controlers
             return View("CultDetail", model);
         }
 
-        private List<SelectListItem> GetAllMembers()
-        {
-            var memberList = memberRepository
-                            .GetMembers()
-                            .OrderBy(m => m.Name)
-                            .ToList();
 
-
-
-            List<SelectListItem> members = new List<SelectListItem>();
-            foreach (var item in memberList)
-            {
-                members.Add(new SelectListItem
-                {
-                    Value = item.Id.ToString(),
-                    Text = item.Name
-
-                });
-            }
-
-            return members;
-        }
 
         [HttpGet]
         public IActionResult EditMembersInEvent(string eventId)
         {
-            
+
             var occasion = repository.GetEvent(int.Parse(eventId));
             if (occasion == null)
             {
@@ -311,21 +290,67 @@ namespace ekklesia.Controlers
 
         }
 
+
         [HttpPost]
         public IActionResult EditMembersInEvent(List<MemberEventViewModel> model, string eventId)
         {
-            if (eventId == null)
+            var occasion = repository.GetSundaySchoolWithItsMembers(int.Parse(eventId));
+
+            if (occasion == null)
             {
-                ViewBag.ErrorMessage = $"Evento com Id: {eventId} incompatível com ação";
+                ViewBag.ErrorMessage = $"Evento com Id: {eventId} não pode ser encontrado";
                 return View("EventNotFound");
             }
 
             for (int i = 0; i < model.Count; i++)
             {
+                var member = memberRepository.GetMember(model[i].MemberId);
+
+                if (model[i].IsSelected && !(occasion.Contains(member)))
+                {
+                    occasion.AddMember(member);
+                }
+                else if (!model[i].IsSelected && occasion.Contains(member))
+                {
+                    occasion.Remove(member);
+                }
+                else
+                {
+                    continue;
+                }
 
             }
+            repository.Update(occasion);
+            return RedirectToAction("edit", "event", occasion.Id);
+        }
 
-            return View();
+        [HttpPost]
+        public IActionResult EditMembersInReunion(List<MemberEventViewModel> model, string eventId)
+        {
+            var occasion = repository.GetReunionWithItsMembers(int.Parse(eventId));
+
+            if (occasion == null)
+            {
+                ViewBag.ErrorMessage = $"Evento com Id: {eventId} não pode ser encontrado";
+                return View("EventNotFound");
+            }
+
+            for (int i = 0; i < model.Count; i++)
+            {
+                var member = memberRepository.GetMember(model[i].MemberId);
+
+                if (model[i].IsSelected)
+                {
+                    occasion.AddMember(member);
+                }
+                else if (occasion.Contains(member))
+                {
+                    occasion.Remove(member);
+                }
+
+            }
+            repository.Update(occasion);
+            return RedirectToAction("edit", "event", occasion.Id);
         }
 
 
@@ -372,6 +397,29 @@ namespace ekklesia.Controlers
             }
 
             return model;
+        }
+
+        private List<SelectListItem> GetAllMembers()
+        {
+            var memberList = memberRepository
+                            .GetMembers()
+                            .OrderBy(m => m.Name)
+                            .ToList();
+
+
+
+            List<SelectListItem> members = new List<SelectListItem>();
+            foreach (var item in memberList)
+            {
+                members.Add(new SelectListItem
+                {
+                    Value = item.Id.ToString(),
+                    Text = item.Name
+
+                });
+            }
+
+            return members;
         }
     }
 }

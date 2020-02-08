@@ -14,8 +14,7 @@ namespace ekklesia
         public DbSet<Member> Members { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Occasion> Occasions { get; set; }
-
-
+        
         public ApplicationContext(DbContextOptions options) : base(options)
         {
         }

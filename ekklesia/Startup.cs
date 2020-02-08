@@ -34,6 +34,7 @@ namespace ekklesia
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
