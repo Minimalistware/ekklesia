@@ -27,9 +27,9 @@ namespace ekklesia.Models.EventModel
         public Reunion(CreateReunionViewModel model)
         {
             Date = model.Date;
-            EventType = EventType.Reunião;
-            Topic = model.Topic;
             EndTime = model.EndTime;
+            EventType = EventType.Reunião;
+            Topic = model.Topic;            
             this.PresentMembers = new List<OccasionMember>();
 
         }

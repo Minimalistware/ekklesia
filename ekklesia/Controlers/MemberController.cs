@@ -21,7 +21,7 @@ namespace ekklesia.Controlers
             this.hostingEnviroment = hostingEnviroment;
         }
 
-        
+
         public ViewResult List()
         {
             var members = repository.GetMembers();
@@ -98,6 +98,23 @@ namespace ekklesia.Controlers
 
             return View();
         }
+
+        [HttpGet]
+        public ViewResult Search()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult Search(MemberSreachViewModel model)
+        {
+            if (model.Name != null && model.Name.Length > 0)
+            {
+                repository.Search(model);
+            }
+            return View();
+        }
+
 
         private string ProcessUploadedFile(MemberCreateViewModel model)
         {

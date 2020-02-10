@@ -183,12 +183,17 @@ namespace ekklesia.Controlers
             {
                 case EventType.Culto:
                     var editCulViewModel = new EditCultViewModel(occasion as Cult);
-                    return View("editcult", editCulViewModel);
+                    return View("Editcult", editCulViewModel);
                 case EventType.Escola_Dominical:
                     var school = occasion as SundaySchool;
-                    var model = new EditSundaySchoolViewModel(occasion as SundaySchool);
-                    model = ConfigureLists(model);
-                    return View("editSundaySchool", model);
+                    var schoolmodel = new EditSundaySchoolViewModel(occasion as SundaySchool);
+                    schoolmodel = ConfigureLists(schoolmodel);
+                    return View("EditSundaySchool", schoolmodel);
+                case EventType.Reunião:
+                    var reunion = occasion as SundaySchool;
+                    var reunionmodel = new EditReunionViewModel(occasion as Reunion);
+                    reunionmodel = ConfigureLists(reunionmodel);
+                    return View("EditReunion", reunionmodel);
                 default:
                     return View();
             }
@@ -250,6 +255,48 @@ namespace ekklesia.Controlers
             }
             return View("EditSundaySchool", model);
         }
+
+        [HttpPost]
+        public IActionResult EditReunion(EditReunionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var reunion = (Reunion)repository.GetEvent(model.Id);
+                reunion.Date = model.Date;
+                reunion.EndTime = model.EndTime;
+                reunion.Topic = model.Topic;                
+
+                var speaker = memberRepository.GetMember(int.Parse(model.TeacherId));
+                if (speaker != null)
+                {
+                    try
+                    {
+                        reunion.Speaker = speaker;
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("Erro ao adicionar orador.", ex.Message);
+                    }
+
+                }
+
+                try
+                {
+                    repository.Update(reunion);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Erro ao salvar Reunião", ex.Message);
+                }
+
+                return RedirectToAction("list", "event");
+            }
+
+            return View("EditReunion", model);
+        }
+
+
+        
 
         public ViewResult Detail(int? id)
         {
@@ -355,6 +402,26 @@ namespace ekklesia.Controlers
 
 
         private EditSundaySchoolViewModel ConfigureLists(EditSundaySchoolViewModel model)
+        {
+            var presentsMembers = memberRepository.GetMembersInEvent(model.Id);
+
+            List<SelectListItem> allMembersList = new List<SelectListItem>();
+            foreach (var member in memberRepository.GetMembers().ToList())
+            {
+                var item = new SelectListItem
+                {
+                    Value = member.Id.ToString(),
+                    Text = member.Name
+                };
+
+                allMembersList.Add(item);
+            }
+
+            model.PresentMembers = presentsMembers;
+            model.AllMembers = allMembersList;
+            return model;
+        }
+        private EditReunionViewModel ConfigureLists(EditReunionViewModel model)
         {
             var presentsMembers = memberRepository.GetMembersInEvent(model.Id);
 

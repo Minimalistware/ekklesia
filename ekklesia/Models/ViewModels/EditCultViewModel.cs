@@ -3,6 +3,7 @@ namespace ekklesia.Models.ViewModels
 {
     public class EditCultViewModel : CreateCultViewModel
     {
+        public EditCultViewModel() { }
 
         public EditCultViewModel(Cult cult)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ekklesia.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace ekklesia.Models.MemberModel
         Member Add(Member member);
         Member Update(Member member);
         Member Delete(int id);
+        IQueryable<Member> Search(MemberSreachViewModel model);
 
     }
     public class MemberRepository : IMemberRepository
@@ -63,6 +65,16 @@ namespace ekklesia.Models.MemberModel
               .Where(m => m.Meetings.Any(oc => oc.OccasionId == id));
         }
 
+        public IQueryable<Member> Search(MemberSreachViewModel model)
+        {
+            return applicationContext.Members.Select(m => new Member
+            {
+                Id = m.Id,
+                Name = m.Name,
+                Position = m.Position
+            });
+
+        }
 
         public Member Update(Member alteredMember)
         {

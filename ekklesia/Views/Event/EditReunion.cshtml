@@ -1,10 +1,10 @@
-﻿@model EditSundaySchoolViewModel
+﻿@model EditReunionViewModel
 
 @{
     ViewBag.Title = Model.PageTitle;
 }
 
-<form enctype="multipart/form-data" asp-controller="event" asp-action="EditSundaySchool" method="post" class="mt-3">
+<form enctype="multipart/form-data" asp-controller="event" asp-action="EditReunion" method="post" class="mt-3">
     <input hidden asp-for="Id" />
 
     <div class="form-group row">
@@ -16,20 +16,21 @@
     </div>
 
     <div class="form-group row">
-        <label asp-for="Verse" class="col-sm-2 col-form-label">Versículo usado</label>
+        <label asp-for="EndTime" class="col-sm-2 col-form-label">Data</label>
         <div class="col-sm-10">
-            <input asp-for="Verse" class="form-control" placeholder="Versículo">
-            <span asp-validation-for="Verse" class="text-danger"></span>
+            <input asp-for="EndTime" class="form-control" placeholder="Data">
+            <span asp-validation-for="EndTime" class="text-danger"></span>
         </div>
     </div>
 
     <div class="form-group row">
-        <label asp-for="Theme" class="col-sm-2 col-form-label">Tema do estudo</label>
+        <label asp-for="Topic" class="col-sm-2 col-form-label">Versículo usado</label>
         <div class="col-sm-10">
-            <input asp-for="Theme" class="form-control" placeholder="Tema">
-            <span asp-validation-for="Theme" class="text-danger"></span>
+            <input asp-for="Topic" class="form-control" placeholder="Versículo">
+            <span asp-validation-for="Topic" class="text-danger"></span>
         </div>
     </div>
+
 
     <div class="form-group row">
         <label asp-for="TeacherId" class="col-sm-2 col-form-label">Professor</label>
@@ -43,19 +44,11 @@
     </div>
 
     <div class="form-group row">
-        <label asp-for="NumberOfBibles" class="col-sm-2 col-form-label">Número de Bíblias</label>
-        <div class="col-sm-10">
-            <input asp-for="NumberOfBibles" class="form-control" placeholder="Número">
-            <span asp-validation-for="NumberOfBibles" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">Savlar</button>
             <a asp-controller="event" asp-action="list" class="btn btn-secondary">Cancelar</a>
         </div>
     </div>
-
 
     <div class="cars">
         <div class="card-header">
