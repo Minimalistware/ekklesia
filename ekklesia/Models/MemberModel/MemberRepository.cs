@@ -15,7 +15,7 @@ namespace ekklesia.Models.MemberModel
         Member Add(Member member);
         Member Update(Member member);
         Member Delete(int id);
-        IQueryable<Member> Search(MemberSreachViewModel model);
+        IEnumerable<Member> Search(MemberSreachViewModel model);
 
     }
     public class MemberRepository : IMemberRepository
@@ -65,14 +65,20 @@ namespace ekklesia.Models.MemberModel
               .Where(m => m.Meetings.Any(oc => oc.OccasionId == id));
         }
 
-        public IQueryable<Member> Search(MemberSreachViewModel model)
+        public IEnumerable<Member> Search(MemberSreachViewModel model)
         {
-            return applicationContext.Members.Select(m => new Member
+            var query = "SELECT * FROM dbo.Members ";
+            if(model.Name != null)
             {
-                Id = m.Id,
-                Name = m.Name,
-                Position = m.Position
-            });
+                query += "WHERE Name LIKE '%'+ @p0 +'%' AND ";
+            }
+            if(model.Position != null)
+            {
+                query += "WHERE Position = @p1 AND ";
+            }
+
+            query += "1 = 1";
+            return applicationContext.Members.FromSql(query, model.Name, model.Position);
 
         }
 

@@ -108,11 +108,9 @@ namespace ekklesia.Controlers
         [HttpPost]
         public ViewResult Search(MemberSreachViewModel model)
         {
-            if (model.Name != null && model.Name.Length > 0)
-            {
-                repository.Search(model);
-            }
-            return View();
+            
+            var members = repository.Search(model);            
+            return View("List",members);
         }
 
 
