@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ekklesia.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,9 +15,9 @@ namespace ekklesia.Models.TransactionModel
         Transaction Add(Transaction transaction);
         Transaction Update(Transaction transaction);
         Transaction Delete(int id);
-
+        IEnumerable<Transaction> Search(TransactionSearchViewModel model);
     }
-    public class TransactionRepository:ITransactionRepository
+    public class TransactionRepository : ITransactionRepository
     {
         private readonly ApplicationContext applicationContext;
 
@@ -52,6 +54,21 @@ namespace ekklesia.Models.TransactionModel
         public IEnumerable<Transaction> GetTransactions()
         {
             return applicationContext.Transactions;
+        }
+
+        public IEnumerable<Transaction> Search(TransactionSearchViewModel model)
+        {
+            var query = "SELECT * FROM dbo.Transactions WHERE ";
+            if (model.Category != null)
+            {
+                query += "Category LIKE '%'+ @p0 +'%' AND ";
+            }
+            if (model.Type != null)
+            {
+                query += "Type = @p1 AND ";                
+            }
+            query += "1 = 1";            
+            return applicationContext.Transactions.FromSql(query, model.Category, model.Type);
         }
 
         public Transaction Update(Transaction alteredTransaction)

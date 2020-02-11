@@ -75,5 +75,18 @@ namespace ekklesia.Controlers
 
             return View();
         }
+
+        [HttpGet]
+        public ViewResult Search()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult Search(TransactionSearchViewModel model)
+        {
+            var transactions = repository.Search(model);
+            return View("List", transactions);
+        }
     }
 }

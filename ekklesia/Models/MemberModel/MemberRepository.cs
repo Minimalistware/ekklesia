@@ -67,19 +67,18 @@ namespace ekklesia.Models.MemberModel
 
         public IEnumerable<Member> Search(MemberSreachViewModel model)
         {
-            var query = "SELECT * FROM dbo.Members ";
-            if(model.Name != null)
+            var query = "SELECT * FROM dbo.Members WHERE ";
+            if (model.Name != null)
             {
-                query += "WHERE Name LIKE '%'+ @p0 +'%' AND ";
+                query += "Name LIKE '%'+ @p0 +'%' AND ";
             }
-            if(model.Position != null)
+            if (model.Position != null)
             {
-                query += "WHERE Position = @p1 AND ";
+                query += "Position = @p1 AND ";
             }
 
             query += "1 = 1";
             return applicationContext.Members.FromSql(query, model.Name, model.Position);
-
         }
 
         public Member Update(Member alteredMember)
