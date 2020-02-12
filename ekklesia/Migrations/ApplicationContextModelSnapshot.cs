@@ -128,6 +128,8 @@ namespace ekklesia.Migrations
                     b.Property<string>("Topic")
                         .IsRequired();
 
+                    b.Property<int>("Type");
+
                     b.HasIndex("SpeakerId");
 
                     b.ToTable("Reunions");

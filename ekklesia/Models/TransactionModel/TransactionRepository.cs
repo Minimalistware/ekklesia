@@ -1,9 +1,6 @@
 ﻿using ekklesia.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Models.TransactionModel
 {

@@ -1,4 +1,5 @@
-﻿using ekklesia.Models.MemberModel;
+﻿using ekklesia.Models.EventModel;
+using ekklesia.Models.MemberModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,10 @@ namespace ekklesia.Models.ViewModels
 
         [Required]
         public DateTime EndTime { get; set; }
+
+        [Required]
+        public ReunionType Type { get; set; }
+
 
     }
 }

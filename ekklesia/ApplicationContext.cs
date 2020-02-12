@@ -1,7 +1,7 @@
 ﻿using Caelum.Stella.CSharp.Vault;
-using ekklesia.Models;
 using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
+using ekklesia.Models.ReportModel;
 using ekklesia.Models.TransactionModel;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +14,8 @@ namespace ekklesia
         public DbSet<Member> Members { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Occasion> Occasions { get; set; }
-        
+        public DbSet<Report> Reports { get; set; }
+
         public ApplicationContext(DbContextOptions options) : base(options)
         {
         }
@@ -25,6 +26,7 @@ namespace ekklesia
             modelBuilder.Entity<Reunion>();
             modelBuilder.Entity<Cult>();
 
+            
             modelBuilder
                 .Entity<OccasionMember>()
                 .HasKey(mm => new { mm.MemberId, mm.OccasionId });

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ekklesia.Migrations
 {
-    public partial class OccasionMember : Migration
+    public partial class MemberOccasion : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,7 @@ namespace ekklesia.Migrations
                     NumberOfPeople = table.Column<int>(nullable: true),
                     MainVerse = table.Column<string>(nullable: true),
                     Topic = table.Column<string>(nullable: true),
+                    Type = table.Column<int>(nullable: true),
                     EndTime = table.Column<DateTime>(nullable: true),
                     SpeakerId = table.Column<int>(nullable: true),
                     Theme = table.Column<string>(nullable: true),

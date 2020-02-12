@@ -10,8 +10,8 @@ using ekklesia;
 namespace ekklesia.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200206171925_OccasionMember")]
-    partial class OccasionMember
+    [Migration("20200212202720_MemberOccasion")]
+    partial class MemberOccasion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,6 +129,8 @@ namespace ekklesia.Migrations
 
                     b.Property<string>("Topic")
                         .IsRequired();
+
+                    b.Property<int>("Type");
 
                     b.HasIndex("SpeakerId");
 
