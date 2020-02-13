@@ -35,6 +35,31 @@ namespace ekklesia
                 .Entity<Transaction>()
                 .Property(t => t.Value)
                 .HasConversion(v => (decimal)v, v => new Money(v));
+
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.PreviousMonth)
+                .HasConversion(v => (decimal)v, v => new Money(v));
+
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Income)
+                .HasConversion(v => (decimal)v, v => new Money(v));
+
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Expense)
+                .HasConversion(v => (decimal)v, v => new Money(v));
+
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Tenth)
+                .HasConversion(v => (decimal)v, v => new Money(v));
+
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Balance)
+                .HasConversion(v => (decimal)v, v => new Money(v));
         }
     }
 }

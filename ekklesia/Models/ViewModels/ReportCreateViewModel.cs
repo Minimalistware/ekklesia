@@ -1,19 +1,26 @@
 ﻿using Caelum.Stella.CSharp.Vault;
-using ekklesia.Models.MemberModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ekklesia.Models.ReportModel
+namespace ekklesia.Models.ViewModels
 {
-    public class Report : BaseModel
+    public class ReportCreateViewModel
     {
+        public ReportCreateViewModel()
+        {
+            AllMembers = new List<SelectListItem>();
+            Date = DateTime.Now;
+        }
+
         [Required]
         public DateTime Date { get; set; }
         public int PreacherId { get; set; }
-        public Member Preacher { get; set; }
         public int CoordinatorId { get; set; }
-        public Member Coordinator { get; set; }
-        
+        public List<SelectListItem> AllMembers { get; set; }
         //ATIVIDADES DA ESCOLA BÍBLICA DE ALIANÇA
         [Required]
         public int Reunions { get; set; }
@@ -31,11 +38,10 @@ namespace ekklesia.Models.ReportModel
         public int PedagogicalBody { get; set; }
 
         //MOVIMENTO FINANCEIRO
-        public Money PreviousMonth { get; set; }
-        public Money Income { get; set; }
-        public Money Expense { get; set; }
-        public Money Tenth { get; set; }
-        public Money Balance { get; set; }
-
+        public decimal PreviousMonth { get; set; }
+        public decimal Income { get; set; }
+        public decimal Expense { get; set; }
+        public decimal Tenth { get; set; }
+        public decimal Balance { get; set; }
     }
 }

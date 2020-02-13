@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
+using ekklesia.Models.ReportModel;
 using ekklesia.Models.TransactionModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +35,7 @@ namespace ekklesia
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
             
         }
 

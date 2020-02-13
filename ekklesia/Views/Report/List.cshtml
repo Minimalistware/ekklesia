@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Report>;
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Pastor</th>
+                        <th>Receitas</th>
+                        <th>Despesa</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{var culture = new System.Globalization.CultureInfo("pt-BR"); }
+                    @foreach (var report in Model)
+                    {
+                        <tr>
+                            <td>@report.Date.ToString("d", culture)</td>
+                            <td>@report.Preacher.Name</td>
+                            <td>@report.Income</td>
+                            <td>@report.Expense</td>
+                            <td>@report.Balance</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <h4>Gerenciar relatórios</h4>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a asp-controller="report" asp-action="create" class="btn btn-primary">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <span>Adicionar relatório</span>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a asp-controller="report" asp-action="search" class="btn btn-primary">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <span>Buscar relatório</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
