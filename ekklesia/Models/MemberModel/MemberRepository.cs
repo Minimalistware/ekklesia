@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.MemberModel
 {
-    public interface IMemberRepository
+    public interface IMemberRepository : IFilling
     {
         Member GetMember(int id);
         IEnumerable<Member> GetMembers();
@@ -16,7 +17,6 @@ namespace ekklesia.Models.MemberModel
         Member Update(Member member);
         Member Delete(int id);
         IEnumerable<Member> Search(MemberSreachViewModel model);
-
     }
     public class MemberRepository : IMemberRepository
     {
@@ -26,6 +26,8 @@ namespace ekklesia.Models.MemberModel
         {
             this.applicationContext = applicationContext;
         }
+
+        public IFilling Next { get; set; }
 
         public Member Add(Member member)
         {
@@ -44,6 +46,22 @@ namespace ekklesia.Models.MemberModel
             }
             return member;
 
+        }
+
+        public ReportCreateViewModel FillUpModel(ReportCreateViewModel model)
+        {
+            var members = applicationContext.Members;
+            //Fill up number of people in pedagogical body
+            model.PedagogicalBody = members.Count(m => m.Position == Position.Membro);
+
+            model.AllMembers = GetAllMembersAsSelectList();
+
+            if (Next!= null)
+            {
+
+            }
+
+            return Next != null ? Next.FillUpModel(model) : model;            
         }
 
         public Member GetMember(int id)
@@ -88,6 +106,29 @@ namespace ekklesia.Models.MemberModel
             applicationContext.SaveChanges();
             return alteredMember;
 
+        }
+
+        private List<SelectListItem> GetAllMembersAsSelectList()
+        {
+            var memberList = applicationContext
+                            .Members
+                            .OrderBy(m => m.Name)
+                            .ToList();
+
+
+
+            List<SelectListItem> members = new List<SelectListItem>();
+            foreach (var item in memberList)
+            {
+                members.Add(new SelectListItem
+                {
+                    Value = item.Id.ToString(),
+                    Text = item.Name
+
+                });
+            }
+
+            return members;
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ReportModel;
+using ekklesia.Models.TransactionModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,11 +15,18 @@ namespace ekklesia.Controlers
     {
         private readonly IReportRepository repository;
         private readonly IMemberRepository memberRepository;
+        private readonly IEventRepository eventRepository;
+        private readonly ITransactionRepository transactionRepository;
 
-        public ReportController(IReportRepository repository, IMemberRepository memberRepository)
+        public ReportController(IReportRepository repository,
+            IMemberRepository memberRepository,
+            IEventRepository eventRepository,
+            ITransactionRepository transactionRepository)
         {
             this.repository = repository;
             this.memberRepository = memberRepository;
+            this.eventRepository = eventRepository;
+            this.transactionRepository = transactionRepository;
         }
 
         public IActionResult List()
@@ -29,37 +38,21 @@ namespace ekklesia.Controlers
         [HttpGet]
         public ViewResult Create()
         {
-            var model = new ReportCreateViewModel();            
+            var model = CreateReportModel();
             return View(model);
         }
 
-        private ReportCreateViewModel ReportFillUp(ReportCreateViewModel model)
+        private ReportCreateViewModel CreateReportModel()
         {
-            model.AllMembers = GetAllMembers();
-            return null;
+            var model = new ReportCreateViewModel();
+
+            eventRepository.Next = memberRepository;
+            memberRepository.Next = transactionRepository;
+            eventRepository.FillUpModel(model);
+            
+
+            return model;
         }
-
-        private List<SelectListItem> GetAllMembers()
-        {
-            var memberList = memberRepository
-                            .GetMembers()
-                            .OrderBy(m => m.Name)
-                            .ToList();
-
-
-
-            List<SelectListItem> members = new List<SelectListItem>();
-            foreach (var item in memberList)
-            {
-                members.Add(new SelectListItem
-                {
-                    Value = item.Id.ToString(),
-                    Text = item.Name
-
-                });
-            }
-
-            return members;
-        }
+               
     }
 }

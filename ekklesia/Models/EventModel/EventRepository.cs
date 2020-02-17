@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ekklesia.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ekklesia.Models.EventModel
 {
-    public interface IEventRepository
+    public interface IEventRepository: IFilling
     {
         IEnumerable<Occasion> GetEvents();
         Occasion GetEventWithItsMembers(EventType eventType, int Id);
@@ -14,7 +15,6 @@ namespace ekklesia.Models.EventModel
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
         Occasion Delete(int id);
-
     }
     public class EventRepository : IEventRepository
     {
@@ -24,6 +24,8 @@ namespace ekklesia.Models.EventModel
         {
             this.applicationContext = applicationContext;
         }
+
+        public IFilling Next { get; set; }
 
         public Occasion Add(Occasion Event)
         {
@@ -104,5 +106,32 @@ namespace ekklesia.Models.EventModel
             .FirstOrDefault();
 
         }
+
+        public ReportCreateViewModel FillUpModel(ReportCreateViewModel model)
+        {
+            var reunions = applicationContext.Occasions.OfType<Reunion>();
+            var cults = applicationContext.Occasions.OfType<Cult>();
+            var sundday_schools = applicationContext.Occasions.OfType<SundaySchool>();
+
+            //Fill up number of reunions
+            model.Reunions = reunions.Count();
+
+            //Fill up number of bibles
+            model.Bibles = sundday_schools.Sum(ss => ss.NumberOfBibles);
+
+            //Fill up number of reunions with teachers
+            model.ReunionWithTeachers = reunions
+                .Where(r => r.Type.Equals(ReunionType.DOCENTES))
+                .Count();
+
+            //Fill up number of reunions with visitors
+            //TODO
+
+            //Fill up number of people present
+            model.PeoplePresent = reunions.Sum(r => r.PresentMembers.Count);
+
+            return Next != null ? Next.FillUpModel(model) : model;
+        }
+               
     }
 }

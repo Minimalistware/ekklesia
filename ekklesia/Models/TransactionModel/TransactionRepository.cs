@@ -1,10 +1,12 @@
 ﻿using ekklesia.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ekklesia.Models.TransactionModel
 {
-    public interface ITransactionRepository
+    public interface ITransactionRepository : IFilling
     {
 
         Transaction GetTransaction(int id);
@@ -13,6 +15,7 @@ namespace ekklesia.Models.TransactionModel
         Transaction Update(Transaction transaction);
         Transaction Delete(int id);
         IEnumerable<Transaction> Search(TransactionSearchViewModel model);
+
     }
     public class TransactionRepository : ITransactionRepository
     {
@@ -22,6 +25,8 @@ namespace ekklesia.Models.TransactionModel
         {
             this.applicationContext = applicationContext;
         }
+
+        public IFilling Next { get; set; }
 
         public Transaction Add(Transaction transaction)
         {
@@ -43,6 +48,40 @@ namespace ekklesia.Models.TransactionModel
             return transaction;
         }
 
+        public ReportCreateViewModel FillUpModel(ReportCreateViewModel model)
+        {
+            var trasaction = applicationContext.Transactions
+                .Where(t => t.Date > DateTime.Today.AddMonths(-1));
+
+            //Fill up previous month
+            //TODO
+
+            //Fill up income
+            var income = trasaction
+                .Where(t => t.Type == TransactionType.RECEITA)
+                .Sum(t => t.Value);
+
+            model.Income = income;
+
+            //Fill up expense
+            var expense = trasaction
+                .Where(t => t.Type == TransactionType.DESPESA)
+                .Sum(t => t.Value);
+            model.Expense = expense;
+
+            //Fill up tenth
+            model.Tenth = trasaction
+                .Where(t => t.Type == TransactionType.RECEITA)
+                .Where(t => t.Category == "Dízimo")
+                .Sum(t => t.Value);
+
+            //Fill up balance
+            model.Balance = income - expense;
+
+            return Next != null ? Next.FillUpModel(model) : model;
+
+        }
+
         public Transaction GetTransaction(int id)
         {
             return applicationContext.Transactions.Find(id);
@@ -62,16 +101,16 @@ namespace ekklesia.Models.TransactionModel
             }
             if (model.Type != null)
             {
-                query += "Type = @p1 AND ";                
+                query += "Type = @p1 AND ";
             }
-            query += "1 = 1";            
+            query += "1 = 1";
             return applicationContext.Transactions.FromSql(query, model.Category, model.Type);
         }
 
         public Transaction Update(Transaction alteredTransaction)
         {
             var member = applicationContext.Transactions.Attach(alteredTransaction);
-            member.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            member.State = EntityState.Modified;
             applicationContext.SaveChanges();
             return alteredTransaction;
         }
