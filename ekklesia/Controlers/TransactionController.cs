@@ -9,12 +9,11 @@ namespace ekklesia.Controlers
     public class TransactionController : Controller
     {
         private readonly ITransactionRepository repository;
-        private readonly IHostingEnvironment hostingEnviroment;
-
-        public TransactionController(ITransactionRepository repository, IHostingEnvironment hostingEnviroment)
+        
+        public TransactionController(ITransactionRepository repository)
         {
             this.repository = repository;
-            this.hostingEnviroment = hostingEnviroment;
+            
         }
 
 

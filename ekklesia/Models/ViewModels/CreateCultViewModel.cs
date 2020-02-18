@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ekklesia.Models.EventModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Models.ViewModels
 {
@@ -12,5 +9,7 @@ namespace ekklesia.Models.ViewModels
         public int NumberOfPeople { get; set; }
         [Required]
         public string MainVerse { get; set; }
+        [Required]
+        public CultType Type { get; set; }
     }
 }

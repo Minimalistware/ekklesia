@@ -29,7 +29,7 @@ namespace ekklesia.Models.EventModel
         public SundaySchool(CreateSundaySchoolViewModel model)
         {
             Date = model.Date;
-            EventType = EventType.Escola_Dominical;
+            EventType = EventType.ESCOLA_DOMINICAL;
             Theme = model.Theme;
             Verse = model.Verse;
             NumberOfBibles = model.NumberOfBibles;

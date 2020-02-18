@@ -181,15 +181,15 @@ namespace ekklesia.Controlers
             }
             switch (occasion.EventType)
             {
-                case EventType.Culto:
+                case EventType.CULTO:
                     var editCulViewModel = new EditCultViewModel(occasion as Cult);
                     return View("Editcult", editCulViewModel);
-                case EventType.Escola_Dominical:
+                case EventType.ESCOLA_DOMINICAL:
                     var school = occasion as SundaySchool;
                     var schoolmodel = new EditSundaySchoolViewModel(occasion as SundaySchool);
                     schoolmodel = ConfigureLists(schoolmodel);
                     return View("EditSundaySchool", schoolmodel);
-                case EventType.Reunião:
+                case EventType.REUNIÃO:
                     var reunion = occasion as SundaySchool;
                     var reunionmodel = new EditReunionViewModel(occasion as Reunion);
                     reunionmodel = ConfigureLists(reunionmodel);
@@ -323,7 +323,7 @@ namespace ekklesia.Controlers
                 return View("NotFound");
             }
 
-            if (occasion.EventType == EventType.Culto)
+            if (occasion.EventType == EventType.CULTO)
             {
                 ViewBag.ErrorMessage = $"Evento com Id: {eventId} incompatível com ação";
                 return View("EventNotFound");

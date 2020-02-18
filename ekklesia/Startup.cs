@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ekklesia.Models.EventModel;
+﻿using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ReportModel;
 using ekklesia.Models.TransactionModel;

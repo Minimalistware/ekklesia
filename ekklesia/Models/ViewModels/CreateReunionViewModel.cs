@@ -27,6 +27,8 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public ReunionType Type { get; set; }
 
+        [Required]
+        public ReunionType ReunionType { get; set; }
 
     }
 }

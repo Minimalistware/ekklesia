@@ -50,6 +50,12 @@
     <Compile Remove="Migrations\20200208190038_EventMembers.Designer.cs" />
     <Compile Remove="Migrations\20200212201456_ReunionType.cs" />
     <Compile Remove="Migrations\20200212201456_ReunionType.Designer.cs" />
+    <Compile Remove="Migrations\20200212202720_MemberOccasion.cs" />
+    <Compile Remove="Migrations\20200212202720_MemberOccasion.Designer.cs" />
+    <Compile Remove="Migrations\20200213182743_Report.cs" />
+    <Compile Remove="Migrations\20200213182743_Report.Designer.cs" />
+    <Compile Remove="Migrations\20200218193755_CultTypeAdded.cs" />
+    <Compile Remove="Migrations\20200218193755_CultTypeAdded.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

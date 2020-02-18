@@ -8,6 +8,7 @@ namespace ekklesia.Models
     public enum Position
     {
         Membro,
-        Lider
+        Lider, 
+        Professor
     }
 }

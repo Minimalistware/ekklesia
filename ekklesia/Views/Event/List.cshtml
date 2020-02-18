@@ -28,10 +28,10 @@
                             <td>@occasion.EventType</td>
                             @switch (occasion.EventType)
                             {
-                                case EventType.Escola_Dominical:
+                                case EventType.ESCOLA_DOMINICAL:
                                     <td>@((occasion as SundaySchool).Theme)</td>
                                     break;
-                                case EventType.Reunião:
+                                case EventType.REUNIÃO:
                                     var reunion = occasion as Reunion;
                                     <td>@reunion.Topic</td>
                                     break;

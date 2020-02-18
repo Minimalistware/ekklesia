@@ -7,11 +7,45 @@
 <form enctype="multipart/form-data" asp-controller="report" asp-action="create"
       method="post" class="mt-3">
 
-    <div class="form-group col-md-6">
-        <label asp-for="Date" class="col-form-label">Data</label>
-        <div class="input-group">
-            <input asp-for="Date" class="form-control" placeholder="Data">
-            <span asp-validation-for="Date" class="text-danger"></span>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="Date" class="col-form-label">Data</label>
+            <div class="input-group">
+                <input asp-for="Date" class="form-control" placeholder="Data">
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputAddress" class="col-form-label">Endereço</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="inputAddress" placeholder="Endereço">
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputAddress" class="col-form-label">Número</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="inputNumber" placeholder="Ex. 666">
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputAddress" class="col-form-label">Cidade</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="inputCity" placeholder="Ex.: Belém">
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputAddress" class="col-form-label">CEP</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="inputPostalCode" placeholder="Ex.: 66645040">
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputAddress" class="col-form-label">UF</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="inputUF" placeholder="Ex. PA">
+            </div>
         </div>
     </div>
 
@@ -29,16 +63,6 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label for="inputAddress" class="col-form-label">Address</label>
-            <div class="input-group">
-                <input type="text" class="form-control" id="inputAddress" placeholder="Endereço">
-            </div>
-        </div>
-    </div>
-
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
             <label asp-for="CoordinatorId" class="col-form-label">Coordenador</label>
             <div class="input-group">
                 <select asp-for="CoordinatorId" class="custom-select mr-sm-2"
@@ -49,59 +73,57 @@
             </div>
         </div>
 
-        <div class="form-group col-md-6">
+    </div>
+
+
+    <div class="form-row">
+
+        <div class="form-group col-md-4">
             <label asp-for="Reunions" class="col-form-label">N° de reuniões no mês</label>
             <div class="input-group">
                 <input asp-for="Reunions" class="form-control" disabled>
             </div>
         </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label asp-for="Convertions" class="col-form-label">N° de conversões a Jesus</label>
             <div class="input-group">
                 <input asp-for="Convertions" class="form-control" placeholder="Número">
                 <span asp-validation-for="Convertions" class="text-danger"></span>
             </div>
         </div>
-
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label asp-for="Bibles" class="col-form-label">Número de Bíblias</label>
             <div class="input-group">
                 <input asp-for="Bibles" class="form-control" disabled>
             </div>
         </div>
     </div>
+
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label asp-for="ReunionWithTeachers" class="col-form-label">N° de reuniões com os docentes</label>
             <div class="input-group">
                 <input asp-for="ReunionWithTeachers" class="form-control" disabled>
             </div>
         </div>
 
-
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label asp-for="Visitors" class="col-form-label">N° de visitantes</label>
             <div class="input-group">
                 <input asp-for="Visitors" class="form-control" placeholder="Visitantes">
                 <span asp-validation-for="Visitors" class="text-danger"></span>
             </div>
         </div>
-    </div>
 
-    <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label asp-for="PeoplePresent" class="col-form-label">N° total de presentes</label>
             <div class="input-group">
                 <input asp-for="PeoplePresent" class="form-control" disabled>
             </div>
         </div>
 
-
-        <div class="form-group col-md-6">
-            <label asp-for="PedagogicalBody" class="col-form-label">N° de membros do Corpo Pedagógico</label>
+        <div class="form-group col-md-3">
+            <label asp-for="PedagogicalBody" class="col-form-label">Nº Corpo pedagógico</label>
             <div class="input-group">
                 <input asp-for="PedagogicalBody" class="form-control" placeholder="Número">
                 <span asp-validation-for="PedagogicalBody" class="text-danger"></span>
@@ -109,45 +131,43 @@
         </div>
     </div>
 
+
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label asp-for="PreviousMonth" class="col-form-label">Saldo do mês anterior</label>
             <div class="input-group">
                 <input asp-for="PreviousMonth" class="form-control" disabled />
             </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label asp-for="Income" class="col-form-label">Receita</label>
             <div class="input-group">
                 <input asp-for="Income" class="form-control" readonly />
             </div>
         </div>
-    </div>
 
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label asp-for="Expense" class="col-form-label">Despesa</label>
             <div class="input-group">
                 <input asp-for="Expense" class="form-control" readonly />
             </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
             <label asp-for="Tenth" class="col-form-label">Dízimo</label>
             <div class="input-group">
                 <input asp-for="Tenth" class="form-control" readonly />
             </div>
         </div>
-    </div>
 
-
-    <div class="form-group row">
-        <label asp-for="Balance" class="col-sm-2 col-form-label">Saldo para o próximo mês</label>
-        <div class="input-group col-sm-10">
-            <input asp-for="Balance" class="form-control" readonly />
+        <div class="form-group col-md-3">
+            <label asp-for="Balance" class="col-form-label">Saldo atual</label>
+            <div class="input-group">
+                <input asp-for="Balance" class="form-control" readonly />
+            </div>
         </div>
+
     </div>
 
 
@@ -157,6 +177,8 @@
             <a asp-controller="report" asp-action="list" class="btn btn-secondary">Cancelar</a>
         </div>
     </div>
-
+    @section Scripts{
+        <script src="~/scripts/reportscript.js"></script>        
+    }
 </form>
 

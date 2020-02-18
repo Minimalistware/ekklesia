@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ekklesia.Models.EventModel
+﻿namespace ekklesia.Models.EventModel
 {
     public enum EventType
     {
-        Escola_Dominical,
-        Reunião,
-        Culto
+        ESCOLA_DOMINICAL,
+        CULTO,
+        REUNIÃO,
+        BATISMO,
+        VISITA,
+        CÉLULA
+
     }
 }

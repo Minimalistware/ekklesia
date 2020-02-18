@@ -25,8 +25,10 @@ namespace ekklesia
             modelBuilder.Entity<SundaySchool>();
             modelBuilder.Entity<Reunion>();
             modelBuilder.Entity<Cult>();
+            modelBuilder.Entity<Cell>();
+            modelBuilder.Entity<Baptism>();
 
-            
+
             modelBuilder
                 .Entity<OccasionMember>()
                 .HasKey(mm => new { mm.MemberId, mm.OccasionId });

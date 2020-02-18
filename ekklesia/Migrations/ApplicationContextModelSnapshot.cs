@@ -19,48 +19,7 @@ namespace ekklesia.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ekklesia.Models.EventModel.Occasion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<int>("EventType");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Occasions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Occasion");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.EventModel.OccasionMember", b =>
-                {
-                    b.Property<int>("MemberId");
-
-                    b.Property<int>("OccasionId");
-
-                    b.Property<int?>("ReunionId");
-
-                    b.Property<int?>("SundaySchoolId");
-
-                    b.HasKey("MemberId", "OccasionId");
-
-                    b.HasIndex("OccasionId");
-
-                    b.HasIndex("ReunionId");
-
-                    b.HasIndex("SundaySchoolId");
-
-                    b.ToTable("OccasionMember");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.MemberModel.Member", b =>
+            modelBuilder.Entity("ekklesia.Models.Member.Member", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,52 +42,7 @@ namespace ekklesia.Migrations
                     b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("ekklesia.Models.ReportModel.Report", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Balance");
-
-                    b.Property<int>("Bibles");
-
-                    b.Property<int>("Convertions");
-
-                    b.Property<int>("CoordinatorId");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<decimal>("Expense");
-
-                    b.Property<decimal>("Income");
-
-                    b.Property<int>("PedagogicalBody");
-
-                    b.Property<int>("PeoplePresent");
-
-                    b.Property<int>("PreacherId");
-
-                    b.Property<decimal>("PreviousMonth");
-
-                    b.Property<int>("ReunionWithTeachers");
-
-                    b.Property<int>("Reunions");
-
-                    b.Property<decimal>("Tenth");
-
-                    b.Property<int>("Visitors");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CoordinatorId");
-
-                    b.HasIndex("PreacherId");
-
-                    b.ToTable("Reports");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.TransactionModel.Transaction", b =>
+            modelBuilder.Entity("ekklesia.Models.Transaction.Transaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,111 +60,6 @@ namespace ekklesia.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Transactions");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.EventModel.Cult", b =>
-                {
-                    b.HasBaseType("ekklesia.Models.EventModel.Occasion");
-
-                    b.Property<string>("MainVerse")
-                        .IsRequired();
-
-                    b.Property<int>("NumberOfPeople");
-
-                    b.ToTable("Cults");
-
-                    b.HasDiscriminator().HasValue("Cult");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.EventModel.Reunion", b =>
-                {
-                    b.HasBaseType("ekklesia.Models.EventModel.Occasion");
-
-                    b.Property<DateTime>("EndTime");
-
-                    b.Property<int>("SpeakerId");
-
-                    b.Property<string>("Topic")
-                        .IsRequired();
-
-                    b.Property<int>("Type");
-
-                    b.HasIndex("SpeakerId");
-
-                    b.ToTable("Reunions");
-
-                    b.HasDiscriminator().HasValue("Reunion");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.EventModel.SundaySchool", b =>
-                {
-                    b.HasBaseType("ekklesia.Models.EventModel.Occasion");
-
-                    b.Property<int>("NumberOfBibles");
-
-                    b.Property<int>("TeacherId");
-
-                    b.Property<string>("Theme")
-                        .IsRequired();
-
-                    b.Property<string>("Verse")
-                        .IsRequired();
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("SundaySchools");
-
-                    b.HasDiscriminator().HasValue("SundaySchool");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.EventModel.OccasionMember", b =>
-                {
-                    b.HasOne("ekklesia.Models.MemberModel.Member", "Member")
-                        .WithMany("Meetings")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ekklesia.Models.EventModel.Occasion", "Occasion")
-                        .WithMany()
-                        .HasForeignKey("OccasionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ekklesia.Models.EventModel.Reunion")
-                        .WithMany("PresentMembers")
-                        .HasForeignKey("ReunionId");
-
-                    b.HasOne("ekklesia.Models.EventModel.SundaySchool")
-                        .WithMany("Members")
-                        .HasForeignKey("SundaySchoolId");
-                });
-
-            modelBuilder.Entity("ekklesia.Models.ReportModel.Report", b =>
-                {
-                    b.HasOne("ekklesia.Models.MemberModel.Member", "Coordinator")
-                        .WithMany()
-                        .HasForeignKey("CoordinatorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ekklesia.Models.MemberModel.Member", "Preacher")
-                        .WithMany()
-                        .HasForeignKey("PreacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ekklesia.Models.EventModel.Reunion", b =>
-                {
-                    b.HasOne("ekklesia.Models.MemberModel.Member", "Speaker")
-                        .WithMany()
-                        .HasForeignKey("SpeakerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ekklesia.Models.EventModel.SundaySchool", b =>
-                {
-                    b.HasOne("ekklesia.Models.MemberModel.Member", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

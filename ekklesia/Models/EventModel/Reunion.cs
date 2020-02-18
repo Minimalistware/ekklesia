@@ -14,7 +14,7 @@ namespace ekklesia.Models.EventModel
         [Required]
         public string Topic { get; set; }
         [Required]
-        public ReunionType Type { get; set; }
+        public ReunionType ReunionType { get; set; }
         [Required]
         public DateTime EndTime { get; set; }
         public Member Speaker { get; set; }
@@ -30,7 +30,7 @@ namespace ekklesia.Models.EventModel
         {
             Date = model.Date;
             EndTime = model.EndTime;
-            EventType = EventType.Reunião;
+            EventType = EventType.REUNIÃO;
             Topic = model.Topic;
             this.PresentMembers = new List<OccasionMember>();
 

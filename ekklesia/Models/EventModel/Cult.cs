@@ -18,7 +18,7 @@ namespace ekklesia.Models.EventModel
         public Cult(CreateCultViewModel model)
         {
             Date = model.Date;
-            EventType = EventType.Culto;
+            EventType = EventType.CULTO;
             NumberOfPeople = model.NumberOfPeople;
             MainVerse = model.MainVerse;
         }
@@ -31,5 +31,10 @@ namespace ekklesia.Models.EventModel
         public int NumberOfPeople { get; set; }
         [Required]
         public string MainVerse { get; set; }
+        [Required]
+        public CultType CultType { get; set; }
+        [Required]
+        public bool Internal { get; set; }
+
     }
 }

@@ -65,7 +65,7 @@ namespace ekklesia.Models.EventModel
 
         public Occasion GetEventWithItsMembers(EventType eventType, int Id)
         {
-            if (eventType == EventType.Escola_Dominical)
+            if (eventType == EventType.ESCOLA_DOMINICAL)
             {
                 return applicationContext.Occasions
                 .OfType<SundaySchool>()
@@ -121,7 +121,7 @@ namespace ekklesia.Models.EventModel
 
             //Fill up number of reunions with teachers
             model.ReunionWithTeachers = reunions
-                .Where(r => r.Type.Equals(ReunionType.DOCENTES))
+                .Where(r => r.ReunionType.Equals(ReunionType.DOCÊNCIA))
                 .Count();
 
             //Fill up number of reunions with visitors
