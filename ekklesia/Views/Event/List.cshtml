@@ -24,6 +24,7 @@
                     @foreach (var occasion in Model)
                     {
                         <tr>
+                            
                             <td>@occasion.Date.ToString("D", culture)</td>
                             <td>@occasion.EventType</td>
                             @switch (occasion.EventType)
@@ -35,8 +36,11 @@
                                     var reunion = occasion as Reunion;
                                     <td>@reunion.Topic</td>
                                     break;
-                                default:
+                                case EventType.CULTO:
                                     <td>@((occasion as Cult).MainVerse)</td>
+                                    break;
+                                default:
+                                    <td></td>
                                     break;
                             }
                             <td>

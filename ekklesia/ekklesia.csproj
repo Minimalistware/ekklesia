@@ -56,6 +56,10 @@
     <Compile Remove="Migrations\20200213182743_Report.Designer.cs" />
     <Compile Remove="Migrations\20200218193755_CultTypeAdded.cs" />
     <Compile Remove="Migrations\20200218193755_CultTypeAdded.Designer.cs" />
+    <Compile Remove="Migrations\20200219193250_Events.cs" />
+    <Compile Remove="Migrations\20200219193250_Events.Designer.cs" />
+    <Compile Remove="Migrations\20200219195604_Occasions.cs" />
+    <Compile Remove="Migrations\20200219195604_Occasions.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

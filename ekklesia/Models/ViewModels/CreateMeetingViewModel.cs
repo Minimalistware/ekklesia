@@ -19,6 +19,7 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public IEnumerable<string> SelectedMembers { get; set; }
                 
+        
         public List<SelectListItem> AllMembers { get; set; }
 
         public IEnumerable<Member> PresentMembers { get; set; }

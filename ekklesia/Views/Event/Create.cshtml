@@ -1,4 +1,8 @@
-﻿<ul class="nav nav-tabs" id="eventsTab" role="tablist">
+﻿@{
+    ViewBag.Title = "Criar evento";
+}
+
+<ul class="nav nav-tabs" id="eventsTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="cult-tab" data-toggle="tab" href="#cult" role="tab"
            aria-controls="cult" aria-selected="true">Culto</a>
@@ -11,6 +15,10 @@
         <a class="nav-link" id="school-sunday-tab" data-toggle="tab" href="#school-sunday" role="tab"
            aria-controls="school-sunday" aria-selected="false">Escola Dominical</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="school-sunday-tab" data-toggle="tab" href="#baptism" role="tab"
+           aria-controls="baptism" aria-selected="false">Batismo</a>
+    </li>
 </ul>
 
 <div class="tab-content">
@@ -18,14 +26,18 @@
     <div class="tab-pane active" id="cult" role="tabpanel" aria-labelledby="cult-tab">
         <partial name="_CultForm" />
     </div>
+
     <div class="tab-pane" id="reunion" role="tabpanel" aria-labelledby="reunion-tab">
         <partial name="_ReunionForm" model="ViewBag.reunionViewModel" />
     </div>
 
     <div class="tab-pane" id="school-sunday" role="tabpanel" aria-labelledby="school-sunday-tab">
-        <partial name="_SundaySchoolForm" model="ViewBag.schoolViewModel"/>
+        <partial name="_SundaySchoolForm" model="ViewBag.schoolViewModel" />
     </div>
 
+    <div class="tab-pane" id="baptism" role="tabpanel" aria-labelledby="baptism-tab">
+        <partial name="_BaptismForm" model="ViewBag.BaptismViewModel" />
+    </div>
 </div>
 
 @section Scripts{

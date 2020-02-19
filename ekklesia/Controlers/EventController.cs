@@ -32,10 +32,7 @@ namespace ekklesia.Controlers
         [HttpGet]
         public ViewResult Create()
         {
-            List<SelectListItem> members = GetAllMembers();
-            ViewBag.reunionViewModel = new CreateReunionViewModel(members);
-            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
-            return View();
+            return ReloadDataAndReturnView();
         }
 
 
@@ -103,10 +100,7 @@ namespace ekklesia.Controlers
                 return RedirectToAction("list", "event");
             }
 
-            List<SelectListItem> members = GetAllMembers();
-            ViewBag.reunionViewModel = new CreateReunionViewModel(members);
-            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
-            return View("Create");
+            return ReloadDataAndReturnView();
         }
 
         [HttpPost]
@@ -164,12 +158,47 @@ namespace ekklesia.Controlers
                 return RedirectToAction("list", "event");
             }
 
-            List<SelectListItem> members = GetAllMembers();
-            ViewBag.reunionViewModel = new CreateReunionViewModel(members);
-            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
-            return View("Create");
+            return ReloadDataAndReturnView();
         }
 
+        [HttpPost]
+        public IActionResult CreateBaptism(BaptismCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var baptism = new Baptism(model);
+                foreach (var id in model.BaptizerMembers)
+                {
+                    var member = memberRepository.GetMember(int.Parse(id));
+                    if (member != null)
+                    {
+                        try
+                        {
+                            baptism.AddMember(member);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception("Erro ao adicionar membros batizados.", ex);
+                        }
+                    }
+                    
+                }
+                try
+                {
+                    repository.Add(baptism);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao salvar Escola Dominical", ex);
+                }
+
+                return RedirectToAction("list", "event");
+
+            }
+            return ReloadDataAndReturnView();
+        }
+                
         [HttpGet]
         public ViewResult Edit(int Id)
         {
@@ -487,6 +516,15 @@ namespace ekklesia.Controlers
             }
 
             return members;
+        }
+
+        private ViewResult ReloadDataAndReturnView()
+        {
+            List<SelectListItem> members = GetAllMembers();
+            ViewBag.reunionViewModel = new CreateReunionViewModel(members);
+            ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
+            ViewBag.BaptismViewModel = new BaptismCreateViewModel(members);
+            return View("Create");
         }
     }
 }

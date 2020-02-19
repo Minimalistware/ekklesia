@@ -24,6 +24,7 @@ namespace ekklesia.Models.EventModel
         public SundaySchool()
         {
             this.Members = new HashSet<OccasionMember>();
+            EventType = EventType.ESCOLA_DOMINICAL;
         }
 
         public SundaySchool(CreateSundaySchoolViewModel model)

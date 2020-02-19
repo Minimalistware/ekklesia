@@ -13,6 +13,7 @@ namespace ekklesia.Models.EventModel
     {
         public Cult()
         {
+            EventType = EventType.CULTO;
         }
 
         public Cult(CreateCultViewModel model)
