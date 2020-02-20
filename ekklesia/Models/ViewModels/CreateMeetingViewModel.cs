@@ -9,9 +9,9 @@ namespace ekklesia.Models.ViewModels
     {
         protected CreateMeetingViewModel()
         {
-            PresentMembers = new List<Member>();
-            SelectedMembers = new List<string>();
-            AllMembers = new List<SelectListItem>();
+            PresentMembers = new HashSet<Member>();
+            SelectedMembers = new HashSet<string>();
+            AllMembers = new HashSet<SelectListItem>();
         }
         
         [Required]
@@ -20,9 +20,10 @@ namespace ekklesia.Models.ViewModels
         public IEnumerable<string> SelectedMembers { get; set; }
                 
         
-        public List<SelectListItem> AllMembers { get; set; }
+        public HashSet<SelectListItem> AllMembers { get; set; }
 
         public IEnumerable<Member> PresentMembers { get; set; }
 
+        public abstract void AddMember(SelectListItem item);
     }
 }

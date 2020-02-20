@@ -2,24 +2,28 @@
     ViewBag.Title = "Criar evento";
 }
 
-<ul class="nav nav-tabs" id="eventsTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="cult-tab" data-toggle="tab" href="#cult" role="tab"
-           aria-controls="cult" aria-selected="true">Culto</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="reunion-tab" data-toggle="tab" href="#reunion" role="tab"
-           aria-controls="reunion" aria-selected="false">Reunião</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="school-sunday-tab" data-toggle="tab" href="#school-sunday" role="tab"
-           aria-controls="school-sunday" aria-selected="false">Escola Dominical</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="school-sunday-tab" data-toggle="tab" href="#baptism" role="tab"
-           aria-controls="baptism" aria-selected="false">Batismo</a>
-    </li>
-</ul>
+    <ul class="nav nav-tabs" id="eventsTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="cult-tab" data-toggle="tab" href="#cult" role="tab"
+               aria-controls="cult" aria-selected="true">Culto</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="reunion-tab" data-toggle="tab" href="#reunion" role="tab"
+               aria-controls="reunion" aria-selected="false">Reunião</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="school-sunday-tab" data-toggle="tab" href="#school-sunday" role="tab"
+               aria-controls="school-sunday" aria-selected="false">Escola Dominical</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="school-sunday-tab" data-toggle="tab" href="#baptism" role="tab"
+               aria-controls="baptism" aria-selected="false">Batismo</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="cell-tab" data-toggle="tab" href="#cell" role="tab"
+               aria-controls="cell" aria-selected="false">Célula</a>
+        </li>
+    </ul>
 
 <div class="tab-content">
 
@@ -37,6 +41,10 @@
 
     <div class="tab-pane" id="baptism" role="tabpanel" aria-labelledby="baptism-tab">
         <partial name="_BaptismForm" model="ViewBag.BaptismViewModel" />
+    </div>
+
+    <div class="tab-pane" id="cell" role="tabpanel" aria-labelledby="cell-tab">
+        <partial name="_CellForm" />
     </div>
 </div>
 

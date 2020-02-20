@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.EventModel;
+using ekklesia.Models.MemberModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace ekklesia.Models.ViewModels
         {
         }
 
-        public CreateReunionViewModel(List<SelectListItem> allMembers)
+        public CreateReunionViewModel(HashSet<SelectListItem> allMembers)
         {
             AllMembers = allMembers;
         }
@@ -29,5 +30,11 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public ReunionType ReunionType { get; set; }
 
+        public override void AddMember(SelectListItem item)
+        {
+            AllMembers.Add(item);
+        }
+
+       
     }
 }

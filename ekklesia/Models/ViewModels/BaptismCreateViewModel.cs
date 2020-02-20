@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ekklesia.Models.MemberModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,10 +9,10 @@ namespace ekklesia.Models.ViewModels
     {
         public BaptismCreateViewModel()
         {
-            AllMembers = new List<SelectListItem>();
+            AllMembers = new HashSet<SelectListItem>();
         }
 
-        public BaptismCreateViewModel(List<SelectListItem> members)
+        public BaptismCreateViewModel(HashSet<SelectListItem> members)
         {
             this.AllMembers = members;
         }
@@ -19,8 +20,15 @@ namespace ekklesia.Models.ViewModels
         public string Place { get; set; }
         public int BaptizerId { get; set; }
         [Required]
-        public IEnumerable<string> BaptizerMembers { get; set; }
+        public IEnumerable<string> BaptizedMembersIds { get; set; }
 
-        public List<SelectListItem> AllMembers { get; set; }
+        public HashSet<SelectListItem> AllMembers { get; set; }
+
+        public void AddMember(SelectListItem item)
+        {
+            AllMembers.Add(item);
+        }
+
+                
     }
 }

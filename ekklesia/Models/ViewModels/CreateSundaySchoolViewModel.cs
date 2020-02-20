@@ -9,7 +9,7 @@ namespace ekklesia.Models.ViewModels
         
         public CreateSundaySchoolViewModel() { }
 
-        public CreateSundaySchoolViewModel(List<SelectListItem> members)
+        public CreateSundaySchoolViewModel(HashSet<SelectListItem> members)
         {
             this.AllMembers = members;
         }
@@ -21,5 +21,9 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public int NumberOfBibles { get; set; }
 
+        public override void AddMember(SelectListItem item)
+        {
+            AllMembers.Add(item);
+        }
     }
 }

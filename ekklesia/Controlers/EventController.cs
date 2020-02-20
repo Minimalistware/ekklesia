@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 
 namespace ekklesia.Controlers
 {
@@ -167,7 +167,7 @@ namespace ekklesia.Controlers
             if (ModelState.IsValid)
             {
                 var baptism = new Baptism(model);
-                foreach (var id in model.BaptizerMembers)
+                foreach (var id in model.BaptizedMembersIds)
                 {
                     var member = memberRepository.GetMember(int.Parse(id));
                     if (member != null)
@@ -182,7 +182,7 @@ namespace ekklesia.Controlers
                             throw new Exception("Erro ao adicionar membros batizados.", ex);
                         }
                     }
-                    
+
                 }
                 try
                 {
@@ -198,7 +198,26 @@ namespace ekklesia.Controlers
             }
             return ReloadDataAndReturnView();
         }
-                
+
+        [HttpPost]
+        public IActionResult CreateCell(CellCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cell = new Cell(model);
+                try
+                {
+                    repository.Add(cell);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao salvar Célula", ex);
+                }
+                return RedirectToAction("list", "event");
+            }
+            return ReloadDataAndReturnView();
+        }
+
         [HttpGet]
         public ViewResult Edit(int Id)
         {
@@ -214,15 +233,18 @@ namespace ekklesia.Controlers
                     var editCulViewModel = new EditCultViewModel(occasion as Cult);
                     return View("Editcult", editCulViewModel);
                 case EventType.ESCOLA_DOMINICAL:
-                    var school = occasion as SundaySchool;
                     var schoolmodel = new EditSundaySchoolViewModel(occasion as SundaySchool);
                     schoolmodel = ConfigureLists(schoolmodel);
                     return View("EditSundaySchool", schoolmodel);
                 case EventType.REUNIÃO:
-                    var reunion = occasion as SundaySchool;
                     var reunionmodel = new EditReunionViewModel(occasion as Reunion);
                     reunionmodel = ConfigureLists(reunionmodel);
                     return View("EditReunion", reunionmodel);
+                case EventType.BATISMO:
+                    var baptismmodel = new BaptismEditViewModel(occasion as Baptism);
+                    baptismmodel = ConfigureLists(baptismmodel);
+                    return View("EditBaptism", baptismmodel);
+
                 default:
                     return View();
             }
@@ -259,15 +281,7 @@ namespace ekklesia.Controlers
                 var teacher = memberRepository.GetMember(int.Parse(model.TeacherId));
                 if (teacher != null)
                 {
-                    try
-                    {
-                        sundaySchool.Teacher = teacher;
-
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("Erro ao adicionar pregador.", ex.Message);
-                    }
+                    sundaySchool.Teacher = teacher;
 
                 }
 
@@ -277,7 +291,7 @@ namespace ekklesia.Controlers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Erro ao salvar Escola Dominical", ex.Message);
+                    ModelState.AddModelError("Erro ao atualizar Escola Dominical", ex.Message);
                 }
 
                 return RedirectToAction("list", "event");
@@ -290,23 +304,15 @@ namespace ekklesia.Controlers
         {
             if (ModelState.IsValid)
             {
-                var reunion = (Reunion)repository.GetEvent(model.Id);
+                var reunion = repository.GetEvent(model.Id) as Reunion;
                 reunion.Date = model.Date;
                 reunion.EndTime = model.EndTime;
-                reunion.Topic = model.Topic;                
+                reunion.Topic = model.Topic;
 
                 var speaker = memberRepository.GetMember(int.Parse(model.TeacherId));
                 if (speaker != null)
                 {
-                    try
-                    {
-                        reunion.Speaker = speaker;
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("Erro ao adicionar orador.", ex.Message);
-                    }
-
+                    reunion.Speaker = speaker;
                 }
 
                 try
@@ -315,7 +321,7 @@ namespace ekklesia.Controlers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Erro ao salvar Reunião", ex.Message);
+                    ModelState.AddModelError("Erro ao atualizar Reunião", ex.Message);
                 }
 
                 return RedirectToAction("list", "event");
@@ -324,8 +330,29 @@ namespace ekklesia.Controlers
             return View("EditReunion", model);
         }
 
+        [HttpPost]
+        public IActionResult EditBaptism(BaptismEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var baptism = repository.GetEvent(model.Id) as Baptism;
+                baptism.Date = model.Date;
+                baptism.Place = model.Place;
+                baptism.BaptizerId = model.BaptizerId;
 
-        
+                try
+                {
+                    repository.Update(baptism);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Erro ao atualizar Batismo", ex.Message);
+                }
+
+                return RedirectToAction("list", "event");
+            }
+            return View("EditBaptism", model);
+        }
 
         public ViewResult Detail(int? id)
         {
@@ -434,7 +461,7 @@ namespace ekklesia.Controlers
         {
             var presentsMembers = memberRepository.GetMembersInEvent(model.Id);
 
-            List<SelectListItem> allMembersList = new List<SelectListItem>();
+            HashSet<SelectListItem> allMembersList = new HashSet<SelectListItem>();
             foreach (var member in memberRepository.GetMembers().ToList())
             {
                 var item = new SelectListItem
@@ -450,11 +477,12 @@ namespace ekklesia.Controlers
             model.AllMembers = allMembersList;
             return model;
         }
+
         private EditReunionViewModel ConfigureLists(EditReunionViewModel model)
         {
             var presentsMembers = memberRepository.GetMembersInEvent(model.Id);
 
-            List<SelectListItem> allMembersList = new List<SelectListItem>();
+            HashSet<SelectListItem> allMembersList = new HashSet<SelectListItem>();
             foreach (var member in memberRepository.GetMembers().ToList())
             {
                 var item = new SelectListItem
@@ -468,6 +496,23 @@ namespace ekklesia.Controlers
 
             model.PresentMembers = presentsMembers;
             model.AllMembers = allMembersList;
+            return model;
+        }
+
+        private BaptismEditViewModel ConfigureLists(BaptismEditViewModel model)
+        {
+
+            foreach (var member in memberRepository.GetMembers().ToList())
+            {
+                var item = new SelectListItem
+                {
+                    Value = member.Id.ToString(),
+                    Text = member.Name
+                };
+                model.AddMember(item);
+            }
+            model.BaptizedMembers = memberRepository.GetMembersInEvent(model.Id);
+
             return model;
         }
 
@@ -495,7 +540,7 @@ namespace ekklesia.Controlers
             return model;
         }
 
-        private List<SelectListItem> GetAllMembers()
+        private HashSet<SelectListItem> GetAllMembers()
         {
             var memberList = memberRepository
                             .GetMembers()
@@ -504,7 +549,7 @@ namespace ekklesia.Controlers
 
 
 
-            List<SelectListItem> members = new List<SelectListItem>();
+            HashSet<SelectListItem> members = new HashSet<SelectListItem>();
             foreach (var item in memberList)
             {
                 members.Add(new SelectListItem
@@ -520,7 +565,7 @@ namespace ekklesia.Controlers
 
         private ViewResult ReloadDataAndReturnView()
         {
-            List<SelectListItem> members = GetAllMembers();
+            HashSet<SelectListItem> members = GetAllMembers();
             ViewBag.reunionViewModel = new CreateReunionViewModel(members);
             ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
             ViewBag.BaptismViewModel = new BaptismCreateViewModel(members);
