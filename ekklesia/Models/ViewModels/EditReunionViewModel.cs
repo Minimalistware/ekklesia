@@ -10,7 +10,7 @@ namespace ekklesia.Models.ViewModels
             Id = reunion.Id;
             Date = reunion.Date;
             EndTime = reunion.EndTime;
-            TeacherId = reunion.SpeakerId.ToString();
+            TeacherId = reunion.SpeakerId;
             Topic = reunion.Topic;
             PageTitle = pageTitle;
         }

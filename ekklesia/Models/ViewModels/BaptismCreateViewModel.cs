@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ekklesia.Models.ViewModels
 {
-    public class BaptismCreateViewModel : CreateEventViewModel
+    public class BaptismCreateViewModel : CreateMeetingViewModel
     {
         public BaptismCreateViewModel()
         {
@@ -18,17 +18,11 @@ namespace ekklesia.Models.ViewModels
         }
         [Required]
         public string Place { get; set; }
-        public int BaptizerId { get; set; }
-        [Required]
-        public IEnumerable<string> BaptizedMembersIds { get; set; }
+                
 
-        public HashSet<SelectListItem> AllMembers { get; set; }
-
-        public void AddMember(SelectListItem item)
+        public override void AddMember(SelectListItem item)
         {
             AllMembers.Add(item);
         }
-
-                
     }
 }

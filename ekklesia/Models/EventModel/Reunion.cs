@@ -34,7 +34,7 @@ namespace ekklesia.Models.EventModel
             EndTime = model.EndTime;
             EventType = EventType.REUNIÃO;
             Topic = model.Topic;
-            this.PresentMembers = new List<OccasionMember>();
+            PresentMembers = new List<OccasionMember>();
 
         }
 

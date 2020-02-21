@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ekklesia", "ekklesia\ekklesia.csproj", "{53F740FB-03C8-416E-BAED-44F5807D07BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ekklesia", "ekklesia\ekklesia.csproj", "{53F740FB-03C8-416E-BAED-44F5807D07BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8C22C390-FDA5-42DD-8FD2-1921B40D5E9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{9B949A35-6EEB-437B-BC28-7690127E5F81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEkkleia", "TestEkkleia\TestEkkleia.csproj", "{C9190C10-CC17-452F-899F-C46721EBF4E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,17 @@ Global
 		{53F740FB-03C8-416E-BAED-44F5807D07BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53F740FB-03C8-416E-BAED-44F5807D07BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53F740FB-03C8-416E-BAED-44F5807D07BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9190C10-CC17-452F-899F-C46721EBF4E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9190C10-CC17-452F-899F-C46721EBF4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9190C10-CC17-452F-899F-C46721EBF4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9190C10-CC17-452F-899F-C46721EBF4E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{53F740FB-03C8-416E-BAED-44F5807D07BD} = {9B949A35-6EEB-437B-BC28-7690127E5F81}
+		{C9190C10-CC17-452F-899F-C46721EBF4E0} = {8C22C390-FDA5-42DD-8FD2-1921B40D5E9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33C250E1-79BA-4E4A-8538-9B5C642749AC}

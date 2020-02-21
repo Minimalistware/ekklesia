@@ -16,7 +16,7 @@ namespace ekklesia.Models.EventModel
         {
             Date = model.Date;
             Place = model.Place;
-            BaptizerId = model.BaptizerId;
+            BaptizerId = model.TeacherId;
             EventType = EventType.BATISMO;
             Baptizeds = new HashSet<OccasionMember>();
         }

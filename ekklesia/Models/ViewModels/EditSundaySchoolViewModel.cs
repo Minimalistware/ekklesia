@@ -11,7 +11,7 @@ namespace ekklesia.Models.ViewModels
         {
             Id = school.Id;
             Date = school.Date;
-            TeacherId = school.TeacherId.ToString();
+            TeacherId = school.TeacherId;
             Theme = school.Theme;
             Verse = school.Verse;
             NumberOfBibles = school.NumberOfBibles;

@@ -10,14 +10,14 @@ namespace ekklesia.Models.ViewModels
         protected CreateMeetingViewModel()
         {
             PresentMembers = new HashSet<Member>();
-            SelectedMembers = new HashSet<string>();
+            SelectedMembers = new HashSet<int>();
             AllMembers = new HashSet<SelectListItem>();
         }
         
         [Required]
-        public string TeacherId { get; set; }
+        public int TeacherId { get; set; }
         [Required]
-        public IEnumerable<string> SelectedMembers { get; set; }
+        public IEnumerable<int> SelectedMembers { get; set; }
                 
         
         public HashSet<SelectListItem> AllMembers { get; set; }

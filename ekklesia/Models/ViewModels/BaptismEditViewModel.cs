@@ -16,7 +16,7 @@ namespace ekklesia.Models.ViewModels
             Id = baptism.Id;
             Date = baptism.Date;
             Place = baptism.Place;
-            BaptizerId = baptism.BaptizerId;
+            TeacherId = baptism.BaptizerId;
             BaptizedMembers = new HashSet<Member>();
         }
 
