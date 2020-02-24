@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ namespace ekklesia.Controlers
             this.hostingEnviroment = hostingEnviroment;
         }
 
-
+        [AllowAnonymous]
         public ViewResult List()
         {
             var members = repository.GetMembers();
@@ -29,6 +30,7 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
+        [Authorize]
         public ViewResult Create()
         {
             return View();
@@ -100,17 +102,19 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ViewResult Search()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ViewResult Search(MemberSreachViewModel model)
         {
-            
-            var members = repository.Search(model);            
-            return View("List",members);
+
+            var members = repository.Search(model);
+            return View("List", members);
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -22,6 +23,7 @@ namespace ekklesia.Controlers
             this.memberRepository = memberRepository;
         }
 
+        [AllowAnonymous]
         public ViewResult List()
         {
             var events = repository.GetEvents();

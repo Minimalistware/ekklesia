@@ -3,13 +3,14 @@ using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ReportModel;
 using ekklesia.Models.TransactionModel;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace ekklesia
 {
 
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : IdentityDbContext
     {
         public DbSet<Member> Members { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
@@ -18,10 +19,15 @@ namespace ekklesia
 
         public ApplicationContext(DbContextOptions options) : base(options)
         {
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //The entity type 'IdentityUserLogin<string>' requires a primary 
+            //key to be defined. So we do this at the base.
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<SundaySchool>();
             modelBuilder.Entity<Reunion>();
             modelBuilder.Entity<Cult>();

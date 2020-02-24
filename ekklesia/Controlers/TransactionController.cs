@@ -1,6 +1,7 @@
 ﻿using System;
 using ekklesia.Models.TransactionModel;
 using ekklesia.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace ekklesia.Controlers
             
         }
 
-
+        [AllowAnonymous]
         public ViewResult List()
         {
             var transactions = repository.GetTransactions();
@@ -76,6 +77,7 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ViewResult Search()
         {
             return View();

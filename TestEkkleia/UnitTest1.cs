@@ -1,5 +1,9 @@
 using System;
 using Xunit;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.IO;
+using System.Reflection;
 
 namespace TestEkkleia
 {
@@ -8,7 +12,7 @@ namespace TestEkkleia
         [Fact]
         public void Test1()
         {
-
+            
         }
     }
 }

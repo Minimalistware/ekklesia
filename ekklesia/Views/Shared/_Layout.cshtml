@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> signInManager
 
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -23,7 +24,7 @@
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <a class="navbar-brand" asp-controller="home" asp-action="index">
 
-                <img src="~/images/Ekklesia.png"/>
+                <img src="~/images/Ekklesia.png" />
             </a>
             <button type="button" class="navbar-toggler" data-toggle="callapse" data-target="#colapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -50,6 +51,31 @@
                             Relatórios
                         </a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item ">
+                            <form asp-controller="account" asp-action="logout" method="post">
+                                <button type="submit" class="nav-link btn btn-link py-0">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="account" asp-action="register">
+                                Registro
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-controller="account" asp-action="login">
+                                Login
+                            </a>
+                        </li>
+                    }
                 </ul>
 
             </div>

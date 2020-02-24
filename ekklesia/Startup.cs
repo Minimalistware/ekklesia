@@ -2,8 +2,11 @@
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ReportModel;
 using ekklesia.Models.TransactionModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,12 +29,23 @@ namespace ekklesia
             {
                 options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
             });
-            services.AddMvc();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
             //services.AddScoped<IReportRepository, ReportRepository>();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,9 +62,10 @@ namespace ekklesia
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default","{controller=member}/{action=list}/{id?}");
+                routes.MapRoute("default", "{controller=member}/{action=list}/{id?}");
             });
         }
     }
