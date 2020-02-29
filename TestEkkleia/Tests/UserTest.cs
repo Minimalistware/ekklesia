@@ -1,8 +1,6 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TestEkkleia.Fixtures;
+using TestEkkleia.PageObjects;
 using Xunit;
 
 namespace TestEkkleia.Tests
@@ -20,53 +18,39 @@ namespace TestEkkleia.Tests
         [Fact]
         public void RegisterUser()
         {
+            var registryPage = new RegistryPage(_driver);
             //Arrange
-            _driver.Navigate().GoToUrl("https://localhost:44389/");
-
-            var inputEmail = _driver.FindElement(By.Id("Email"));
-            var inputPassword = _driver.FindElement(By.Id("Password"));
-            var inputConfirmationPassword = _driver.FindElement(By.Id("ConfirmPassword"));
-
-            inputEmail.SendKeys("userTest@email.com");
-            inputPassword.SendKeys("eyw_6AbX?-CuQ+?");
-            inputConfirmationPassword.SendKeys("eyw_6AbX?-CuQ+?");
-
-            var registerButton = _driver.FindElement(By.Id("registerButton"));
-            registerButton.Click();
-
+            registryPage.Visit();
+            //Act
+            registryPage.
+                FillUpForm("userTest@email.com", "eyw_6AbX?-CuQ+?", "eyw_6AbX?-CuQ+?");
             //Verify
             Assert.Contains("userTest@email.com", _driver.PageSource);
         }
 
         [Theory]
         [InlineData("", "", "")]
+        [InlineData("test.com", "Aa1123456789", "Aa1123456789")]
         [InlineData("test1@email.com", "", "")]
         [InlineData("test2@email.com", "Aa112", "Aa112")]
         [InlineData("test3@email.com", "Aa1123456789", "")]
         [InlineData("test4@email.com", "Ab1123456789", "Ac1123456789")]
         [InlineData("test5@email.com", "AB1123456789", "AB1123456789")]
-        [InlineData("test6@email.com", "ab1123456789", "ab1123456789")]        
+        [InlineData("test6@email.com", "ab1123456789", "ab1123456789")]
         public void TryToRegisterUserwrongly(string email, string password,
             string passwordConfirmation)
         {
+            var registryPage = new RegistryPage(_driver);
             //Arrange
-            _driver.Navigate().GoToUrl("https://localhost:44389/");
-            var registerLink = _driver.FindElement(By.Id("registerLink"));
-            registerLink.Click();
-
-            var inputEmail = _driver.FindElement(By.Id("Email"));
-            var inputPassword = _driver.FindElement(By.Id("Password"));
-            var inputConfirmationPassword = _driver.FindElement(By.Id("ConfirmPassword"));
-
-            inputEmail.SendKeys(email);
-            inputPassword.SendKeys(password);
-            inputConfirmationPassword.SendKeys(passwordConfirmation);
-
-            var registerButton = _driver.FindElement(By.Id("registerButton"));
-            registerButton.Click();
+            registryPage.Visit();
+            //Act
+            registryPage.
+                FillUpForm(email, password, passwordConfirmation);
+            //Verify
+            var spans = _driver.FindElements(By.TagName("span"));
 
             //Verify
-            Assert.Contains("text-danger validation-summary-errors", _driver.PageSource);
+            Assert.True(spans.Count >= 1);
         }
 
     }
