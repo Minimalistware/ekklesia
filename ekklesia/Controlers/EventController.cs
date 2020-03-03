@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace ekklesia.Controlers
 {
@@ -32,9 +32,9 @@ namespace ekklesia.Controlers
 
 
         [HttpGet]
-        public ViewResult Create()
+        public async Task<ViewResult> Create()
         {
-            return ReloadDataAndReturnView();
+            return await ReloadDataAndReturnView();
         }
 
 
@@ -52,30 +52,29 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public IActionResult CreateReunion(CreateReunionViewModel model)
+        public async Task<IActionResult> CreateReunion(CreateReunionViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var reunion = new Reunion(model);
                 foreach (var id in model.SelectedMembers)
                 {
-                    var member = memberRepository.GetMember(id);
+                    var member = await memberRepository.GetMember(id);
                     if (member != null)
                     {
                         try
                         {
                             reunion.AddMember(member);
-
                         }
-                        catch (System.Exception ex)
+                        catch (Exception ex)
                         {
-                            throw new System.Exception("Erro ao adicionar membros presentes.", ex);
+                            throw new Exception("Erro ao adicionar membros presentes.", ex);
                         }
                     }
 
                 }
 
-                var speaker = memberRepository.GetMember(model.TeacherId);
+                var speaker = await memberRepository.GetMember(model.TeacherId);
                 if (speaker != null)
                 {
                     try
@@ -102,11 +101,11 @@ namespace ekklesia.Controlers
                 return RedirectToAction("list", "event");
             }
 
-            return ReloadDataAndReturnView();
+            return await ReloadDataAndReturnView();
         }
 
         [HttpPost]
-        public IActionResult CreateSundaySchool(CreateSundaySchoolViewModel model)
+        public async Task<IActionResult> CreateSundaySchool(CreateSundaySchoolViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +116,7 @@ namespace ekklesia.Controlers
                 var sundaySchool = new SundaySchool(model);
                 foreach (var id in model.SelectedMembers)
                 {
-                    var member = memberRepository.GetMember(id);
+                    var member = await memberRepository.GetMember(id);
                     if (member != null)
                     {
                         try
@@ -133,7 +132,7 @@ namespace ekklesia.Controlers
 
                 }
 
-                var teacher = memberRepository.GetMember(model.TeacherId);
+                var teacher = await memberRepository.GetMember(model.TeacherId);
                 if (teacher != null)
                 {
                     try
@@ -160,18 +159,18 @@ namespace ekklesia.Controlers
                 return RedirectToAction("list", "event");
             }
 
-            return ReloadDataAndReturnView();
+            return await ReloadDataAndReturnView();
         }
 
         [HttpPost]
-        public IActionResult CreateBaptism(BaptismCreateViewModel model)
+        public async Task<IActionResult> CreateBaptism(BaptismCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var baptism = new Baptism(model);
                 foreach (var id in model.SelectedMembers)
                 {
-                    var member = memberRepository.GetMember(id);
+                    var member = await memberRepository.GetMember(id);
                     if (member != null)
                     {
                         try
@@ -198,11 +197,11 @@ namespace ekklesia.Controlers
                 return RedirectToAction("list", "event");
 
             }
-            return ReloadDataAndReturnView();
+            return await ReloadDataAndReturnView();
         }
 
         [HttpPost]
-        public IActionResult CreateCell(CellCreateViewModel model)
+        public async Task<IActionResult> CreateCell(CellCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -217,11 +216,11 @@ namespace ekklesia.Controlers
                 }
                 return RedirectToAction("list", "event");
             }
-            return ReloadDataAndReturnView();
+            return await ReloadDataAndReturnView();
         }
 
         [HttpGet]
-        public ViewResult Edit(int Id)
+        public async Task<ViewResult> Edit(int Id)
         {
             var occasion = repository.GetEvent(Id);
             if (occasion == null)
@@ -236,15 +235,15 @@ namespace ekklesia.Controlers
                     return View("Editcult", editCulViewModel);
                 case EventType.ESCOLA_DOMINICAL:
                     var schoolmodel = new EditSundaySchoolViewModel(occasion as SundaySchool);
-                    schoolmodel = ConfigureLists(schoolmodel, schoolmodel.Id) as EditSundaySchoolViewModel;
+                    schoolmodel = await ConfigureLists(schoolmodel, schoolmodel.Id) as EditSundaySchoolViewModel;
                     return View("EditSundaySchool", schoolmodel);
                 case EventType.REUNIÃO:
                     var reunionmodel = new EditReunionViewModel(occasion as Reunion);
-                    reunionmodel = ConfigureLists(reunionmodel, reunionmodel.Id) as EditReunionViewModel;
+                    reunionmodel = await ConfigureLists(reunionmodel, reunionmodel.Id) as EditReunionViewModel;
                     return View("EditReunion", reunionmodel);
                 case EventType.BATISMO:
                     var baptismmodel = new BaptismEditViewModel(occasion as Baptism);
-                    baptismmodel = ConfigureLists(baptismmodel, baptismmodel.Id) as BaptismEditViewModel;
+                    baptismmodel = await ConfigureLists(baptismmodel, baptismmodel.Id) as BaptismEditViewModel;
                     return View("EditBaptism", baptismmodel);
 
                 default:
@@ -270,7 +269,7 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public IActionResult EditSundaySchool(EditSundaySchoolViewModel model)
+        public async Task<IActionResult> EditSundaySchool(EditSundaySchoolViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -280,7 +279,7 @@ namespace ekklesia.Controlers
                 sundaySchool.Theme = model.Theme;
                 sundaySchool.Verse = model.Verse;
 
-                var teacher = memberRepository.GetMember(model.TeacherId);
+                var teacher = await memberRepository.GetMember(model.TeacherId);
                 if (teacher != null)
                 {
                     sundaySchool.Teacher = teacher;
@@ -302,7 +301,7 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public IActionResult EditReunion(EditReunionViewModel model)
+        public async Task<IActionResult> EditReunion(EditReunionViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -311,7 +310,7 @@ namespace ekklesia.Controlers
                 reunion.EndTime = model.EndTime;
                 reunion.Topic = model.Topic;
 
-                var speaker = memberRepository.GetMember(model.TeacherId);
+                var speaker = await memberRepository.GetMember(model.TeacherId);
                 if (speaker != null)
                 {
                     reunion.Speaker = speaker;
@@ -397,7 +396,7 @@ namespace ekklesia.Controlers
 
 
         [HttpPost]
-        public IActionResult EditMembersInEvent(List<MemberEventViewModel> model, string eventId)
+        public async Task<IActionResult> EditMembersInEvent(List<MemberEventViewModel> model, string eventId)
         {
             var occasion = repository.GetSundaySchoolWithItsMembers(int.Parse(eventId));
 
@@ -409,7 +408,7 @@ namespace ekklesia.Controlers
 
             for (int i = 0; i < model.Count; i++)
             {
-                var member = memberRepository.GetMember(model[i].MemberId);
+                var member = await memberRepository.GetMember(model[i].MemberId);
 
                 if (model[i].IsSelected && !(occasion.Contains(member)))
                 {
@@ -430,7 +429,7 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public IActionResult EditMembersInReunion(List<MemberEventViewModel> model, string eventId)
+        public async Task<IActionResult> EditMembersInReunion(List<MemberEventViewModel> model, string eventId)
         {
             var occasion = repository.GetReunionWithItsMembers(int.Parse(eventId));
 
@@ -442,7 +441,7 @@ namespace ekklesia.Controlers
 
             for (int i = 0; i < model.Count; i++)
             {
-                var member = memberRepository.GetMember(model[i].MemberId);
+                var member = await memberRepository.GetMember(model[i].MemberId);
 
                 if (model[i].IsSelected)
                 {
@@ -457,12 +456,11 @@ namespace ekklesia.Controlers
             repository.Update(occasion);
             return RedirectToAction("edit", "event", occasion.Id);
         }
-                  
-        
-        private CreateMeetingViewModel ConfigureLists(CreateMeetingViewModel model, int Id)
-        {
 
-            foreach (var member in memberRepository.GetMembers().ToList())
+
+        private async Task<CreateMeetingViewModel> ConfigureLists(CreateMeetingViewModel model, int Id)
+        {
+            foreach (var member in await memberRepository.GetMembers())
             {
                 var item = new SelectListItem
                 {
@@ -481,7 +479,7 @@ namespace ekklesia.Controlers
             var presentsMembers = memberRepository.GetMembersInEvent(Id);
 
             var model = new List<MemberEventViewModel>();
-            foreach (var member in memberRepository.GetMembers().ToList())
+            foreach (var member in memberRepository.GetMembers().Result.ToList())
             {
                 var memberEventViewModel = new MemberEventViewModel
                 {
@@ -500,10 +498,12 @@ namespace ekklesia.Controlers
             return model;
         }
 
-        private HashSet<SelectListItem> GetAllMembers()
+        private async Task<HashSet<SelectListItem>> GetAllMembers()
         {
-            var memberList = memberRepository
-                            .GetMembers()
+            var asyncmembers = await memberRepository
+                            .GetMembers();
+
+            var memberList = asyncmembers
                             .OrderBy(m => m.Name)
                             .ToList();
 
@@ -523,9 +523,9 @@ namespace ekklesia.Controlers
             return members;
         }
 
-        private ViewResult ReloadDataAndReturnView()
+        private async Task<ViewResult> ReloadDataAndReturnView()
         {
-            HashSet<SelectListItem> members = GetAllMembers();
+            HashSet<SelectListItem> members = await GetAllMembers();
             ViewBag.reunionViewModel = new CreateReunionViewModel(members);
             ViewBag.schoolViewModel = new CreateSundaySchoolViewModel(members);
             ViewBag.BaptismViewModel = new BaptismCreateViewModel(members);

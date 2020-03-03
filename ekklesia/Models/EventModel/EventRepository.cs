@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ekklesia.Models.EventModel
 {
@@ -107,7 +108,7 @@ namespace ekklesia.Models.EventModel
 
         }
 
-        public ReportCreateViewModel FillUpModel(ReportCreateViewModel model)
+        public async Task<ReportCreateViewModel> FillUpModel(ReportCreateViewModel model)
         {
             var reunions = applicationContext.Occasions.OfType<Reunion>();
             var cults = applicationContext.Occasions.OfType<Cult>();
@@ -130,7 +131,7 @@ namespace ekklesia.Models.EventModel
             //Fill up number of people present
             model.PeoplePresent = reunions.Sum(r => r.PresentMembers.Count);
 
-            return Next != null ? Next.FillUpModel(model) : model;
+            return Next != null ? await Next.FillUpModel(model) : model;
         }
                
     }

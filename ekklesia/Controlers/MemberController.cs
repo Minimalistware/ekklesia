@@ -23,9 +23,9 @@ namespace ekklesia.Controlers
         }
 
         [AllowAnonymous]
-        public ViewResult List()
+        public async Task<ViewResult> List()
         {
-            var members = repository.GetMembers();
+            var members = await repository.GetMembers();
             return View(members);
         }
 
@@ -57,9 +57,9 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
-        public ViewResult Edit(int id)
+        public async Task<ViewResult> Edit(int id)
         {
-            Member member = repository.GetMember(id);
+            Member member = await repository.GetMember(id);
             var viewModel = new MemberEditViewModel()
             {
                 Id = member.Id,
@@ -74,11 +74,11 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public IActionResult Edit(MemberEditViewModel model)
+        public async Task<IActionResult> Edit(MemberEditViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Member member = repository.GetMember(model.Id);
+                Member member = await repository.GetMember(model.Id);
                 member.Name = model.Name;
                 member.Phone = model.Phone;
                 member.Position = model.Position;
@@ -94,7 +94,7 @@ namespace ekklesia.Controlers
                 }
 
 
-                repository.Update(member);
+                await repository.Update(member);
                 return RedirectToAction("list");
             }
 
@@ -102,9 +102,9 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
-        public ViewResult Details(int id)
+        public async Task<ViewResult> Details(int id)
         {
-            Member member = repository.GetMember(id);
+            Member member = await repository.GetMember(id);
             var viewModel = new MemberDetailsViewModel()
             {
                 Name = member.Name,
@@ -116,7 +116,7 @@ namespace ekklesia.Controlers
             return View(viewModel);
         }
 
-       
+
 
         [HttpGet]
         [AllowAnonymous]

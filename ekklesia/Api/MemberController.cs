@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ekklesia.Api
 {
@@ -22,15 +23,15 @@ namespace ekklesia.Api
         }
 
         [HttpGet]
-        public IEnumerable<Member> Browse()
+        public async Task<IEnumerable<Member>> Browse()
         {
-            return repository.GetMembers();
+            return await repository.GetMembers();
         }
 
         [HttpGet("{id}")]
-        public IActionResult Read(int id)
+        public async Task<IActionResult> Read(int id)
         {
-            Member member = repository.GetMember(id);
+            Member member = await repository.GetMember(id);
             if (member == null)
             {
                 return NotFound(id);
@@ -53,15 +54,15 @@ namespace ekklesia.Api
                 var url = Url.Action("Read", new { id = member.Id });
                 return Created(url, member);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         [HttpPut]
-        public IActionResult Edit(MemberEditViewModel model)
+        public async Task<IActionResult> Update(MemberEditViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Member member = repository.GetMember(model.Id);
+                Member member = await repository.GetMember(model.Id);
                 if (member == null)
                 {
                     return NotFound(model.Id);
@@ -69,7 +70,7 @@ namespace ekklesia.Api
                 member.Name = model.Name;
                 member.Phone = model.Phone;
                 member.Position = model.Position;
-                repository.Update(member);
+                await repository.Update(member);
                 return Ok(member);
             }
             return BadRequest();

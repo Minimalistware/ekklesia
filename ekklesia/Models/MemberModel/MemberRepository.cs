@@ -10,29 +10,28 @@ namespace ekklesia.Models.MemberModel
 {
     public interface IMemberRepository : IFilling
     {
-        Member GetMember(int id);
-        IEnumerable<Member> GetMembers();
+        Task<Member> GetMember(int id);
+        Task<IEnumerable<Member>> GetMembers();
         IEnumerable<Member> GetMembersInEvent(int id);
-        Member Add(Member member);
-        Member Update(Member member);
+        Task<Member> Add(Member member);
+        Task<Member> Update(Member member);
         Member Delete(int id);
         IEnumerable<Member> Search(MemberSreachViewModel model);
     }
     public class MemberRepository : IMemberRepository
     {
         private readonly ApplicationContext applicationContext;
+        public IFilling Next { get; set; }
 
         public MemberRepository(ApplicationContext applicationContext)
         {
             this.applicationContext = applicationContext;
         }
-
-        public IFilling Next { get; set; }
-
-        public Member Add(Member member)
+               
+        public async Task<Member> Add(Member member)
         {
-            applicationContext.Members.Add(member);
-            applicationContext.SaveChanges();
+            await applicationContext.Members.AddAsync(member);
+            await applicationContext.SaveChangesAsync();
             return member;
         }
 
@@ -48,31 +47,31 @@ namespace ekklesia.Models.MemberModel
 
         }
 
-        public ReportCreateViewModel FillUpModel(ReportCreateViewModel model)
+        public async Task<ReportCreateViewModel> FillUpModel(ReportCreateViewModel model)
         {
             var members = applicationContext.Members;
             //Fill up number of people in pedagogical body
             model.PedagogicalBody = members.Count(m => m.Position == Position.Membro);
 
-            model.AllMembers = GetAllMembersAsSelectList();
+            model.AllMembers = await GetAllMembersAsSelectList();
 
-            if (Next!= null)
+            if (Next != null)
             {
 
             }
 
-            return Next != null ? Next.FillUpModel(model) : model;            
+            return Next != null ? await Next.FillUpModel(model) : model;
         }
 
-        public Member GetMember(int id)
+        public async Task<Member> GetMember(int id)
         {
-            return applicationContext.Members.Find(id);
+            return await applicationContext.Members.FindAsync(id);
         }
 
 
-        public IEnumerable<Member> GetMembers()
+        public async Task<IEnumerable<Member>> GetMembers()
         {
-            return applicationContext.Members;
+            return await applicationContext.Members.ToListAsync();
         }
 
         public IEnumerable<Member> GetMembersInEvent(int id)
@@ -99,22 +98,21 @@ namespace ekklesia.Models.MemberModel
             return applicationContext.Members.FromSql(query, model.Name, model.Position);
         }
 
-        public Member Update(Member alteredMember)
+        public async Task<Member> Update(Member alteredMember)
         {
             var member = applicationContext.Members.Attach(alteredMember);
             member.State = EntityState.Modified;
-            applicationContext.SaveChanges();
+            await applicationContext.SaveChangesAsync();
             return alteredMember;
 
         }
 
-        private List<SelectListItem> GetAllMembersAsSelectList()
+        private async Task<List<SelectListItem>> GetAllMembersAsSelectList()
         {
-            var memberList = applicationContext
+            var memberList = await applicationContext
                             .Members
                             .OrderBy(m => m.Name)
-                            .ToList();
-
+                            .ToListAsync();
 
 
             List<SelectListItem> members = new List<SelectListItem>();
@@ -130,5 +128,6 @@ namespace ekklesia.Models.MemberModel
 
             return members;
         }
+
     }
 }

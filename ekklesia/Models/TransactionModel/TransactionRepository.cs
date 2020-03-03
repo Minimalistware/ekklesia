@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ekklesia.Models.TransactionModel
 {
@@ -48,7 +49,7 @@ namespace ekklesia.Models.TransactionModel
             return transaction;
         }
 
-        public ReportCreateViewModel FillUpModel(ReportCreateViewModel model)
+        public async Task<ReportCreateViewModel> FillUpModel(ReportCreateViewModel model)
         {
             var trasaction = applicationContext.Transactions
                 .Where(t => t.Date > DateTime.Today.AddMonths(-1));
@@ -78,7 +79,7 @@ namespace ekklesia.Models.TransactionModel
             //Fill up balance
             model.Balance = income - expense;
 
-            return Next != null ? Next.FillUpModel(model) : model;
+            return Next != null ? await Next.FillUpModel(model) : model;
 
         }
 

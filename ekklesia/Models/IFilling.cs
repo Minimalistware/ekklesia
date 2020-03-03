@@ -8,7 +8,7 @@ namespace ekklesia.Models
 {
     public interface IFilling
     {
-        ReportCreateViewModel FillUpModel(ReportCreateViewModel model);
+        Task<ReportCreateViewModel> FillUpModel(ReportCreateViewModel model);
         IFilling Next { get; set; }
     }
 }
