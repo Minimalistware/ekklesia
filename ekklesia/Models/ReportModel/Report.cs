@@ -13,18 +13,14 @@ namespace ekklesia.Models.ReportModel
         public Member Preacher { get; set; }
         public int CoordinatorId { get; set; }
         public Member Coordinator { get; set; }
-        
+
         //ATIVIDADES DA ESCOLA BÍBLICA DE ALIANÇA
         [Required]
         public int Reunions { get; set; }
         [Required]
-        public int Convertions { get; set; }
-        [Required]
-        public int Bibles { get; set; }
+        public int Convertions { get; set; }        
         [Required]
         public int ReunionWithTeachers { get; set; }
-        [Required]
-        public int Visitors { get; set; }
         [Required]
         public int PeoplePresent { get; set; }
         [Required]

@@ -102,6 +102,23 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
+        public ViewResult Details(int id)
+        {
+            Member member = repository.GetMember(id);
+            var viewModel = new MemberDetailsViewModel()
+            {
+                Name = member.Name,
+                Phone = member.Phone,
+                Position = member.Position,
+                PageTitle = "Detalhes do membro"
+            };
+
+            return View(viewModel);
+        }
+
+       
+
+        [HttpGet]
         [AllowAnonymous]
         public ViewResult Search()
         {

@@ -1,7 +1,7 @@
 ﻿using ekklesia.Models.EventModel;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace ekklesia.Models.MemberModel
 {
@@ -14,12 +14,16 @@ namespace ekklesia.Models.MemberModel
 
         [Required]
         [MaxLength(50, ErrorMessage = "Nome não pode exceder mais de 50 caracteres.")]
+        [DataMember]
         public string Name { get; set; }
         [Required]
         [MaxLength(11, ErrorMessage = "Número de telefone precisa conter 11 caracteres.")]
+        [DataMember]
         public string Phone { get; set; }
         [Required]
+        [DataMember]
         public Position Position { get; set; }
+        [DataMember]
         public string PhotoPath { get; set; }
         public virtual ICollection<OccasionMember> Meetings { get; set; }
 

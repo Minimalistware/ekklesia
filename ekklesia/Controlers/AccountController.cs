@@ -68,7 +68,7 @@ namespace ekklesia.Controlers
             {
                 var user = new IdentityUser()
                 {
-                    UserName = model.Email,
+                    UserName = model.Name,
                     Email = model.Email
                 };
 

@@ -30,7 +30,11 @@ namespace ekklesia
                 options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.User.AllowedUserNameCharacters = "^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*)$ ";
+                options.User.RequireUniqueEmail = true;                
+            })
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddMvc(config =>
@@ -44,7 +48,7 @@ namespace ekklesia
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
-            //services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
 
         }
 
