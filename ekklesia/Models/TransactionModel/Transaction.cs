@@ -1,9 +1,7 @@
 ﻿using Caelum.Stella.CSharp.Vault;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Models.TransactionModel
 {
@@ -18,5 +16,19 @@ namespace ekklesia.Models.TransactionModel
         public TransactionType Type { get; set; }
         [Required]
         public string Category { get; set; }
+
+        public string ToJson()
+        {
+            return JObject.FromObject(
+            new
+            {
+                Id,
+                Date = Date.ToString("O"),
+                Value = (decimal)Value,
+                Type = Type.ToString(),
+                Category
+            }).ToString();
+
+        }
     }
 }

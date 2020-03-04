@@ -73,7 +73,7 @@ namespace ekklesia.Api
                 await repository.Update(member);
                 return Ok(member);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
     }

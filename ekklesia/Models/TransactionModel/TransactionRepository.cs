@@ -10,11 +10,11 @@ namespace ekklesia.Models.TransactionModel
     public interface ITransactionRepository : IFilling
     {
 
-        Transaction GetTransaction(int id);
-        IEnumerable<Transaction> GetTransactions();
-        Transaction Add(Transaction transaction);
-        Transaction Update(Transaction transaction);
-        Transaction Delete(int id);
+        Task<Transaction> GetTransaction(int id);
+        Task<IEnumerable<Transaction>> GetTransactions();
+        Task Add(Transaction transaction);
+        Task Update(Transaction transaction);
+        Task Delete(int id);
         IEnumerable<Transaction> Search(TransactionSearchViewModel model);
 
     }
@@ -29,24 +29,20 @@ namespace ekklesia.Models.TransactionModel
 
         public IFilling Next { get; set; }
 
-        public Transaction Add(Transaction transaction)
+        public async Task Add(Transaction transaction)
         {
-            applicationContext.Transactions.Add(transaction);
-            applicationContext.SaveChanges();
-            return transaction;
-
+            await applicationContext.Transactions.AddAsync(transaction);
+            await applicationContext.SaveChangesAsync();            
         }
 
-        public Transaction Delete(int id)
+        public async Task Delete(int id)
         {
-            var transaction = applicationContext.Transactions.Find(id);
+            var transaction = await applicationContext.Transactions.FindAsync(id);
             if (transaction != null)
             {
                 applicationContext.Transactions.Remove(transaction);
                 applicationContext.SaveChanges();
-
-            }
-            return transaction;
+            }            
         }
 
         public async Task<ReportCreateViewModel> FillUpModel(ReportCreateViewModel model)
@@ -58,23 +54,23 @@ namespace ekklesia.Models.TransactionModel
             //TODO
 
             //Fill up income
-            var income = trasaction
+            var income = await trasaction
                 .Where(t => t.Type == TransactionType.RECEITA)
-                .Sum(t => t.Value);
+                .SumAsync(t => t.Value);
 
             model.Income = income;
 
             //Fill up expense
-            var expense = trasaction
+            var expense = await trasaction
                 .Where(t => t.Type == TransactionType.DESPESA)
-                .Sum(t => t.Value);
+                .SumAsync(t => t.Value);
             model.Expense = expense;
 
             //Fill up tenth
-            model.Tenth = trasaction
+            model.Tenth = await trasaction
                 .Where(t => t.Type == TransactionType.RECEITA)
-                .Where(t => t.Category == "Dízimo")
-                .Sum(t => t.Value);
+                .Where(t => t.Category == "Dízimo")              
+                .SumAsync(t => t.Value);
 
             //Fill up balance
             model.Balance = income - expense;
@@ -83,14 +79,14 @@ namespace ekklesia.Models.TransactionModel
 
         }
 
-        public Transaction GetTransaction(int id)
+        public async Task<Transaction> GetTransaction(int id)
         {
-            return applicationContext.Transactions.Find(id);
+            return await applicationContext.Transactions.FindAsync(id);
         }
 
-        public IEnumerable<Transaction> GetTransactions()
+        public async Task<IEnumerable<Transaction>> GetTransactions()
         {
-            return applicationContext.Transactions;
+            return await applicationContext.Transactions.ToListAsync();
         }
 
         public IEnumerable<Transaction> Search(TransactionSearchViewModel model)
@@ -108,12 +104,11 @@ namespace ekklesia.Models.TransactionModel
             return applicationContext.Transactions.FromSql(query, model.Category, model.Type);
         }
 
-        public Transaction Update(Transaction alteredTransaction)
+        public async Task Update(Transaction alteredTransaction)
         {
             var member = applicationContext.Transactions.Attach(alteredTransaction);
             member.State = EntityState.Modified;
-            applicationContext.SaveChanges();
-            return alteredTransaction;
+            await applicationContext.SaveChangesAsync();            
         }
     }
 }

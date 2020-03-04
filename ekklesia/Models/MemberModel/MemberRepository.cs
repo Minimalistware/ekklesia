@@ -13,8 +13,8 @@ namespace ekklesia.Models.MemberModel
         Task<Member> GetMember(int id);
         Task<IEnumerable<Member>> GetMembers();
         IEnumerable<Member> GetMembersInEvent(int id);
-        Task<Member> Add(Member member);
-        Task<Member> Update(Member member);
+        Task Add(Member member);
+        Task Update(Member member);
         Member Delete(int id);
         IEnumerable<Member> Search(MemberSreachViewModel model);
     }
@@ -28,11 +28,10 @@ namespace ekklesia.Models.MemberModel
             this.applicationContext = applicationContext;
         }
                
-        public async Task<Member> Add(Member member)
+        public async Task Add(Member member)
         {
             await applicationContext.Members.AddAsync(member);
-            await applicationContext.SaveChangesAsync();
-            return member;
+            await applicationContext.SaveChangesAsync();           
         }
 
         public Member Delete(int id)
@@ -98,13 +97,11 @@ namespace ekklesia.Models.MemberModel
             return applicationContext.Members.FromSql(query, model.Name, model.Position);
         }
 
-        public async Task<Member> Update(Member alteredMember)
+        public async Task Update(Member alteredMember)
         {
             var member = applicationContext.Members.Attach(alteredMember);
             member.State = EntityState.Modified;
-            await applicationContext.SaveChangesAsync();
-            return alteredMember;
-
+            await applicationContext.SaveChangesAsync();       
         }
 
         private async Task<List<SelectListItem>> GetAllMembersAsSelectList()
