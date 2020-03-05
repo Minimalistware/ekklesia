@@ -17,17 +17,16 @@ namespace ekklesia.Models.TransactionModel
         [Required]
         public string Category { get; set; }
 
-        public string ToJson()
+        public Object ToJson()
         {
-            return JObject.FromObject(
-            new
+            return new
             {
                 Id,
                 Date = Date.ToString("O"),
                 Value = (decimal)Value,
                 Type = Type.ToString(),
                 Category
-            }).ToString();
+            };
 
         }
     }

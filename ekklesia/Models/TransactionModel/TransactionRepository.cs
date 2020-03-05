@@ -11,7 +11,7 @@ namespace ekklesia.Models.TransactionModel
     {
 
         Task<Transaction> GetTransaction(int id);
-        Task<IEnumerable<Transaction>> GetTransactions();
+        Task<IList<Transaction>> GetTransactions();
         Task Add(Transaction transaction);
         Task Update(Transaction transaction);
         Task Delete(int id);
@@ -84,7 +84,7 @@ namespace ekklesia.Models.TransactionModel
             return await applicationContext.Transactions.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Transaction>> GetTransactions()
+        public async Task<IList<Transaction>> GetTransactions()
         {
             return await applicationContext.Transactions.ToListAsync();
         }

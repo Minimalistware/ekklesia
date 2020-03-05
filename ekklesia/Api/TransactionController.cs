@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ekklesia.Models.TransactionModel;
 using ekklesia.Models.ViewModels;
@@ -8,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ekklesia.Api
 {
     [ApiController]
-    [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Route("api/[controller]")]    
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionRepository repository;
@@ -20,9 +20,10 @@ namespace ekklesia.Api
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Transaction>> Browse()
+        public async Task<IEnumerable<object>> Browse()
         {
-            return await repository.GetTransactions();
+            var t = await repository.GetTransactions();
+            return t.Select(t => t.ToJson()).ToList();
         }
 
         [HttpGet("{id}")]
