@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
@@ -29,8 +27,7 @@ namespace ekklesia.Controlers
             return View(members);
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public ViewResult Create()
         {
             return View();

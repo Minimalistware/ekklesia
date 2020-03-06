@@ -7,9 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ekklesia", "ekklesia\ekkles
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8C22C390-FDA5-42DD-8FD2-1921B40D5E9B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{9B949A35-6EEB-437B-BC28-7690127E5F81}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{9B949A35-6EEB-437B-BC28-7690127E5F81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEkkleia", "TestEkkleia\TestEkkleia.csproj", "{C9190C10-CC17-452F-899F-C46721EBF4E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestEkkleia", "TestEkkleia\TestEkkleia.csproj", "{C9190C10-CC17-452F-899F-C46721EBF4E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{D8EE93FC-D765-47FC-AD73-C308F6FFB9A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthProvider", "AuthProvider\AuthProvider.csproj", "{936328D0-ABB2-4C59-8F73-20C9B5B91312}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ekklesiapi", "ekklesiapi\ekklesiapi.csproj", "{8BB68ED0-867E-47B8-A4B9-C3509748FAEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +31,14 @@ Global
 		{C9190C10-CC17-452F-899F-C46721EBF4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9190C10-CC17-452F-899F-C46721EBF4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9190C10-CC17-452F-899F-C46721EBF4E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936328D0-ABB2-4C59-8F73-20C9B5B91312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936328D0-ABB2-4C59-8F73-20C9B5B91312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936328D0-ABB2-4C59-8F73-20C9B5B91312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936328D0-ABB2-4C59-8F73-20C9B5B91312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BB68ED0-867E-47B8-A4B9-C3509748FAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BB68ED0-867E-47B8-A4B9-C3509748FAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BB68ED0-867E-47B8-A4B9-C3509748FAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BB68ED0-867E-47B8-A4B9-C3509748FAEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +46,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{53F740FB-03C8-416E-BAED-44F5807D07BD} = {9B949A35-6EEB-437B-BC28-7690127E5F81}
 		{C9190C10-CC17-452F-899F-C46721EBF4E0} = {8C22C390-FDA5-42DD-8FD2-1921B40D5E9B}
+		{936328D0-ABB2-4C59-8F73-20C9B5B91312} = {D8EE93FC-D765-47FC-AD73-C308F6FFB9A0}
+		{8BB68ED0-867E-47B8-A4B9-C3509748FAEA} = {D8EE93FC-D765-47FC-AD73-C308F6FFB9A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33C250E1-79BA-4E4A-8538-9B5C642749AC}

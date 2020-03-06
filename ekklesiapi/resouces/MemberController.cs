@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ekklesia.Api
+namespace ekklesiapi.resources
 {
     [ApiController]
     [Route("api/[controller]")]    
