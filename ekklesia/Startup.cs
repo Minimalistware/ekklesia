@@ -40,9 +40,13 @@ namespace ekklesia
             //Auth
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
+                options.SignIn.RequireConfirmedEmail = true;
                 options.User.AllowedUserNameCharacters = "^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*)$ ";
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<ApplicationContext>();
+
+            }).AddEntityFrameworkStores<ApplicationContext>()
+            .AddDefaultTokenProviders();
+                       
 
             //Mvc routing
             services.AddMvc(config =>

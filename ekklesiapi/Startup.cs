@@ -6,6 +6,7 @@ using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ReportModel;
 using ekklesia.Models.TransactionModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,28 +60,26 @@ namespace ekklesiapi
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<ApplicationContext>();
 
-            
+
             //JWT
             var key = Encoding.ASCII.GetBytes(configuration["SecretKey"]);
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = "JwtBearer";
-                options.DefaultChallengeScheme = "JwtBearer";
-            }).AddJwtBearer("JwtBearer", options =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ClockSkew = TimeSpan.FromHours(1),
-                    ValidIssuer = configuration["Issuer"],
-                    ValidAudience = configuration["ValidAt"]
+                    ClockSkew = TimeSpan.FromHours(1)                    
                 };
-            });            
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,8 +89,8 @@ namespace ekklesiapi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseAuthentication();
+            
+            app.UseAuthentication();            
             app.UseMvc();
         }
     }

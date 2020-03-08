@@ -55,8 +55,6 @@ namespace ekklesiapi.auth
             var symetricKey = new SymmetricSecurityKey(key);
             var credentials = new SigningCredentials(symetricKey, SecurityAlgorithms.HmacSha256);
             var securityToken = new JwtSecurityToken(
-                issuer: "Ekklésia",
-                audience: "http://localhost",
                 claims: rights,
                 signingCredentials: credentials,
                 expires: DateTime.Now.AddHours(1)
