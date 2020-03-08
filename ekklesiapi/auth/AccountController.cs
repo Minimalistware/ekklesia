@@ -9,7 +9,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
 
-namespace ekklesia.Api
+namespace ekklesiapi.auth
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -27,7 +27,7 @@ namespace ekklesia.Api
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Token(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -56,16 +56,15 @@ namespace ekklesia.Api
             var credentials = new SigningCredentials(symetricKey, SecurityAlgorithms.HmacSha256);
             var securityToken = new JwtSecurityToken(
                 issuer: "Ekklésia",
-                audience: "https://localhost",
+                audience: "http://localhost",
                 claims: rights,
                 signingCredentials: credentials,
-                expires: DateTime.Now.AddHours(2)
+                expires: DateTime.Now.AddHours(1)
                 );
 
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
             return token;
         }
     }
-
 
 }

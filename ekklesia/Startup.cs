@@ -31,6 +31,12 @@ namespace ekklesia
                 options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
             });
 
+            //Injection
+            services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
+
             //Auth
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
@@ -38,20 +44,14 @@ namespace ekklesia
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<ApplicationContext>();
 
-            //Mvc
+            //Mvc routing
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
                                 .RequireAuthenticatedUser()
                                 .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
-            });
-
-            //Injection
-            services.AddScoped<IMemberRepository, MemberRepository>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<IEventRepository, EventRepository>();
-            services.AddScoped<IReportRepository, ReportRepository>();
+            });           
             
         }
 

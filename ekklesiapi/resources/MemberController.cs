@@ -1,6 +1,5 @@
 ﻿using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 namespace ekklesiapi.resources
 {
     [ApiController]
-    [Route("api/[controller]")]    
+    [Route("api/[controller]")]   
     public class MemberController : ControllerBase
     {
         private readonly IMemberRepository repository;

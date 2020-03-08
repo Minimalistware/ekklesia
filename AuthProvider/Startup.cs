@@ -57,6 +57,8 @@ namespace AuthProvider
                     ValidAudience = configuration["ValidAt"]
                 };
             });
+
+            //Routing
             services.AddMvc();
         }
 
@@ -67,7 +69,7 @@ namespace AuthProvider
             {
                 app.UseDeveloperExceptionPage();
             }
-
+                      
             app.UseMvc();
         }
     }
