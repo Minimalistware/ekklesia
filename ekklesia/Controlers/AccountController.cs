@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ekklesia.Models.ViewModels;
+using ekklesia.Utils.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +11,14 @@ namespace ekklesia.Controlers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly IEmailSender emailSender;
 
         public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager, IEmailSender emailSender)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.emailSender = emailSender;
         }
 
         [HttpGet]
@@ -81,8 +81,8 @@ namespace ekklesia.Controlers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("list", "member");
+                    await SendConfirmationEmail(user);
+                    return View("ConfirmEmail");
                 }
 
                 foreach (var error in result.Errors)
@@ -97,7 +97,28 @@ namespace ekklesia.Controlers
         private async Task SendConfirmationEmail(IdentityUser user)
         {
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            //userManager.SendEmailAsync()
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account",
+                new { token, email = user.Email }, Request.Scheme);
+
+            await emailSender.SendEmailAsync(user.Email, "Confirmation email link", confirmationLink);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"O email {email} é inválido.";
+                return View("Error");
+            }
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
+        }
+
+
+
+
     }
 }

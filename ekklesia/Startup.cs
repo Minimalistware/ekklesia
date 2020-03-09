@@ -2,6 +2,7 @@
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ReportModel;
 using ekklesia.Models.TransactionModel;
+using ekklesia.Utils.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,12 +42,17 @@ namespace ekklesia
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = true;
-                options.User.AllowedUserNameCharacters = "^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*)$ ";
+                options.User.AllowedUserNameCharacters = null;
                 options.User.RequireUniqueEmail = true;
 
             }).AddEntityFrameworkStores<ApplicationContext>()
             .AddDefaultTokenProviders();
-                       
+
+            //Email
+            var emailConfig = configuration.GetSection("EmailSettings")
+                .Get<EmailSettings>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
 
             //Mvc routing
             services.AddMvc(config =>
@@ -55,8 +61,8 @@ namespace ekklesia
                                 .RequireAuthenticatedUser()
                                 .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
-            });           
-            
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
