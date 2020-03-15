@@ -35,11 +35,12 @@ namespace ekklesia.Controlers
             if (ModelState.IsValid)
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
-                if (user != null && !user.EmailConfirmed &&
-                    (await userManager.CheckPasswordAsync(user, model.Password)))
+                if (user != null && !user.EmailConfirmed)
                 {
                     ModelState.AddModelError(string.Empty, "Email não confirmado.");
+                    
                 }
+
                 var result = await signInManager.PasswordSignInAsync(model.Email
                     , model.Password, model.RememberMe, false);
 
