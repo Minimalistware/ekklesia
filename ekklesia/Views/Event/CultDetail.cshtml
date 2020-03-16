@@ -4,8 +4,16 @@
     ViewBag.Title = Model.PageTitle;
     var culture = new System.Globalization.CultureInfo("pt-BR");
 }
-<h3>@Model.PageTitle</h3>
 
-<div>Data: @Model.Cult.Date.ToString("D", culture)</div>
-<div>Número de pessoas: @Model.Cult.NumberOfPeople</div>
-<div>Vésiculo: @Model.Cult.MainVerse</div>
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-8">
+            <h4>@Model.PageTitle</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Data: @Model.Cult.Date.ToString("D", culture)</p>
+        <p class="card-text">Número de pessoas: @Model.Cult.NumberOfPeople</p>
+        <p class="card-text">Vésiculo: @Model.Cult.MainVerse</p>
+    </div>
+</div>

@@ -85,5 +85,13 @@ namespace ekklesia.Controlers
             var transactions = repository.Search(model);
             return View("List", transactions);
         }
+
+        [HttpGet]
+        public async Task<ViewResult> Details(int id)
+        {
+            var transaction = await repository.GetTransaction(id);
+            var model = new TransactionDetailsViewModel(transaction);
+            return View(model);
+        }
     }
 }

@@ -1,0 +1,22 @@
+﻿@model TransactionDetailsViewModel
+
+@{
+    ViewBag.Title = Model.PageTitle;
+}
+
+@{
+    ViewBag.Title = Model.PageTitle;
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-8">
+            <h4>@Model.Category</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Data: @Model.Date</p>
+        <p class="card-text">Valor: @Model.Value</p>
+        <p class="card-text">Tipo: @Model.Type</p>
+    </div>
+</div>
