@@ -30,12 +30,19 @@ namespace ekklesiapi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
         {
             //DB
             services.AddDbContextPool<ApplicationContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
+                if (env.IsDevelopment())
+                {
+                    options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
+                }
+                else
+                {
+                    options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
+                }
             });
 
             //Injection
@@ -77,7 +84,7 @@ namespace ekklesiapi
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ClockSkew = TimeSpan.FromHours(1)                    
+                    ClockSkew = TimeSpan.FromHours(1)
                 };
             });
         }
@@ -89,8 +96,8 @@ namespace ekklesiapi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
-            app.UseAuthentication();            
+
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

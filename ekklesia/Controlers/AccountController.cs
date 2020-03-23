@@ -82,7 +82,8 @@ namespace ekklesia.Controlers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SendConfirmationEmail(user);
+                    //await SendConfirmationEmail(user);
+                    await signInManager.SignInAsync(user, isPersistent: false);
                     return View("ConfirmEmail");
                 }
 
