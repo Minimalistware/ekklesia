@@ -80,13 +80,13 @@ namespace ekklesia.Migrations
                         column: x => x.MemberId,
                         principalTable: "Members",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OccasionMember_Occasions_OccasionId",
                         column: x => x.OccasionId,
                         principalTable: "Occasions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OccasionMember_Occasions_ReunionId",
                         column: x => x.ReunionId,

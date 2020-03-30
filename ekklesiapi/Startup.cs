@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using ekklesia;
 using ekklesia.Models.EventModel;
@@ -22,27 +21,31 @@ namespace ekklesiapi
     public class Startup
     {
         private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment env;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             this.configuration = configuration;
+            this.env = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
             //DB
             services.AddDbContextPool<ApplicationContext>(options =>
             {
-                if (env.IsDevelopment())
-                {
-                    options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
-                }
-                else
-                {
-                    options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
-                }
+                //if (env.IsDevelopment())
+                //{
+                //    options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
+                //}
+                //else
+                //{
+                //    options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
+                //}
+
+                options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
             });
 
             //Injection

@@ -31,14 +31,16 @@ namespace ekklesia
             //DB
             services.AddDbContextPool<ApplicationContext>(options =>
             {
-                if (env.IsDevelopment())
-                {
-                    options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
-                }
-                else
-                {
-                    options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
-                }
+                //if (env.IsDevelopment())
+                //{
+                //    options.UseSqlServer(configuration.GetConnectionString("EkklesiaDBConnection"));
+                //}
+                //else
+                //{
+                //    options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
+                //}
+
+                options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
             });
 
             //Injection

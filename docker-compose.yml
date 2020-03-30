@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  ekklesia:
+    image: ${DOCKER_REGISTRY-}ekklesia
+    build:
+      context: .
+      dockerfile: ekklesia/Dockerfile
+
+  ekklesiapi:
+    image: ${DOCKER_REGISTRY-}ekklesiapi
+    build:
+      context: .
+      dockerfile: ekklesiapi/Dockerfile
+
