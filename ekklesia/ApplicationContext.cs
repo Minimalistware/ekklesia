@@ -19,7 +19,7 @@ namespace ekklesia
 
         public ApplicationContext(DbContextOptions options) : base(options)
         {
-            this.Database.EnsureCreated();
+            //this.Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,12 +28,16 @@ namespace ekklesia
             //key to be defined. So we do this at the base.
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<SundaySchool>();
             modelBuilder.Entity<Reunion>();
+            modelBuilder.Entity<SundaySchool>();
             modelBuilder.Entity<Cult>();
             modelBuilder.Entity<Cell>();
             modelBuilder.Entity<Baptism>();
 
+            modelBuilder.Entity<BiblicalBasedReport>();
+            modelBuilder.Entity<CellBasedReport>();
+            modelBuilder.Entity<GroupBasedReport>();
+            
 
             modelBuilder
                 .Entity<OccasionMember>()

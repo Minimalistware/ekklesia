@@ -24,10 +24,7 @@ namespace ekklesia.Models.EventModel
             MainVerse = model.MainVerse;
         }
 
-        //[ForeignKey(nameof(Event))]
-        //public int Id { get; set; } // PK and FK pointing to Event
-        //public Event Event { get; set; }
-
+        
         [Required]
         public int NumberOfPeople { get; set; }
         [Required]

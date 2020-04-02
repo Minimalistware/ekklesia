@@ -33,12 +33,12 @@ namespace ekklesia
             {
                 if (env.IsDevelopment())
                 {
-                    options.UseSqlite(configuration.GetConnectionString("EkklesiaSqliteConnection"));
+                    options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
 
                 }
                 if (env.IsProduction())
                 {
-                    options.UseNpgsql(configuration.GetConnectionString("EkklesiaPostgresConnection"));
+                    options.UseNpgsql(configuration.GetConnectionString("PostgresConnection"));
                 }
                
 

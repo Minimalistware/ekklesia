@@ -5,7 +5,12 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.ReportModel
 {
-    public class YouthReport
+    public enum ReportType
     {
+        CRIANÇAS,
+        MULHERES,
+        HOMENS,
+        BIBLÍCO,
+        CÉLULA
     }
 }
