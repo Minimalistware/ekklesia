@@ -42,11 +42,15 @@ namespace ekklesia.Controlers
         {
             var model = new ReportCreateViewModel();
 
+            /*Defaines a Chain of Reponsability.
+             https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern
+             */
+
             eventRepository.Next = memberRepository;
             memberRepository.Next = transactionRepository;
             
-            eventRepository.FillUpModel(model);
-            
+            //Executes the pattern.
+            eventRepository.FillUpModel(model);           
 
             return model;
         }
