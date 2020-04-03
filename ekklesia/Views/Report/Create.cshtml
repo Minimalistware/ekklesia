@@ -34,17 +34,16 @@
         <div class="tab-content">
 
             <div class="tab-pane active" id="children" role="tabpanel" aria-labelledby="children-tab">
-                <partial name="_ChildrenForm" />
+                <partial name="_ChildrenForm" model="ViewBag.childrenViewModel" />
             </div>
 
             <div class="tab-pane" id="young" role="tabpanel" aria-labelledby="young-tab">
-                <partial name="_YoungForm" />
+                <partial name="_MenForm" model="ViewBag.menViewModel"/>
             </div>
 
             <div class="tab-pane" id="women" role="tabpanel" aria-labelledby="women-tab">
-                <partial name="_WomenForm" />
+                <partial name="_WomenForm" model="ViewBag.womenViewModel"/>
             </div>
-
             
         </div>
 

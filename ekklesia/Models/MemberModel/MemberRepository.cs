@@ -27,11 +27,11 @@ namespace ekklesia.Models.MemberModel
         {
             this.applicationContext = applicationContext;
         }
-               
+
         public async Task Add(Member member)
         {
             await applicationContext.Members.AddAsync(member);
-            await applicationContext.SaveChangesAsync();           
+            await applicationContext.SaveChangesAsync();
         }
 
         public Member Delete(int id)
@@ -46,11 +46,11 @@ namespace ekklesia.Models.MemberModel
 
         }
 
-        public async Task<ReportCreateViewModel> FillUpModel(ReportCreateViewModel model)
+        public async Task<ReportCreateViewModel> FillUpGroupReportModel(GroupBasedReportViewModel model)
         {
             var members = applicationContext.Members;
             //Fill up number of people in pedagogical body
-            model.PedagogicalBody = members.Count(m => m.Position == Position.Membro);
+            //model.PedagogicalBody = members.Count(m => m.Position == Position.Membro);
 
             model.AllMembers = await GetAllMembersAsSelectList();
 
@@ -59,7 +59,7 @@ namespace ekklesia.Models.MemberModel
 
             }
 
-            return Next != null ? await Next.FillUpModel(model) : model;
+            return Next != null ? await Next.FillUpGroupReportModel(model) : model;
         }
 
         public async Task<Member> GetMember(int id)
@@ -101,10 +101,10 @@ namespace ekklesia.Models.MemberModel
         {
             var member = applicationContext.Members.Attach(alteredMember);
             member.State = EntityState.Modified;
-            await applicationContext.SaveChangesAsync();       
+            await applicationContext.SaveChangesAsync();
         }
 
-        private async Task<List<SelectListItem>> GetAllMembersAsSelectList()
+        private async Task<HashSet<SelectListItem>> GetAllMembersAsSelectList()
         {
             var memberList = await applicationContext
                             .Members
@@ -112,7 +112,7 @@ namespace ekklesia.Models.MemberModel
                             .ToListAsync();
 
 
-            List<SelectListItem> members = new List<SelectListItem>();
+            HashSet<SelectListItem> members = new HashSet<SelectListItem>();
             foreach (var item in memberList)
             {
                 members.Add(new SelectListItem

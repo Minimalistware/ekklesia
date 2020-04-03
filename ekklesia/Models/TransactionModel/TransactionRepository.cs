@@ -45,7 +45,7 @@ namespace ekklesia.Models.TransactionModel
             }            
         }
 
-        public async Task<ReportCreateViewModel> FillUpModel(ReportCreateViewModel model)
+        public async Task<ReportCreateViewModel> FillUpGroupReportModel(GroupBasedReportViewModel model)
         {
             var trasaction = applicationContext.Transactions
                 .Where(t => t.Date > DateTime.Today.AddMonths(-1));
@@ -75,7 +75,7 @@ namespace ekklesia.Models.TransactionModel
             //Fill up balance
             model.Balance = income - expense;
 
-            return Next != null ? await Next.FillUpModel(model) : model;
+            return Next != null ? await Next.FillUpGroupReportModel(model) : model;
 
         }
 
