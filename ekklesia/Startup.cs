@@ -40,7 +40,6 @@ namespace ekklesia
                 {
                     options.UseNpgsql(configuration.GetConnectionString("PostgresConnection"));
                 }
-               
 
             });
 

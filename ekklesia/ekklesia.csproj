@@ -64,6 +64,10 @@
     <Compile Remove="Migrations\20200219193250_Events.Designer.cs" />
     <Compile Remove="Migrations\20200219195604_Occasions.cs" />
     <Compile Remove="Migrations\20200219195604_Occasions.Designer.cs" />
+    <Compile Remove="Migrations\20200402233957_Reports.cs" />
+    <Compile Remove="Migrations\20200402233957_Reports.Designer.cs" />
+    <Compile Remove="Migrations\20200407223449_EventTransactio.cs" />
+    <Compile Remove="Migrations\20200407223449_EventTransactio.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -44,8 +44,18 @@
                     <tr>
                         <td>@transaction.Date.ToString("d", culture)</td>
                         <td>@transaction.Value</td>
-                        <td>@transaction.Type</td>
-                        <td>@transaction.Category</td>
+
+                        @switch (transaction.TransactionType)
+                        {
+                            case TransactionType.RECEITA:
+                                <td>@((transaction as Revenue).RevenueType.ToString())</td>
+                                break;
+                            case TransactionType.DESPESA:
+                                <td>@((transaction as Expenditure).Description)</td>
+                                break;
+                            default:
+                                break;
+                        }
                         <td>
 
                             <div class="btn-group">

@@ -1,61 +1,36 @@
-﻿@model TransactionCreateViewModel
-
-@{
-ViewBag.Title = "Criar transação";
+﻿@{
+    ViewBag.Title = "Criar transação";
 }
 
-<div class="card">
-<div class="card-header">
-    <div class="col-md-8">
-        <h4>Nova transação</h4>
+<div class="card text-center">
+    <div class="card-header">
+
+        <ul class="nav nav-tabs card-header-tabs" id="transactionsTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="revenue-tab" data-toggle="tab" href="#revenue" role="tab"
+                   aria-controls="revenue" aria-selected="true">Receita</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="expenditure-tab" data-toggle="tab" href="#expenditure" role="tab"
+                   aria-controls="expenditure" aria-selected="false">Despesa</a>
+            </li>
+        </ul>
+
     </div>
-</div>
-<div class="card-body">
-    <form enctype="multipart/form-data" asp-controller="transaction" asp-action="create" method="post" class="mt-3">
+    <div class="card-body">
+        <div class="tab-content">
 
-        <div class="form-group row">
-            <label asp-for="Date" class="col-sm-2 col-form-label">Data</label>
-            <div class="col-sm-10">
-                <input asp-for="Date" class="form-control" placeholder="Data">
-                <span asp-validation-for="Date" class="text-danger"></span>
+
+            <div class="tab-pane" id="revenue" role="tabpanel" aria-labelledby="revenue-tab">
+                <partial name="_RevenueForm" model="ViewBag.Revenue" />
             </div>
+
+            <div class="tab-pane" id="expenditure" role="tabpanel" aria-labelledby="expenditure-tab">
+                <partial name="_ExpenditureForm" model="ViewBag.Expenditure" />
+            </div>
+
         </div>
 
-        <div class="form-group row">
-            <label asp-for="Value" class="col-sm-2 col-form-label"></label>
-            <div class="input-group col-sm-10">
-                <input asp-for="Value" class="form-control" placeholder="Valor">
-                <span asp-validation-for="Value" class="text-danger"></span>
-            </div>
-        </div>
-
-
-        <div class="form-group row">
-            <label asp-for="Type" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-10">
-                <select asp-for="Type" class="custom-select mr-sm-2" asp-items="Html.GetEnumSelectList<TransactionType>()">
-                    <option value="">Please Select</option>
-                </select>
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label asp-for="Category" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-10">
-                <input asp-for="Category" class="form-control" placeholder="Categoria">
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Criar</button>
-                <a asp-controller="transaction" asp-action="list" class="btn btn-secondary">Cancelar</a>
-            </div>
-        </div>
-
-    </form>
-</div>
+    </div>
 </div>
 

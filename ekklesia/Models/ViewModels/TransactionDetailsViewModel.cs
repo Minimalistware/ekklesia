@@ -9,8 +9,8 @@ namespace ekklesia.Models.ViewModels
             var culture = new System.Globalization.CultureInfo("pt-BR");
             Date = transaction.Date.ToString("D", culture);
             Value = transaction.Value.ToString();
-            Type = transaction.Type.ToString();
-            Category = transaction.Category;
+            //Type = transaction.Type.ToString();
+            //Category = transaction.Category;
         }
 
         public string Date { get; set; }

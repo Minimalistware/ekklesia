@@ -28,6 +28,10 @@ namespace ekklesia
             //key to be defined. So we do this at the base.
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Revenue>();
+            modelBuilder.Entity<Expenditure>();
+
+
             modelBuilder.Entity<Reunion>();
             modelBuilder.Entity<SundaySchool>();
             modelBuilder.Entity<Cult>();

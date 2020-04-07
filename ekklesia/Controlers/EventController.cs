@@ -222,7 +222,7 @@ namespace ekklesia.Controlers
         [HttpGet]
         public async Task<ViewResult> Edit(int Id)
         {
-            var occasion = repository.GetEvent(Id);
+            var occasion = await repository.GetEvent(Id);
             if (occasion == null)
             {
                 ViewBag.ErrorMessage = $"Evento com Id: {Id} não pode ser encontrado";
@@ -252,13 +252,12 @@ namespace ekklesia.Controlers
 
         }
 
-
         [HttpPost]
-        public IActionResult EditCult(EditCultViewModel model)
+        public async Task<IActionResult> EditCult(EditCultViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var cult = (Cult)repository.GetEvent(model.Id);
+                var cult = await repository.GetEvent(model.Id) as Cult;
                 cult.Date = model.Date;
                 cult.MainVerse = model.MainVerse;
                 repository.Update(cult);
@@ -273,7 +272,7 @@ namespace ekklesia.Controlers
         {
             if (ModelState.IsValid)
             {
-                var sundaySchool = (SundaySchool)repository.GetEvent(model.Id);
+                var sundaySchool = await repository.GetEvent(model.Id) as SundaySchool;
                 sundaySchool.Date = model.Date;
                 sundaySchool.NumberOfBibles = model.NumberOfBibles;
                 sundaySchool.Theme = model.Theme;
@@ -305,7 +304,7 @@ namespace ekklesia.Controlers
         {
             if (ModelState.IsValid)
             {
-                var reunion = repository.GetEvent(model.Id) as Reunion;
+                var reunion = await repository.GetEvent(model.Id) as Reunion;
                 reunion.Date = model.Date;
                 reunion.EndTime = model.EndTime;
                 reunion.Topic = model.Topic;
@@ -332,11 +331,11 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public IActionResult EditBaptism(BaptismEditViewModel model)
+        public async Task<IActionResult> EditBaptism(BaptismEditViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var baptism = repository.GetEvent(model.Id) as Baptism;
+                var baptism = await repository.GetEvent(model.Id) as Baptism;
                 baptism.Date = model.Date;
                 baptism.Place = model.Place;
                 baptism.BaptizerId = model.TeacherId;
@@ -355,9 +354,9 @@ namespace ekklesia.Controlers
             return View("EditBaptism", model);
         }
 
-        public ViewResult Detail(int? id)
+        public async Task<ViewResult> Detail(int? id)
         {
-            var occasion = repository.GetEvent(id.Value);
+            var occasion = await repository.GetEvent(id.Value);
             if (occasion == null)
             {
                 Response.StatusCode = 404;
@@ -370,10 +369,10 @@ namespace ekklesia.Controlers
 
 
         [HttpGet]
-        public IActionResult EditMembersInEvent(string eventId)
+        public async Task<IActionResult> EditMembersInEvent(string eventId)
         {
 
-            var occasion = repository.GetEvent(int.Parse(eventId));
+            var occasion = await repository.GetEvent(int.Parse(eventId));
             if (occasion == null)
             {
                 ViewBag.ErrorMessage = $"Evento com Id: {eventId} não pode ser encontrado";
@@ -531,5 +530,6 @@ namespace ekklesia.Controlers
             ViewBag.BaptismViewModel = new BaptismCreateViewModel(members);
             return View("Create");
         }
+                
     }
 }

@@ -54,26 +54,26 @@ namespace ekklesia.Models.TransactionModel
             //TODO
 
             //Fill up income
-            var income = await trasaction
-                .Where(t => t.Type == TransactionType.RECEITA)
-                .SumAsync(t => t.Value);
+            //var income = await trasaction
+            //    .Where(t => t.Type == TransactionType.RECEITA)
+            //    .SumAsync(t => t.Value);
 
-            model.Income = income;
+            //model.Income = income;
 
-            //Fill up expense
-            var expense = await trasaction
-                .Where(t => t.Type == TransactionType.DESPESA)
-                .SumAsync(t => t.Value);
-            model.Expense = expense;
+            ////Fill up expense
+            //var expense = await trasaction
+            //    .Where(t => t.Type == TransactionType.DESPESA)
+            //    .SumAsync(t => t.Value);
+            //model.Expense = expense;
 
-            //Fill up tenth
-            model.Tenth = await trasaction
-                .Where(t => t.Type == TransactionType.RECEITA)
-                .Where(t => t.Category == "Dízimo")              
-                .SumAsync(t => t.Value);
+            ////Fill up tenth
+            //model.Tenth = await trasaction
+            //    .Where(t => t.Type == TransactionType.RECEITA)
+            //    .Where(t => t.Category == "Dízimo")              
+            //    .SumAsync(t => t.Value);
 
             //Fill up balance
-            model.Balance = income - expense;
+            //model.Balance = income - expense;
 
             return Next != null ? await Next.FillUpGroupReportModel(model) : model;
 

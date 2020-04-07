@@ -1,18 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ekklesia.Models.EventModel;
 using ekklesia.Models.TransactionModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ekklesia.Controlers
 {
     public class TransactionController : Controller
     {
         private readonly ITransactionRepository repository;
+        private readonly IEventRepository eventRepository;
 
-        public TransactionController(ITransactionRepository repository)
+        public TransactionController(ITransactionRepository repository, IEventRepository eventRepository)
         {
             this.repository = repository;
+            this.eventRepository = eventRepository;
         }
 
         [AllowAnonymous]
@@ -25,22 +31,45 @@ namespace ekklesia.Controlers
         [HttpGet]
         public ViewResult Create()
         {
-            return View();
+            var events = eventRepository.GetEvents();
+            ViewBag.Revenue = new RevenueCreateViewModel();
+            ViewBag.Expenditure = new ExpenditureCreateViewModel();
+            return View("Create");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TransactionCreateViewModel model)
+        public async Task<IActionResult> CreateRevenue(RevenueCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Transaction transaction = new Transaction()
+                var revenue = new Revenue()
                 {
                     Date = model.Date,
                     Value = model.Value,
-                    Type = model.Type,
-                    Category = model.Category
+                    RevenueType = model.RevenueType
                 };
-                await repository.Add(transaction);
+                await AddOcassion(model.OccasionId, revenue);
+                await repository.Add(revenue);
+                return RedirectToAction("list", "transaction");
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateExpenditure(ExpenditureCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var expenditure = new Expenditure()
+                {
+                    Date = model.Date,
+                    Value = model.Value,
+                    Description = model.Description,
+                    Invoice = model.Invoice
+                };
+                await AddOcassion(model.OccasionId, expenditure);
+                await repository.Add(expenditure);
                 return RedirectToAction("list", "transaction");
             }
             return View();
@@ -50,22 +79,52 @@ namespace ekklesia.Controlers
         public async Task<ViewResult> Edit(int id)
         {
             var transaction = await repository.GetTransaction(id);
-            var model = new TransactionEditViewModel(transaction);
-            return View(model);
+            if (transaction == null)
+            {
+                ViewBag.ErrorMessage = $"Transação com Id: {id} não pode ser encontrado";
+                return View("NotFound");
+            }
+            switch (transaction.TransactionType)
+            {
+                case TransactionType.RECEITA:
+                    var revenueEditViewModel = new RevenueEditViewModel(transaction as Revenue);
+                    return View("EditRevenue", revenueEditViewModel);
+                case TransactionType.DESPESA:
+                    var expenditureEditViewModel = new ExpenditureEditViewModel(transaction as Expenditure);
+                    return View("EditExpenditure", expenditureEditViewModel);
+                default:
+                    return View();
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(TransactionEditViewModel model)
+        public async Task<IActionResult> EditRevenue(RevenueEditViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var transaction = await repository.GetTransaction(model.Id);
-                transaction.Date = model.Date;
-                transaction.Value = model.Value;
-                transaction.Type = model.Type;
-                transaction.Category = model.Category;
+                var revenue = await repository.GetTransaction(model.Id) as Revenue;
+                revenue.Date = model.Date;
+                revenue.Value = model.Value;
+                revenue.RevenueType = model.RevenueType;
+                await AddOcassion(model.OccasionId, revenue);
+                await repository.Update(revenue);
+                return RedirectToAction("list", "transaction");
+            }
 
-                await repository.Update(transaction);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditExpenditure(ExpenditureEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var expenditure = await repository.GetTransaction(model.Id) as Expenditure;
+                expenditure.Date = model.Date;
+                expenditure.Value = model.Value;
+                expenditure.Description = model.Description;
+                await AddOcassion(model.OccasionId, expenditure);
+                await repository.Update(expenditure);
                 return RedirectToAction("list", "transaction");
             }
 
@@ -92,6 +151,48 @@ namespace ekklesia.Controlers
             var transaction = await repository.GetTransaction(id);
             var model = new TransactionDetailsViewModel(transaction);
             return View(model);
+        }
+
+        private async Task AddOcassion(int OccasionId, Transaction transaction)
+        {
+            var occasion = await eventRepository.GetEvent(OccasionId);
+            if (occasion != null)
+            {
+                try
+                {
+                    transaction.Occasion = occasion;
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao adicionar ocasião.", ex);
+                }
+
+            }
+        }
+
+        private async Task<HashSet<SelectListItem>> GetAllEvents()
+        {
+            var asyncmembers = await eventRepository.GetEvents();
+
+            var memberList = asyncmembers
+                            .OrderBy(m => m.Name)
+                            .ToList();
+
+
+
+            HashSet<SelectListItem> members = new HashSet<SelectListItem>();
+            foreach (var item in memberList)
+            {
+                members.Add(new SelectListItem
+                {
+                    Value = item.Id.ToString(),
+                    Text = item.Name
+
+                });
+            }
+
+            return members;
         }
     }
 }

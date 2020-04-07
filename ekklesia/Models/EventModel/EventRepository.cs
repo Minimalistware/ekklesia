@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.EventModel
 {
-    public interface IEventRepository: IFilling
+    public interface IEventRepository : IFilling
     {
-        IEnumerable<Occasion> GetEvents();
+        Task<IEnumerable<Occasion>> GetEvents();
         Occasion GetEventWithItsMembers(EventType eventType, int Id);
         SundaySchool GetSundaySchoolWithItsMembers(int Id);
         Reunion GetReunionWithItsMembers(int Id);
-        Occasion GetEvent(int Id);
+        Task<Occasion> GetEvent(int Id);
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
         Occasion Delete(int id);
@@ -46,14 +46,14 @@ namespace ekklesia.Models.EventModel
             return occasion;
         }
 
-        public Occasion GetEvent(int Id)
+        public async Task<Occasion> GetEvent(int Id)
         {
-            return applicationContext.Occasions.Find(Id);
+            return await applicationContext.Occasions.FindAsync(Id);
         }
 
-        public IEnumerable<Occasion> GetEvents()
+        public async Task<IEnumerable<Occasion>> GetEvents()
         {
-            return applicationContext.Occasions;
+            return await applicationContext.Occasions.ToListAsync();
         }
 
         public Occasion Update(Occasion alteredEvent)
@@ -133,6 +133,6 @@ namespace ekklesia.Models.EventModel
 
             return Next != null ? await Next.FillUpGroupReportModel(model) : model;
         }
-               
+
     }
 }
