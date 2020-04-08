@@ -1,33 +1,27 @@
 ﻿using ekklesia.Models.TransactionModel;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ekklesia.Models.ViewModels
 {
-    public class ExpenditureCreateViewModel
+    public class ExpenditureCreateViewModel : TransactionCreateViewModel
+
     {
         public ExpenditureCreateViewModel()
         {
-
         }
 
-        public ExpenditureCreateViewModel(Expenditure expenditure)
+        public ExpenditureCreateViewModel(HashSet<SelectListItem> events)
         {
-            Date = expenditure.Date;
-            Value = expenditure.Value;
-            Description = expenditure.Description;
-            Invoice = expenditure.Invoice;
-            OccasionId = expenditure.OccasionId;
+            AllEvents = events;
         }
 
-        [Required]
-        public DateTime Date { get; set; }
-        [Required]
-        public decimal Value { get; set; }
         [Required]
         public string Description { get; set; }
-        public string Invoice { get; set; }
-        public int OccasionId { get; set; }
+        public IFormFile Invoice { get; set; }
 
     }
 }

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using ekklesia.Models.EventModel;
 using ekklesia.Models.TransactionModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -14,11 +18,14 @@ namespace ekklesia.Controlers
     {
         private readonly ITransactionRepository repository;
         private readonly IEventRepository eventRepository;
+        private readonly IHostingEnvironment hostingEnviroment;
 
-        public TransactionController(ITransactionRepository repository, IEventRepository eventRepository)
+        public TransactionController(ITransactionRepository repository, IEventRepository eventRepository
+            , IHostingEnvironment hostingEnviroment)
         {
             this.repository = repository;
             this.eventRepository = eventRepository;
+            this.hostingEnviroment = hostingEnviroment;
         }
 
         [AllowAnonymous]
@@ -29,11 +36,11 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
-        public ViewResult Create()
+        public async Task<ViewResult> Create()
         {
-            var events = eventRepository.GetEvents();
-            ViewBag.Revenue = new RevenueCreateViewModel();
-            ViewBag.Expenditure = new ExpenditureCreateViewModel();
+            var events = await GetEvents(3);
+            ViewBag.Revenue = new RevenueCreateViewModel(events);
+            ViewBag.Expenditure = new ExpenditureCreateViewModel(events);
             return View("Create");
         }
 
@@ -61,12 +68,13 @@ namespace ekklesia.Controlers
         {
             if (ModelState.IsValid)
             {
+                string uniqueFileName = ProcessUploadedFile(model.Invoice);
                 var expenditure = new Expenditure()
                 {
                     Date = model.Date,
                     Value = model.Value,
                     Description = model.Description,
-                    Invoice = model.Invoice
+                    Invoice = uniqueFileName
                 };
                 await AddOcassion(model.OccasionId, expenditure);
                 await repository.Add(expenditure);
@@ -75,6 +83,7 @@ namespace ekklesia.Controlers
             return View();
         }
 
+        //TODO REMOVER OS CONDICIONAIS
         [HttpGet]
         public async Task<ViewResult> Edit(int id)
         {
@@ -106,7 +115,6 @@ namespace ekklesia.Controlers
                 revenue.Date = model.Date;
                 revenue.Value = model.Value;
                 revenue.RevenueType = model.RevenueType;
-                await AddOcassion(model.OccasionId, revenue);
                 await repository.Update(revenue);
                 return RedirectToAction("list", "transaction");
             }
@@ -171,28 +179,49 @@ namespace ekklesia.Controlers
             }
         }
 
-        private async Task<HashSet<SelectListItem>> GetAllEvents()
+        private async Task<HashSet<SelectListItem>> GetEvents(int eventsNumber = 10)
         {
-            var asyncmembers = await eventRepository.GetEvents();
+            var asyncevents = await eventRepository.GetEvents();
 
-            var memberList = asyncmembers
-                            .OrderBy(m => m.Name)
-                            .ToList();
+            var eventsList = asyncevents
+                            .OrderBy(e => e.Date)
+                            .ToList()
+                            .Take(eventsNumber);
 
 
 
-            HashSet<SelectListItem> members = new HashSet<SelectListItem>();
-            foreach (var item in memberList)
+            HashSet<SelectListItem> occasions = new HashSet<SelectListItem>();
+            foreach (var item in eventsList)
             {
-                members.Add(new SelectListItem
+                occasions.Add(new SelectListItem
                 {
                     Value = item.Id.ToString(),
-                    Text = item.Name
+                    Text = $"{item.EventType} {item.Date}"
 
                 });
             }
 
-            return members;
+            return occasions;
+        }
+
+        //TODO MÉTODO DUPLICADO
+        private string ProcessUploadedFile(IFormFile file)
+        {
+            string uniqueFileName = null;
+            if (file != null)
+            {
+                var uploadsFolder = Path.Combine(hostingEnviroment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+            }
+
+            return uniqueFileName;
         }
     }
 }

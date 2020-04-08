@@ -5,6 +5,7 @@ using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ekklesia.Controlers
@@ -27,18 +28,18 @@ namespace ekklesia.Controlers
             return View(members);
         }
 
-        [HttpGet]        
+        [HttpGet]
         public ViewResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(MemberCreateViewModel model)
+        public async Task<IActionResult> Create(MemberCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = ProcessUploadedFile(model);
+                string uniqueFileName = ProcessUploadedFile(model.Photo);
                 Member member = new Member
                 {
                     Name = model.Name,
@@ -46,8 +47,8 @@ namespace ekklesia.Controlers
                     Position = model.Position,
                     PhotoPath = uniqueFileName
                 };
-                repository.Add(member);
-                return RedirectToAction("list");
+                await repository.Add(member);
+                return RedirectToAction("list", "member");
             }
 
             return View();
@@ -87,7 +88,7 @@ namespace ekklesia.Controlers
                         var filePath = Path.Combine(hostingEnviroment.WebRootPath, "images", model.ExistingPhotoPath);
                         System.IO.File.Delete(filePath);
                     }
-                    member.PhotoPath = ProcessUploadedFile(model);
+                    member.PhotoPath = ProcessUploadedFile(model.Photo);
                 }
 
 
@@ -132,18 +133,19 @@ namespace ekklesia.Controlers
         }
 
 
-        private string ProcessUploadedFile(MemberCreateViewModel model)
+        //TODO MÉTODO DUPLICADO
+        private string ProcessUploadedFile(IFormFile file)
         {
             string uniqueFileName = null;
-            if (model.Photo != null)
+            if (file != null)
             {
                 var uploadsFolder = Path.Combine(hostingEnviroment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    model.Photo.CopyTo(fileStream);
+                    file.CopyTo(fileStream);
                 }
 
             }

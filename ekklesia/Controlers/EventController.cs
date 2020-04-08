@@ -24,9 +24,9 @@ namespace ekklesia.Controlers
         }
 
         [AllowAnonymous]
-        public ViewResult List()
+        public async Task<ViewResult> List()
         {
-            var events = repository.GetEvents();
+            var events = await repository.GetEvents();
             return View(events);
         }
 
@@ -530,6 +530,6 @@ namespace ekklesia.Controlers
             ViewBag.BaptismViewModel = new BaptismCreateViewModel(members);
             return View("Create");
         }
-                
+
     }
 }

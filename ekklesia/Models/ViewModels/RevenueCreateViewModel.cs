@@ -1,14 +1,21 @@
 ﻿using ekklesia.Models.TransactionModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ekklesia.Models.ViewModels
 {
-    public class RevenueCreateViewModel
+    public class RevenueCreateViewModel : TransactionCreateViewModel
     {
-        public RevenueCreateViewModel()
-        {
+        [Required]
+        public RevenueType RevenueType { get; set; }
 
+        public RevenueCreateViewModel() { }
+
+        public RevenueCreateViewModel(HashSet<SelectListItem> events)
+        {
+            AllEvents = events;
         }
 
         public RevenueCreateViewModel(Revenue revenue)
@@ -19,12 +26,7 @@ namespace ekklesia.Models.ViewModels
             OccasionId = revenue.OccasionId;
         }
 
-        [Required]
-        public DateTime Date { get; set; }
-        [Required]
-        public decimal Value { get; set; }
-        [Required]
-        public RevenueType RevenueType { get; set; }
-        public int OccasionId { get; set; }
+
+
     }
 }

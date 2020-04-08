@@ -1,8 +1,5 @@
 ﻿using ekklesia.Models.TransactionModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace ekklesia.Models.ViewModels
 {
@@ -12,15 +9,17 @@ namespace ekklesia.Models.ViewModels
         {
         }
 
-        public ExpenditureEditViewModel(Expenditure expenditure, string title = "Editar") :
-            base(expenditure)
+        public ExpenditureEditViewModel(Expenditure expenditure, string title = "Editar")
         {
             Id = expenditure.Id;
+            Date = expenditure.Date;
+            Value = expenditure.Value;
+            Description = expenditure.Description;
             PageTitle = title;
         }
 
         public string PageTitle { get; set; }
-        public int Id { get; set; }        
+        public int Id { get; set; }
 
     }
 }
