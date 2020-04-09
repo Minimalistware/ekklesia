@@ -1,0 +1,24 @@
+﻿@model ExpenditureDetailsViewModel
+
+@{
+    var photoPath = "~/Images/" + (Model.ExistingPhotoPath ?? "noimage.png");
+    ViewBag.Title = Model.PageTitle;
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-8">
+            <h4>@Model.PageTitle</h4>
+        </div>
+    </div>
+    <img src="@photoPath" class="card-img-top" alt="...">
+    <div class="card-body">
+        <p class="card-text">Data: @Model.Date</p>
+        <p class="card-text">Valor: @Model.Value</p>
+        <p class="card-text">Tipo: @Model.Occasion</p>
+    </div>
+    <div class="card-footer text-center">
+        <a href="#" class="btn btn-primary">Voltar</a>
+        <a href="#" class="btn btn-primary">Editar</a>
+    </div>
+</div>

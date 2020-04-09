@@ -11,6 +11,7 @@ namespace ekklesia.Models.TransactionModel
     {
 
         Task<Transaction> GetTransaction(int id);
+        Task<Transaction> GetTransactionWithOccasion(int id);
         Task<IList<Transaction>> GetTransactions();
         Task Add(Transaction transaction);
         Task Update(Transaction transaction);
@@ -32,7 +33,7 @@ namespace ekklesia.Models.TransactionModel
         public async Task Add(Transaction transaction)
         {
             await applicationContext.Transactions.AddAsync(transaction);
-            await applicationContext.SaveChangesAsync();            
+            await applicationContext.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -42,7 +43,7 @@ namespace ekklesia.Models.TransactionModel
             {
                 applicationContext.Transactions.Remove(transaction);
                 applicationContext.SaveChanges();
-            }            
+            }
         }
 
         public async Task<ReportCreateViewModel> FillUpGroupReportModel(GroupBasedReportViewModel model)
@@ -84,6 +85,13 @@ namespace ekklesia.Models.TransactionModel
             return await applicationContext.Transactions.FindAsync(id);
         }
 
+        public async Task<Transaction> GetTransactionWithOccasion(int id)
+        {
+            return await applicationContext.Transactions
+                .Include(t => t.Occasion)
+                .SingleOrDefaultAsync(t => t.Id == id);
+        }
+
         public async Task<IList<Transaction>> GetTransactions()
         {
             return await applicationContext.Transactions.ToListAsync();
@@ -108,7 +116,7 @@ namespace ekklesia.Models.TransactionModel
         {
             var member = applicationContext.Transactions.Attach(alteredTransaction);
             member.State = EntityState.Modified;
-            await applicationContext.SaveChangesAsync();            
+            await applicationContext.SaveChangesAsync();
         }
     }
 }

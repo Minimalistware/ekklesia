@@ -14,7 +14,6 @@ namespace ekklesia.Models.TransactionModel
         [Required]
         public string Description { get; set; }
 
-        [Required]
         public string Invoice { get; set; }
 
         public override object ToJson()

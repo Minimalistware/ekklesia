@@ -102,7 +102,7 @@ namespace ekklesia.Controlers
                     var expenditureEditViewModel = new ExpenditureEditViewModel(transaction as Expenditure);
                     return View("EditExpenditure", expenditureEditViewModel);
                 default:
-                    return View();
+                    return View("NotFound");
             }
         }
 
@@ -156,10 +156,26 @@ namespace ekklesia.Controlers
         [HttpGet]
         public async Task<ViewResult> Details(int id)
         {
-            var transaction = await repository.GetTransaction(id);
-            var model = new TransactionDetailsViewModel(transaction);
-            return View(model);
+            var transaction = await repository.GetTransactionWithOccasion(id);
+            if (transaction == null)
+            {
+                ViewBag.ErrorMessage = $"Transação com Id: {id} não pode ser encontrado";
+                return View("NotFound");
+            }
+            switch (transaction.TransactionType)
+            {
+                case TransactionType.RECEITA:
+                    var revenue = new RevenueDetailsViewModel(transaction as Revenue);
+                    return View("RevenueDetails", revenue);
+                case TransactionType.DESPESA:
+                    var expenditure = new ExpenditureDetailsViewModel(transaction as Expenditure);
+                    return View("ExpenditureDetails", expenditure);
+                default:
+                    return View("NotFound");
+            }
+
         }
+
 
         private async Task AddOcassion(int OccasionId, Transaction transaction)
         {
