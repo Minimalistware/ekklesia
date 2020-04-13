@@ -11,5 +11,7 @@ namespace ekklesia.Models.ViewModels
         public string MainVerse { get; set; }
         [Required]
         public CultType Type { get; set; }
+        [Required]
+        public int Convertions { get; set; }
     }
 }

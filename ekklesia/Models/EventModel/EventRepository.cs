@@ -17,6 +17,7 @@ namespace ekklesia.Models.EventModel
         Occasion Update(Occasion Event);
         Occasion Delete(int id);
     }
+
     public class EventRepository : IEventRepository
     {
         private readonly ApplicationContext applicationContext;
@@ -134,5 +135,14 @@ namespace ekklesia.Models.EventModel
             return Next != null ? await Next.FillUpGroupReportModel(model) : model;
         }
 
+        public async Task<ReportCreateViewModel> CompleteBaseReportFor(ReportCreateViewModel model)
+        {
+            var occasions = applicationContext.Occasions.OfType<Cult>()
+                .Where(c => c.CultType.ToString() == model.Type.ToString());
+
+            model.Reunions = occasions.Count();
+            //model.Convertions = occasions.Sum(c => c.Convertions);
+            return Next != null ? await Next.CompleteBaseReportFor(model) : model;
+        }
     }
 }

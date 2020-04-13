@@ -27,21 +27,20 @@ namespace ekklesia.Models.ReportModel
 
         public Report Add(Report report)
         {
-            //applicationContext.Reports.Add(report);
+            applicationContext.Reports.Add(report);
             applicationContext.SaveChanges();
             return report;
         }
 
         public Report GetReport(int id)
         {
-            //return applicationContext.Reports.Find(id);
-            return null;
+            return applicationContext.Reports.Find(id);
+
         }
 
         public IEnumerable<Report> GetReports()
         {
-            //return applicationContext.Reports;
-            return null;
+            return applicationContext.Reports;            
         }
 
         public IEnumerable<Report> Search(ReportSearchViewModel model)
@@ -51,8 +50,8 @@ namespace ekklesia.Models.ReportModel
 
         public Report Update(Report alteredReport)
         {
-            //var report = applicationContext.Reports.Attach(alteredReport);
-            //report.State = EntityState.Modified;
+            var report = applicationContext.Reports.Attach(alteredReport);
+            report.State = EntityState.Modified;
             applicationContext.SaveChanges();
             return alteredReport;
         }

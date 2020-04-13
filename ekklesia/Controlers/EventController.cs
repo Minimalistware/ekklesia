@@ -26,10 +26,9 @@ namespace ekklesia.Controlers
         [AllowAnonymous]
         public async Task<ViewResult> List()
         {
-            var events = await repository.GetEvents();
+            var events = await repository.GetEvents();             
             return View(events);
         }
-
 
         [HttpGet]
         public async Task<ViewResult> Create()

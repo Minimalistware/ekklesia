@@ -36,28 +36,34 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
-        public ViewResult Create()
+        public async Task<ViewResult> Create()
         {
-            var model = CreateReportModel();
-            return View(model);
+            HashSet<SelectListItem> members = await GetAllMembers();
+            var model = new GroupBasedReportViewModel(ReportType.CRIANÇAS, members);
+            eventRepository.Next = transactionRepository;
+            //Executes the pattern.
+            await eventRepository.CompleteBaseReportFor(model);
+
+            ViewBag.childrenViewModel = model;
+            ViewBag.menViewModel = new GroupBasedReportViewModel(ReportType.HOMENS, members);
+            ViewBag.womenViewModel = new GroupBasedReportViewModel(ReportType.MULHERES, members);
+            return View("Create");
         }
 
         private ReportCreateViewModel CreateReportModel()
         {
-             var model = new GroupBasedReportViewModel();
+            var model = new GroupBasedReportViewModel();
             /*Defaines a Chain of Reponsability.
              https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern
              */
 
-            eventRepository.Next = memberRepository;
-            memberRepository.Next = transactionRepository;
+            eventRepository.Next = transactionRepository;
 
             //Executes the pattern.
-            eventRepository.FillUpGroupReportModel(model);
+            eventRepository.CompleteBaseReportFor(model);
 
             return model;
         }
-
 
         private async Task<HashSet<SelectListItem>> GetAllMembers()
         {

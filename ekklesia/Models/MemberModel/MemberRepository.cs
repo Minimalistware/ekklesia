@@ -53,10 +53,6 @@ namespace ekklesia.Models.MemberModel
 
             model.AllMembers = await GetAllMembersAsSelectList();
 
-            if (Next != null)
-            {
-
-            }
 
             return Next != null ? await Next.FillUpGroupReportModel(model) : model;
         }
@@ -125,5 +121,9 @@ namespace ekklesia.Models.MemberModel
             return members;
         }
 
+        public async Task<ReportCreateViewModel> CompleteBaseReportFor(ReportCreateViewModel model)
+        {
+            return Next != null ? await Next.CompleteBaseReportFor(model) : model;
+        }
     }
 }

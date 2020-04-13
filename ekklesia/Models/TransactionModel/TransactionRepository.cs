@@ -1,4 +1,5 @@
-﻿using ekklesia.Models.ViewModels;
+﻿using ekklesia.Models.ReportModel;
+using ekklesia.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -117,6 +118,38 @@ namespace ekklesia.Models.TransactionModel
             var member = applicationContext.Transactions.Attach(alteredTransaction);
             member.State = EntityState.Modified;
             await applicationContext.SaveChangesAsync();
+        }
+
+        public async Task<ReportCreateViewModel> CompleteBaseReportFor(ReportCreateViewModel model)
+        {
+            var trasaction = applicationContext.Transactions
+                .Include(t => t.Occasion)
+                .Where(t => t.Date > DateTime.Today.AddMonths(-1))
+                .Where(t => t.Occasion.EventType.ToString() == model.Type.ToString());
+
+            //Fill out income
+            var income = await trasaction
+                .Where(t => t.TransactionType == TransactionType.RECEITA)
+                .SumAsync(t => t.Value);
+
+            model.Income = income;
+
+            //Fill out expense
+            var expense = await trasaction
+                .Where(t => t.TransactionType == TransactionType.DESPESA)
+                .SumAsync(t => t.Value);
+
+            model.Expense = expense;
+
+            //Fill out tenth
+            model.Tenth = await trasaction.OfType<Revenue>()
+                .Where(t => t.RevenueType == RevenueType.DÍZIMO)
+                .SumAsync(t => t.Value);
+
+            //Fill out balance
+            model.Balance = income - expense;
+
+            return Next != null ? await Next.CompleteBaseReportFor(model) : model;
         }
     }
 }

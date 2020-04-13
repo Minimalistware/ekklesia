@@ -15,7 +15,7 @@ namespace ekklesia
         public DbSet<Member> Members { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Occasion> Occasions { get; set; }
-        //public DbSet<Report> Reports { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
         public ApplicationContext(DbContextOptions options) : base(options)
         {
@@ -38,9 +38,9 @@ namespace ekklesia
             modelBuilder.Entity<Cell>();
             modelBuilder.Entity<Baptism>();
 
-            //modelBuilder.Entity<BiblicalBasedReport>();
-            //modelBuilder.Entity<CellBasedReport>();
-            //modelBuilder.Entity<GroupBasedReport>();
+            modelBuilder.Entity<BiblicalBasedReport>();
+            modelBuilder.Entity<CellBasedReport>();
+            modelBuilder.Entity<GroupBasedReport>();
 
 
             modelBuilder
@@ -52,30 +52,30 @@ namespace ekklesia
                 .Property(t => t.Value)
                 .HasConversion(v => (decimal)v, v => new Money(v));
 
-            //modelBuilder
-            //    .Entity<Report>()
-            //    .Property(r => r.PreviousMonth)
-            //    .HasConversion(v => (decimal)v, v => new Money(v));
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.PreviousMonth)
+                .HasConversion(v => (decimal)v, v => new Money(v));
 
-            //modelBuilder
-            //    .Entity<Report>()
-            //    .Property(r => r.Income)
-            //    .HasConversion(v => (decimal)v, v => new Money(v));
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Income)
+                .HasConversion(v => (decimal)v, v => new Money(v));
+            
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Expense)
+                .HasConversion(v => (decimal)v, v => new Money(v));
 
-            //modelBuilder
-            //    .Entity<Report>()
-            //    .Property(r => r.Expense)
-            //    .HasConversion(v => (decimal)v, v => new Money(v));
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Tenth)
+                .HasConversion(v => (decimal)v, v => new Money(v));
 
-            //modelBuilder
-            //    .Entity<Report>()
-            //    .Property(r => r.Tenth)
-            //    .HasConversion(v => (decimal)v, v => new Money(v));
-
-            //modelBuilder
-            //    .Entity<Report>()
-            //    .Property(r => r.Balance)
-            //    .HasConversion(v => (decimal)v, v => new Money(v));
+            modelBuilder
+                .Entity<Report>()
+                .Property(r => r.Balance)
+                .HasConversion(v => (decimal)v, v => new Money(v));
 
         }
     }

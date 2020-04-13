@@ -16,11 +16,12 @@ namespace ekklesia.Models.ReportModel
         public int CoordinatorId { get; set; }
         public Member Coordinator { get; set; }
 
-        //ATIVIDADES BÁSICAS
+        //ATIVIDADES BÁSICAS PARA EVENTOS
         [Required]
         public int Reunions { get; set; }
         [Required]
         public int Convertions { get; set; }
+
 
         //MOVIMENTO FINANCEIRO
         public Money PreviousMonth { get; set; }
