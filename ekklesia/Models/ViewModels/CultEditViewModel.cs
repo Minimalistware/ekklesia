@@ -11,7 +11,11 @@ namespace ekklesia.Models.ViewModels
             Date = cult.Date;
             NumberOfPeople = cult.NumberOfPeople;
             MainVerse = cult.MainVerse;
+            Convertions = cult.Convertions;
+            CultType = cult.CultType;
+            InDoors = cult.Internal;
             PageTitle = "Editar Culto";
+
         }
 
         public int Id { get; set; }

@@ -141,7 +141,8 @@ namespace ekklesia.Models.EventModel
                 .Where(c => c.CultType.ToString() == model.Type.ToString());
 
             model.Reunions = occasions.Count();
-            //model.Convertions = occasions.Sum(c => c.Convertions);
+            
+            model.Convertions = occasions.Sum(c => c.Convertions);
             return Next != null ? await Next.CompleteBaseReportFor(model) : model;
         }
     }

@@ -18,9 +18,11 @@ namespace ekklesia.Models.EventModel
             EventType = EventType.CULTO;
             NumberOfPeople = model.NumberOfPeople;
             MainVerse = model.MainVerse;
+            Convertions = model.Convertions;
+            Internal = model.InDoors;
         }
 
-        
+
         [Required]
         public int NumberOfPeople { get; set; }
         [Required]

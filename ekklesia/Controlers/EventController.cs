@@ -26,7 +26,7 @@ namespace ekklesia.Controlers
         [AllowAnonymous]
         public async Task<ViewResult> List()
         {
-            var events = await repository.GetEvents();             
+            var events = await repository.GetEvents();
             return View(events);
         }
 
@@ -259,6 +259,9 @@ namespace ekklesia.Controlers
                 var cult = await repository.GetEvent(model.Id) as Cult;
                 cult.Date = model.Date;
                 cult.MainVerse = model.MainVerse;
+                cult.Convertions = model.Convertions;
+                cult.CultType = model.CultType;
+                cult.Internal = model.InDoors;
                 repository.Update(cult);
                 return RedirectToAction("list", "event");
             }

@@ -6,5 +6,6 @@
         public string Phone { get; internal set; }
         public Position Position { get; internal set; }
         public string PageTitle { get; internal set; }
+        public string ExistingPhotoPath { get; set; }
     }
 }

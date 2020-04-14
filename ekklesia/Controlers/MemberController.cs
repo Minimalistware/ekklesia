@@ -108,6 +108,7 @@ namespace ekklesia.Controlers
                 Name = member.Name,
                 Phone = member.Phone,
                 Position = member.Position,
+                ExistingPhotoPath = member.PhotoPath,
                 PageTitle = "Detalhes do membro"
             };
 
