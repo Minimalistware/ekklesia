@@ -1,16 +1,12 @@
-﻿using ekklesia.Models.ReportModel;
-using ekklesia.Models.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ekklesia.Models.ViewModels;
 using System.Threading.Tasks;
 
 namespace ekklesia.Models
 {
     public interface IFilling
     {
-        Task<ReportCreateViewModel> FillUpGroupReportModel(GroupBasedReportViewModel model);
-        Task<ReportCreateViewModel> CompleteBaseReportFor(ReportCreateViewModel model);
+        Task<ReportCreateViewModel> FillOutBaseReport(ReportCreateViewModel model);
         IFilling Next { get; set; }
     }
+
 }

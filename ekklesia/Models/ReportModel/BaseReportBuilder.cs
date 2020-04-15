@@ -27,7 +27,7 @@ namespace ekklesia.Models.ReportModel
 
         public virtual async void GenerateBaseReportFor(ReportType type)
         {
-            groupBasedReport = new GroupBasedReportViewModel(type, await GetAllMembers());
+            //groupBasedReport = new GroupBasedReportViewModel(type, await GetAllMembers());
             /*Defaines a Chain of Reponsability.
              https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern
              */
@@ -36,7 +36,7 @@ namespace ekklesia.Models.ReportModel
             memberRepository.Next = transactionRepository;
 
             //Executes the pattern.            
-            await eventRepository.FillUpGroupReportModel(groupBasedReport);
+            //await eventRepository.FillUpGroupReportModel(groupBasedReport);
 
         }
 

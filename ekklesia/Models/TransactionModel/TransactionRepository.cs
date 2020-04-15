@@ -1,4 +1,5 @@
-﻿using ekklesia.Models.ReportModel;
+﻿using ekklesia.Models.EventModel;
+using ekklesia.Models.ReportModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -47,39 +48,6 @@ namespace ekklesia.Models.TransactionModel
             }
         }
 
-        public async Task<ReportCreateViewModel> FillUpGroupReportModel(GroupBasedReportViewModel model)
-        {
-            var trasaction = applicationContext.Transactions
-                .Where(t => t.Date > DateTime.Today.AddMonths(-1));
-
-            //Fill up previous month
-            //TODO
-
-            //Fill up income
-            //var income = await trasaction
-            //    .Where(t => t.Type == TransactionType.RECEITA)
-            //    .SumAsync(t => t.Value);
-
-            //model.Income = income;
-
-            ////Fill up expense
-            //var expense = await trasaction
-            //    .Where(t => t.Type == TransactionType.DESPESA)
-            //    .SumAsync(t => t.Value);
-            //model.Expense = expense;
-
-            ////Fill up tenth
-            //model.Tenth = await trasaction
-            //    .Where(t => t.Type == TransactionType.RECEITA)
-            //    .Where(t => t.Category == "Dízimo")              
-            //    .SumAsync(t => t.Value);
-
-            //Fill up balance
-            //model.Balance = income - expense;
-
-            return Next != null ? await Next.FillUpGroupReportModel(model) : model;
-
-        }
 
         public async Task<Transaction> GetTransaction(int id)
         {
@@ -120,12 +88,17 @@ namespace ekklesia.Models.TransactionModel
             await applicationContext.SaveChangesAsync();
         }
 
-        public async Task<ReportCreateViewModel> CompleteBaseReportFor(ReportCreateViewModel model)
+        public async Task<ReportCreateViewModel> FillOutBaseReport(ReportCreateViewModel model)
         {
-            var trasaction = applicationContext.Transactions
-                .Include(t => t.Occasion)
-                .Where(t => t.Date > DateTime.Today.AddMonths(-1))
-                .Where(t => t.Occasion.EventType.ToString() == model.Type.ToString());
+            var cults = applicationContext.Occasions
+                             .OfType<Cult>()
+                             .Where(c => c.CultType.ToString() == model.Type.ToString());
+
+            var trasaction = from c in cults
+                             join t in applicationContext.Transactions on c.Id equals t.OccasionId
+                             where t.Date > DateTime.Today.AddMonths(-1)
+                             select t;
+
 
             //Fill out income
             var income = await trasaction
@@ -142,14 +115,22 @@ namespace ekklesia.Models.TransactionModel
             model.Expense = expense;
 
             //Fill out tenth
-            model.Tenth = await trasaction.OfType<Revenue>()
-                .Where(t => t.RevenueType == RevenueType.DÍZIMO)
-                .SumAsync(t => t.Value);
+
+            trasaction = from c in cults
+                         join t in applicationContext.Transactions.OfType<Revenue>()
+                         .Where(t => t.RevenueType == RevenueType.DÍZIMO)
+                         on c.Id equals t.OccasionId
+                         where t.Date > DateTime.Today.AddMonths(-1)
+                         select t;
+
+            model.Tenth = await trasaction.SumAsync(t => t.Value);
 
             //Fill out balance
             model.Balance = income - expense;
 
-            return Next != null ? await Next.CompleteBaseReportFor(model) : model;
+            return Next != null ? await Next.FillOutBaseReport(model) : model;
         }
+
+
     }
 }

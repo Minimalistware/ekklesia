@@ -22,6 +22,8 @@ namespace ekklesia.Models.ReportModel
         [Required]
         public int Convertions { get; set; }
 
+        //ATIVIDADES BÁSICAS PARA MEMBROS
+
 
         //MOVIMENTO FINANCEIRO
         public Money PreviousMonth { get; set; }

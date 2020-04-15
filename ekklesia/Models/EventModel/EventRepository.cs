@@ -16,6 +16,7 @@ namespace ekklesia.Models.EventModel
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
         Occasion Delete(int id);
+        GroupBasedReportViewModel FillOutGroupReportModel(GroupBasedReportViewModel model);
     }
 
     public class EventRepository : IEventRepository
@@ -109,41 +110,36 @@ namespace ekklesia.Models.EventModel
 
         }
 
-        public async Task<ReportCreateViewModel> FillUpGroupReportModel(GroupBasedReportViewModel model)
-        {
-            var reunions = applicationContext.Occasions.OfType<Reunion>();
-            var cults = applicationContext.Occasions.OfType<Cult>();
-            var sundday_schools = applicationContext.Occasions.OfType<SundaySchool>();
-
-            ////Fill up number of reunions
-            model.Reunions = reunions.Count();
-
-            ////Fill up number of bibles
-            //model.Bibles = sundday_schools.Sum(ss => ss.NumberOfBibles);
-
-            ////Fill up number of reunions with teachers
-            //model.ReunionWithTeachers = reunions
-            //    .Where(r => r.ReunionType.Equals(ReunionType.DOCÊNCIA))
-            //    .Count();
-
-            ////Fill up number of reunions with visitors
-            ////TODO
-
-            ////Fill up number of people present
-            //model.PeoplePresent = reunions.Sum(r => r.PresentMembers.Count);
-
-            return Next != null ? await Next.FillUpGroupReportModel(model) : model;
-        }
-
-        public async Task<ReportCreateViewModel> CompleteBaseReportFor(ReportCreateViewModel model)
+        public async Task<ReportCreateViewModel> FillOutBaseReport(ReportCreateViewModel model)
         {
             var occasions = applicationContext.Occasions.OfType<Cult>()
                 .Where(c => c.CultType.ToString() == model.Type.ToString());
 
             model.Reunions = occasions.Count();
-            
+
             model.Convertions = occasions.Sum(c => c.Convertions);
-            return Next != null ? await Next.CompleteBaseReportFor(model) : model;
+            return Next != null ? await Next.FillOutBaseReport(model) : model;
         }
+
+        public GroupBasedReportViewModel FillOutGroupReportModel(GroupBasedReportViewModel model)
+        {
+            var cults = applicationContext.Occasions.OfType<Cult>()
+                .Where(c => c.CultType.ToString() == model.Type.ToString());
+
+            model.Reunions = cults.Count();
+            model.Convertions = cults.Sum(c => c.Convertions);
+            model.ExternalCults = cults.Count(c => c.Internal == false);
+
+            model.CellsNumber = applicationContext.Occasions.OfType<Cell>().Count();
+
+
+            model.Reunions = applicationContext.Occasions.OfType<Reunion>()
+                .Where(r => r.ReunionType.Equals(ReunionType.DOCÊNCIA))
+                .Count();
+
+            return model;
+        }
+
+
     }
 }

@@ -9,10 +9,10 @@ namespace ekklesia.Models.ViewModels
     {
         public GroupBasedReportViewModel() { }
 
-        public GroupBasedReportViewModel(ReportType Type, HashSet<SelectListItem> members)
+        public GroupBasedReportViewModel(ReportType Type)
         {
             this.Type = Type;
-            this.AllMembers = members;
+            this.AllMembers = new HashSet<SelectListItem>();
         }
 
         [Required]
@@ -25,6 +25,11 @@ namespace ekklesia.Models.ViewModels
         public int Baptized { get; set; }
         [Required]
         public int MeetingsWithTheCoordination { get; set; }
+        [Required]
+        public int MembersNumber { get; set; }
+        [Required]
+        public int BoardMembersNumber { get; set; }
+
 
     }
 }

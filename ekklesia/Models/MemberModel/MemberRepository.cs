@@ -16,6 +16,7 @@ namespace ekklesia.Models.MemberModel
         Task Update(Member member);
         Member Delete(int id);
         IEnumerable<Member> Search(MemberSreachViewModel model);
+        GroupBasedReportViewModel FillOutGroupReportModel(GroupBasedReportViewModel model);
     }
     public class MemberRepository : IMemberRepository
     {
@@ -43,18 +44,6 @@ namespace ekklesia.Models.MemberModel
             }
             return member;
 
-        }
-
-        public async Task<ReportCreateViewModel> FillUpGroupReportModel(GroupBasedReportViewModel model)
-        {
-            var members = applicationContext.Members;
-            //Fill up number of people in pedagogical body
-            //model.PedagogicalBody = members.Count(m => m.Position == Position.Membro);
-
-            model.AllMembers = await GetAllMembersAsSelectList();
-
-
-            return Next != null ? await Next.FillUpGroupReportModel(model) : model;
         }
 
         public async Task<Member> GetMember(int id)
@@ -99,13 +88,30 @@ namespace ekklesia.Models.MemberModel
             await applicationContext.SaveChangesAsync();
         }
 
+        
+        public async Task<ReportCreateViewModel> FillOutBaseReport(ReportCreateViewModel model)
+        {
+            model.AllMembers = await GetAllMembersAsSelectList();
+            return Next != null ? await Next.FillOutBaseReport(model) : model;
+        }
+
+        public GroupBasedReportViewModel FillOutGroupReportModel(GroupBasedReportViewModel model)
+        {
+            var members = applicationContext.Members;
+
+            model.MembersNumber = members.Count();
+
+            model.BoardMembersNumber = members.Count(m => m.Position == Position.Lider);
+
+            return model;
+        }
+
         private async Task<HashSet<SelectListItem>> GetAllMembersAsSelectList()
         {
             var memberList = await applicationContext
                             .Members
                             .OrderBy(m => m.Name)
                             .ToListAsync();
-
 
             HashSet<SelectListItem> members = new HashSet<SelectListItem>();
             foreach (var item in memberList)
@@ -119,11 +125,6 @@ namespace ekklesia.Models.MemberModel
             }
 
             return members;
-        }
-
-        public async Task<ReportCreateViewModel> CompleteBaseReportFor(ReportCreateViewModel model)
-        {
-            return Next != null ? await Next.CompleteBaseReportFor(model) : model;
         }
     }
 }
