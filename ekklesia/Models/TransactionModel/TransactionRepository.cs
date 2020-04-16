@@ -1,5 +1,4 @@
 ﻿using ekklesia.Models.EventModel;
-using ekklesia.Models.ReportModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.TransactionModel
 {
-    public interface ITransactionRepository : IFilling
+    public interface ITransactionRepository
     {
 
         Task<Transaction> GetTransaction(int id);
@@ -30,7 +29,7 @@ namespace ekklesia.Models.TransactionModel
             this.applicationContext = applicationContext;
         }
 
-        public IFilling Next { get; set; }
+
 
         public async Task Add(Transaction transaction)
         {
@@ -87,50 +86,6 @@ namespace ekklesia.Models.TransactionModel
             member.State = EntityState.Modified;
             await applicationContext.SaveChangesAsync();
         }
-
-        public async Task<ReportCreateViewModel> FillOutBaseReport(ReportCreateViewModel model)
-        {
-            var cults = applicationContext.Occasions
-                             .OfType<Cult>()
-                             .Where(c => c.CultType.ToString() == model.Type.ToString());
-
-            var trasaction = from c in cults
-                             join t in applicationContext.Transactions on c.Id equals t.OccasionId
-                             where t.Date > DateTime.Today.AddMonths(-1)
-                             select t;
-
-
-            //Fill out income
-            var income = await trasaction
-                .Where(t => t.TransactionType == TransactionType.RECEITA)
-                .SumAsync(t => t.Value);
-
-            model.Income = income;
-
-            //Fill out expense
-            var expense = await trasaction
-                .Where(t => t.TransactionType == TransactionType.DESPESA)
-                .SumAsync(t => t.Value);
-
-            model.Expense = expense;
-
-            //Fill out tenth
-
-            trasaction = from c in cults
-                         join t in applicationContext.Transactions.OfType<Revenue>()
-                         .Where(t => t.RevenueType == RevenueType.DÍZIMO)
-                         on c.Id equals t.OccasionId
-                         where t.Date > DateTime.Today.AddMonths(-1)
-                         select t;
-
-            model.Tenth = await trasaction.SumAsync(t => t.Value);
-
-            //Fill out balance
-            model.Balance = income - expense;
-
-            return Next != null ? await Next.FillOutBaseReport(model) : model;
-        }
-
 
     }
 }

@@ -7,7 +7,7 @@ namespace ekklesia.Models.ViewModels
     {
         public BiblicalBasedReportViewModel()
         {
-            this.Type = ReportModel.ReportType.CÉLULA;
+            this.Type = ReportModel.ReportType.BIBLÍCO;
         }
 
         [Required]

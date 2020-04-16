@@ -1,32 +1,18 @@
-﻿using ekklesia.Models.EventModel;
-using ekklesia.Models.MemberModel;
-using ekklesia.Models.ReportModel;
-using ekklesia.Models.TransactionModel;
+﻿using ekklesia.Models.ReportModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ekklesia.Controlers
 {
     public class ReportController : Controller
     {
         private readonly IReportRepository repository;
-        private readonly IMemberRepository memberRepository;
-        private readonly IEventRepository eventRepository;
-        private readonly ITransactionRepository transactionRepository;
+        private readonly IReportBuilder reportBuilder;
 
-        public ReportController(IReportRepository repository,
-            IMemberRepository memberRepository,
-            IEventRepository eventRepository,
-            ITransactionRepository transactionRepository)
+        public ReportController(IReportRepository repository, IReportBuilder builder)
         {
             this.repository = repository;
-            this.memberRepository = memberRepository;
-            this.eventRepository = eventRepository;
-            this.transactionRepository = transactionRepository;
+            this.reportBuilder = builder;
         }
 
         public IActionResult List()
@@ -36,18 +22,23 @@ namespace ekklesia.Controlers
         }
 
         [HttpGet]
-        public async Task<ViewResult> Create()
+        public ViewResult Create()
         {
-            var model = new GroupBasedReportViewModel(ReportType.CRIANÇAS);
-            eventRepository.Next = transactionRepository;
-            transactionRepository.Next = memberRepository;
+            var childrenViewModel = new GroupBasedReportViewModel(ReportType.CRIANÇAS);
+            var menViewModel = new GroupBasedReportViewModel(ReportType.HOMENS);
+            var womenViewModel = new GroupBasedReportViewModel(ReportType.MULHERES);
+            var youngViewModel = new YoungBasedReportViewModel();
+            var biblicalViewModel = new BiblicalBasedReportViewModel();
 
-            //Executes the pattern.
-            await eventRepository.FillOutBaseReport(model);
 
-            ViewBag.childrenViewModel = model;
-            ViewBag.menViewModel = new GroupBasedReportViewModel(ReportType.HOMENS);
-            ViewBag.womenViewModel = new GroupBasedReportViewModel(ReportType.MULHERES);
+            reportBuilder.FilloutGroupReport(childrenViewModel);
+
+            ViewBag.childrenViewModel = childrenViewModel;
+            ViewBag.menViewModel = menViewModel;
+            ViewBag.womenViewModel = womenViewModel;
+            ViewBag.youngViewModel = youngViewModel;
+            ViewBag.biblicalViewModel = biblicalViewModel;
+            
             return View("Create");
         }
 

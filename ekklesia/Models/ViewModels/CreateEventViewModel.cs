@@ -6,9 +6,7 @@ namespace ekklesia.Models.ViewModels
     public abstract class CreateEventViewModel
     {
         [Required]
-        public DateTime Date { get; set; }
-
-        
+        public DateTime Date { get; set; }  
         
 
     }

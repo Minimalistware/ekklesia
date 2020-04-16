@@ -1,67 +1,76 @@
 ﻿@model CreateSundaySchoolViewModel
 
-<form enctype="multipart/form-data" asp-controller="event" asp-action="CreateSundaySchool" method="post" class="mt-3">
+    <form enctype="multipart/form-data" asp-controller="event" asp-action="CreateSundaySchool" method="post" class="mt-3">
 
-    <div class="form-group row">
-        <label asp-for="Date" class="col-sm-2 col-form-label">Data</label>
-        <div class="col-sm-10">
-            <input asp-for="Date" class="form-control" placeholder="Data">
-            <span asp-validation-for="Date" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="Date" class="col-sm-2 col-form-label">Data</label>
+            <div class="col-sm-10">
+                <input asp-for="Date" class="form-control" placeholder="Data">
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group row">
-        <label asp-for="Verse" class="col-sm-2 col-form-label">Versículo usado</label>
-        <div class="col-sm-10">
-            <input asp-for="Verse" class="form-control" placeholder="Versículo">
-            <span asp-validation-for="Verse" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="Verse" class="col-sm-2 col-form-label">Versículo usado</label>
+            <div class="col-sm-10">
+                <input asp-for="Verse" class="form-control" placeholder="Versículo">
+                <span asp-validation-for="Verse" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group row">
-        <label asp-for="Theme" class="col-sm-2 col-form-label">Tema do estudo</label>
-        <div class="col-sm-10">
-            <input asp-for="Theme" class="form-control" placeholder="Tema">
-            <span asp-validation-for="Theme" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="Theme" class="col-sm-2 col-form-label">Tema do estudo</label>
+            <div class="col-sm-10">
+                <input asp-for="Theme" class="form-control" placeholder="Tema">
+                <span asp-validation-for="Theme" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group row">
-        <label asp-for="TeacherId" class="col-sm-2 col-form-label">Professor</label>
-        <div class="col-sm-10">
-            <select asp-for="TeacherId" class="custom-select mr-sm-2"
-                    asp-items="@Model.AllMembers">                    
-                <option value="0">Selecione um membro</option>
-            </select>
-            <span asp-validation-for="TeacherId" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="TeacherId" class="col-sm-2 col-form-label">Professor</label>
+            <div class="col-sm-10">
+                <select asp-for="TeacherId" class="custom-select mr-sm-2"
+                        asp-items="@Model.AllMembers">
+                    <option value="0">Selecione um membro</option>
+                </select>
+                <span asp-validation-for="TeacherId" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
+        <div class="form-group row">
 
-    <div class="form-group row">
+            <label asp-for="SelectedMembers" class="col-sm-2 col-form-label">Membros presentes</label>
+            <div class="col-sm-10">
 
-        <label asp-for="SelectedMembers" class="col-sm-2 col-form-label">Membros presentes</label>
-        <div class="col-sm-10">
-
-            <select asp-for="SelectedMembers" class="custom-select mr-sm-2"
-                    asp-items="@Model.AllMembers">
-                <option value="0">Selecione um membro</option>
-            </select>
-            <span asp-validation-for="SelectedMembers" class="text-danger"></span>
+                <select asp-for="SelectedMembers" class="custom-select mr-sm-2"
+                        asp-items="@Model.AllMembers">
+                    <option value="0">Selecione um membro</option>
+                </select>
+                <span asp-validation-for="SelectedMembers" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="NumberOfBibles" class="col-sm-2 col-form-label">Número de Bíblias</label>
-        <div class="col-sm-10">
-            <input asp-for="NumberOfBibles" class="form-control" placeholder="Número">
-            <span asp-validation-for="NumberOfBibles" class="text-danger"></span>
+
+        <div class="form-group row">
+            <label asp-for="NumberOfBibles" class="col-sm-2 col-form-label">Número de Bíblias</label>
+            <div class="col-sm-10">
+                <input asp-for="NumberOfBibles" class="form-control" placeholder="Número">
+                <span asp-validation-for="NumberOfBibles" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-2">
-            <button type="submit" class="btn btn-primary">Criar</button>
-            <a asp-controller="event" asp-action="list" class="btn btn-secondary">Cancelar</a>
+
+        <div class="form-group row">
+            <label asp-for="Visitants" class="col-sm-2 col-form-label">Número de visitantes</label>
+            <div class="col-sm-10">
+                <input asp-for="Visitants" class="form-control" placeholder="Número">
+                <span asp-validation-for="Visitants" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-</form>
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-primary">Criar</button>
+                <a asp-controller="event" asp-action="list" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </div>
+    </form>
 

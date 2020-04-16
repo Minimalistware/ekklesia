@@ -2,7 +2,6 @@
     ViewBag.Title = "Criar relatório";
 }
 
-
 <div class="card text-center">
     <div class="card-header">
 
@@ -10,10 +9,6 @@
             <li class="nav-item">
                 <a class="nav-link active" id="cult-tab" data-toggle="tab" href="#children" role="tab"
                    aria-controls="children" aria-selected="true">Crianças</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="young-tab" data-toggle="tab" href="#Young" role="tab"
-                   aria-controls="young" aria-selected="false">Jovens</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="women-tab" data-toggle="tab" href="#women" role="tab"
@@ -24,11 +19,14 @@
                    aria-controls="men" aria-selected="false">Homens</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="cell-tab" data-toggle="tab" href="#cell" role="tab"
-                   aria-controls="cell" aria-selected="false">Escola Bíblica</a>
+                <a class="nav-link" id="young-tab" data-toggle="tab" href="#young" role="tab"
+                   aria-controls="young" aria-selected="false">Célula</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="biblical-tab" data-toggle="tab" href="#biblical" role="tab"
+                   aria-controls="biblical" aria-selected="false">Escola Bíblica</a>
             </li>
         </ul>
-
     </div>
     <div class="card-body">
         <div class="tab-content">
@@ -37,14 +35,22 @@
                 <partial name="_ChildrenForm" model="ViewBag.childrenViewModel" />
             </div>
 
-            <div class="tab-pane" id="young" role="tabpanel" aria-labelledby="young-tab">
-                <partial name="_MenForm" model="ViewBag.menViewModel"/>
+            <div class="tab-pane" id="men" role="tabpanel" aria-labelledby="men-tab">
+                <partial name="_MenForm" model="ViewBag.menViewModel" />
             </div>
 
             <div class="tab-pane" id="women" role="tabpanel" aria-labelledby="women-tab">
-                <partial name="_WomenForm" model="ViewBag.womenViewModel"/>
+                <partial name="_WomenForm" model="ViewBag.womenViewModel" />
             </div>
-            
+
+            <div class="tab-pane" id="biblical" role="tabpanel" aria-labelledby="biblical-tab">
+                <partial name="_BiblicalForm" model="ViewBag.biblicalViewModel" />
+            </div>
+
+            <div class="tab-pane" id="young" role="tabpanel" aria-labelledby="young-tab">
+                <partial name="_YoungForm" model="ViewBag.youngViewModel" />
+            </div>
+
         </div>
 
     </div>

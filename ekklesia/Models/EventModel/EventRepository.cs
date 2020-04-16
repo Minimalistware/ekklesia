@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ekklesia.Models.EventModel
 {
-    public interface IEventRepository : IFilling
+    public interface IEventRepository
     {
         Task<IEnumerable<Occasion>> GetEvents();
         Occasion GetEventWithItsMembers(EventType eventType, int Id);
@@ -16,7 +16,7 @@ namespace ekklesia.Models.EventModel
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
         Occasion Delete(int id);
-        GroupBasedReportViewModel FillOutGroupReportModel(GroupBasedReportViewModel model);
+
     }
 
     public class EventRepository : IEventRepository
@@ -28,7 +28,6 @@ namespace ekklesia.Models.EventModel
             this.applicationContext = applicationContext;
         }
 
-        public IFilling Next { get; set; }
 
         public Occasion Add(Occasion Event)
         {
@@ -109,37 +108,6 @@ namespace ekklesia.Models.EventModel
             .FirstOrDefault();
 
         }
-
-        public async Task<ReportCreateViewModel> FillOutBaseReport(ReportCreateViewModel model)
-        {
-            var occasions = applicationContext.Occasions.OfType<Cult>()
-                .Where(c => c.CultType.ToString() == model.Type.ToString());
-
-            model.Reunions = occasions.Count();
-
-            model.Convertions = occasions.Sum(c => c.Convertions);
-            return Next != null ? await Next.FillOutBaseReport(model) : model;
-        }
-
-        public GroupBasedReportViewModel FillOutGroupReportModel(GroupBasedReportViewModel model)
-        {
-            var cults = applicationContext.Occasions.OfType<Cult>()
-                .Where(c => c.CultType.ToString() == model.Type.ToString());
-
-            model.Reunions = cults.Count();
-            model.Convertions = cults.Sum(c => c.Convertions);
-            model.ExternalCults = cults.Count(c => c.Internal == false);
-
-            model.CellsNumber = applicationContext.Occasions.OfType<Cell>().Count();
-
-
-            model.Reunions = applicationContext.Occasions.OfType<Reunion>()
-                .Where(r => r.ReunionType.Equals(ReunionType.DOCÊNCIA))
-                .Count();
-
-            return model;
-        }
-
 
     }
 }

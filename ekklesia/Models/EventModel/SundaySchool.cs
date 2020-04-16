@@ -17,6 +17,8 @@ namespace ekklesia.Models.EventModel
         public string Verse { get; set; }
         [Required]
         public int NumberOfBibles { get; set; }
+        [Required]
+        public int Visitants { get; set; }
         public Member Teacher { get; set; }
         public int TeacherId { get; set; }
         public ICollection<OccasionMember> Members { get; set; }
@@ -34,6 +36,7 @@ namespace ekklesia.Models.EventModel
             Theme = model.Theme;
             Verse = model.Verse;
             NumberOfBibles = model.NumberOfBibles;
+            Visitants = model.Visitants;
             this.Members = new HashSet<OccasionMember>();
         }
 

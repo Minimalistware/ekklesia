@@ -48,6 +48,7 @@ namespace ekklesia
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IReportBuilder, ReportBuilder>();
 
             //Auth
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
