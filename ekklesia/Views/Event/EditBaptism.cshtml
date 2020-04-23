@@ -44,9 +44,9 @@
             <h4>Membros batizados</h4>
         </div>
         <div class="card-body">
-            @if (Model.BaptizedMembers.Any())
+            @if (Model.PresentMembers.Any())
             {
-                foreach (var member in Model.BaptizedMembers)
+                foreach (var member in Model.PresentMembers)
                 {
                     <h6 class="card-title">@member.Name</h6>
                 }

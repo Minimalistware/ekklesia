@@ -6,7 +6,7 @@ namespace ekklesia.Models.ReportModel
     {
         public CellBasedReport()
         {
-            Type = ReportType.CÉLULA;
+            ReportType = ReportType.CÉLULA;
         }
 
         [Required]

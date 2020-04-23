@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ekklesia;
 
 namespace ekklesia.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200422140548_VisitantsAdd")]
+    partial class VisitantsAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,11 +275,11 @@ namespace ekklesia.Migrations
 
                     b.Property<decimal>("PreviousMonth");
 
-                    b.Property<int>("ReportType");
-
                     b.Property<int>("Reunions");
 
                     b.Property<decimal>("Tenth");
+
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 

@@ -25,7 +25,7 @@ namespace ekklesia.Models.EventModel
         public string Place { get; set; }
         public int BaptizerId { get; set; }
         public Member Baptizer { get; set; }
-        public ICollection<OccasionMember> Baptizeds { get; set; }
+        public ICollection<OccasionMember> Baptizeds { get; set; }        
 
         public void AddMember(Member member)
         {

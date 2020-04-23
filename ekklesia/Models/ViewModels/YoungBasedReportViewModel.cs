@@ -7,7 +7,7 @@ namespace ekklesia.Models.ViewModels
     {
         public YoungBasedReportViewModel()
         {
-            this.Type = ReportModel.ReportType.CÉLULA;            
+            this.ReportType = ReportModel.ReportType.CÉLULA;            
         }
 
         [Required]

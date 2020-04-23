@@ -7,8 +7,9 @@ namespace ekklesia.Models.ReportModel
 {
     public abstract class Report : BaseModel
     {
+        //ATIVIDADES BÁSICAS DE RELATÓRIO
         [Required]
-        public ReportType Type { get; set; }
+        public ReportType ReportType { get; set; }
         [Required]
         public DateTime Date { get; set; }
         public int PreacherId { get; set; }
@@ -22,9 +23,7 @@ namespace ekklesia.Models.ReportModel
         [Required]
         public int Convertions { get; set; }
 
-        //ATIVIDADES BÁSICAS PARA MEMBROS
-
-
+       
         //MOVIMENTO FINANCEIRO
         public Money PreviousMonth { get; set; }
         public Money Income { get; set; }

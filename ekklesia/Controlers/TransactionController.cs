@@ -38,7 +38,7 @@ namespace ekklesia.Controlers
         [HttpGet]
         public async Task<ViewResult> Create()
         {
-            var events = await GetEvents(3);
+            var events = await GetEvents();
             ViewBag.Revenue = new RevenueCreateViewModel(events);
             ViewBag.Expenditure = new ExpenditureCreateViewModel(events);
             return View("Create");

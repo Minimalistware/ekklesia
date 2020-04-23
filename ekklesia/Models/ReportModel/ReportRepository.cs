@@ -9,10 +9,10 @@ namespace ekklesia.Models.ReportModel
 {
     public interface IReportRepository
     {
-        Report GetReport(int id);
-        IEnumerable<Report> GetReports();
-        Report Add(Report report);
-        Report Update(Report report);
+        Task<Report> GetReport(int id);
+        Task<IEnumerable<Report>> GetReports();
+        Task Add(Report report);
+        Task Update(Report report);
         IEnumerable<Report> Search(ReportSearchViewModel model);
 
     }
@@ -25,22 +25,26 @@ namespace ekklesia.Models.ReportModel
             this.applicationContext = applicationContext;
         }
 
-        public Report Add(Report report)
+        public async Task Add(Report report)
         {
-            applicationContext.Reports.Add(report);
-            applicationContext.SaveChanges();
-            return report;
+            await applicationContext.Reports.AddAsync(report);
+            await applicationContext.SaveChangesAsync();
         }
 
-        public Report GetReport(int id)
+        public async Task<Report> GetReport(int id)
         {
-            return applicationContext.Reports.Find(id);
+            return await applicationContext.Reports
+                .Include(r => r.Preacher)
+                .Include(r => r.Coordinator)
+                .SingleOrDefaultAsync(r => r.Id == id);
 
         }
 
-        public IEnumerable<Report> GetReports()
+        public async Task<IEnumerable<Report>> GetReports()
         {
-            return applicationContext.Reports;            
+            return await applicationContext.Reports
+                .Include(r => r.Preacher)
+                .ToListAsync();
         }
 
         public IEnumerable<Report> Search(ReportSearchViewModel model)
@@ -48,12 +52,11 @@ namespace ekklesia.Models.ReportModel
             throw new NotImplementedException();
         }
 
-        public Report Update(Report alteredReport)
+        public async Task Update(Report alteredReport)
         {
             var report = applicationContext.Reports.Attach(alteredReport);
             report.State = EntityState.Modified;
-            applicationContext.SaveChanges();
-            return alteredReport;
+            await applicationContext.SaveChangesAsync();
         }
     }
 }

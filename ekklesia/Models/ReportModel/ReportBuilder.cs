@@ -24,18 +24,24 @@ namespace ekklesia.Models.ReportModel
             this.applicationContext = applicationContext;
         }
 
+
         public async void FilloutGroupReport(GroupBasedReportViewModel model)
         {
             FilloutBaseReport(model);
 
             var cults = applicationContext.Occasions.OfType<Cult>()
-                .Where(c => c.CultType.ToString() == model.Type.ToString());
+                .Where(c => c.CultType.ToString() == model.ReportType.ToString());
 
             //ATIVIDADES PARA EVENTOS
             model.ExternalCults = await cults.CountAsync(c => c.Internal == false);
 
             model.CellsNumber = await applicationContext.Occasions.OfType<Cell>().CountAsync();
 
+            model.Baptized = await applicationContext.Occasions.OfType<Baptism>()
+                 .Include(b => b.Baptizeds)
+                 .ThenInclude(oc => oc.Member)
+                 .CountAsync();
+                        
             model.Reunions = await applicationContext.Occasions.OfType<Reunion>()
                 .Where(r => r.ReunionType.Equals(ReunionType.DOCÊNCIA))
                 .CountAsync();
@@ -69,30 +75,27 @@ namespace ekklesia.Models.ReportModel
 
         }
 
-
-
         private void FilloutBaseReport(ReportCreateViewModel model)
         {
-            FillOutMembersBaseReport(model);
             FillOutEventBaseReport(model);
+            FillOutMembersBaseReport(model);            
             FillOutTransactionBaseReport(model);
+            
         }
 
         private async void FillOutMembersBaseReport(ReportCreateViewModel model)
         {
             model.AllMembers = await GetAllMembersAsSelectList();
-
         }
 
         private async void FillOutEventBaseReport(ReportCreateViewModel model)
         {
-            var occasions = applicationContext.Occasions.OfType<Cult>()
-                 .Where(c => c.CultType.ToString() == model.Type.ToString());
-
-            model.Convertions = await occasions.SumAsync(c => c.Convertions);
-
             model.Reunions = await applicationContext.Occasions.OfType<Reunion>().CountAsync();
+            
+            var occasions = applicationContext.Occasions.OfType<Cult>()
+                 .Where(c => c.CultType.ToString() == model.ReportType.ToString());
 
+            model.Convertions = await occasions.SumAsync(c => c.Convertions);            
 
         }
 
@@ -100,7 +103,7 @@ namespace ekklesia.Models.ReportModel
         {
             var cults = applicationContext.Occasions
                              .OfType<Cult>()
-                             .Where(c => c.CultType.ToString() == model.Type.ToString());
+                             .Where(c => c.CultType.ToString() == model.ReportType.ToString());
 
             var trasaction = from c in cults
                              join t in applicationContext.Transactions on c.Id equals t.OccasionId

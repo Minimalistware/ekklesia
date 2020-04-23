@@ -1,0 +1,144 @@
+﻿@model GroupBasedReportDetailsViewModel
+
+@{
+    ViewBag.Title = "Detalhes";
+}
+
+<div class="card">
+    <div class="card-header">
+        @Model.ReportType
+    </div>
+
+    <div class="card-body">
+        <form enctype="multipart/form-data" asp-controller="report" asp-action="CreateGroupBasedReport"
+              method="post" class="mt-3">
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Date" class="col-form-label">Data</label>
+                    <div class="input-group">
+                        <input asp-for="Date" class="form-control" placeholder="Data">
+
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="Preacher" class="col-form-label">Pastor</label>
+                    <div class="input-group">
+                        <input asp-for="Preacher.Name" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Coordinator" class="col-form-label">Coordenador</label>
+                    <div class="input-group">
+                        <input asp-for="Coordinator.Name" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+
+                <div class="form-group col-md-4">
+                    <label asp-for="Reunions" class="col-form-label">N° de reuniões no mês</label>
+                    <div class="input-group">
+                        <input asp-for="Reunions" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="Convertions" class="col-form-label">N° de conversões a Jesus</label>
+                    <div class="input-group">
+                        <input asp-for="Convertions" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="ExternalCults" class="col-form-label">N° de cultos externos</label>
+                    <div class="input-group">
+                        <input asp-for="ExternalCults" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label asp-for="CellsNumber" class="col-form-label">N° de Células</label>
+                    <div class="input-group">
+                        <input asp-for="CellsNumber" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Baptized" class="col-form-label">N° de batizados nas águas</label>
+                    <div class="input-group">
+                        <input asp-for="Baptized" class="form-control" disabled>
+
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="MeetingsWithTheCoordination" class="col-form-label">N° de reuniões com a Coordenação</label>
+                    <div class="input-group">
+                        <input asp-for="MeetingsWithTheCoordination" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="NumberOfVisits" class="col-form-label"> N° de visitas</label>
+                    <div class="input-group">
+                        <input asp-for="NumberOfVisits" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label asp-for="PreviousMonth" class="col-form-label">Saldo do mês anterior</label>
+                    <div class="input-group">
+                        <input asp-for="PreviousMonth" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Income" class="col-form-label">Receita</label>
+                    <div class="input-group">
+                        <input asp-for="Income" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Expense" class="col-form-label">Despesa</label>
+                    <div class="input-group">
+                        <input asp-for="Expense" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Tenth" class="col-form-label">Dízimo</label>
+                    <div class="input-group">
+                        <input asp-for="Tenth" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Balance" class="col-form-label">Saldo atual</label>
+                    <div class="input-group">
+                        <input asp-for="Balance" class="form-control" readonly />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-2">
+                    <a asp-controller="report" asp-action="list" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </div>
+        </form>
+
+    </div>   
+
+</div>
+
+
+

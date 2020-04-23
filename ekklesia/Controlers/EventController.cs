@@ -179,7 +179,7 @@ namespace ekklesia.Controlers
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception("Erro ao adicionar membros batizados.", ex);
+                            throw new Exception("Erro ao adicionar membros presentes.", ex);
                         }
                     }
 

@@ -15,7 +15,7 @@ namespace ekklesia.Models.ViewModels
         }
 
         [Required]
-        public ReportType Type { get; set; }
+        public ReportType ReportType { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
