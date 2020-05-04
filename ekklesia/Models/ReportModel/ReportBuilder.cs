@@ -77,9 +77,13 @@ namespace ekklesia.Models.ReportModel
 
         private void FilloutBaseReport(ReportCreateViewModel model)
         {
-            FillOutEventBaseReport(model);
-            FillOutMembersBaseReport(model);            
-            FillOutTransactionBaseReport(model);
+            Task[] tasks = {
+                Task.Factory.StartNew(() => FillOutEventBaseReport(model)),
+                Task.Factory.StartNew(() => FillOutMembersBaseReport(model)),
+                Task.Factory.StartNew(() => FillOutTransactionBaseReport(model))
+            };
+
+            Task.WaitAll(tasks);          
             
         }
 

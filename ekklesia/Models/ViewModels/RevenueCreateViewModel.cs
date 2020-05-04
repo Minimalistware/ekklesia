@@ -26,7 +26,5 @@ namespace ekklesia.Models.ViewModels
             OccasionId = revenue.OccasionId;
         }
 
-
-
     }
 }
