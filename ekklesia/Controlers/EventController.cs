@@ -458,6 +458,12 @@ namespace ekklesia.Controlers
             return RedirectToAction("edit", "event", occasion.Id);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ViewResult Search()
+        {
+            return View();
+        }
 
         private async Task<CreateMeetingViewModel> ConfigureLists(CreateMeetingViewModel model, int Id)
         {

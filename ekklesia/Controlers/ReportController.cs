@@ -1,5 +1,6 @@
 ﻿using ekklesia.Models.ReportModel;
 using ekklesia.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -115,6 +116,13 @@ namespace ekklesia.Controlers
             }
 
 
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ViewResult Search()
+        {
+            return View();
         }
 
         //private async Task<ViewResult> ReloadDataAndReturnView()
