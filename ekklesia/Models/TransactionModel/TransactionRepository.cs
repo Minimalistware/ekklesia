@@ -68,16 +68,25 @@ namespace ekklesia.Models.TransactionModel
         public IEnumerable<Transaction> Search(TransactionSearchViewModel model)
         {
             var query = "SELECT * FROM dbo.Transactions WHERE ";
-            if (model.Category != null)
+            if (model.TransactionType != null)
             {
-                query += "Category LIKE '%'+ @p0 +'%' AND ";
+                query += "TransactionType = @p0 AND ";
             }
-            if (model.Type != null)
+            if (model.Max != null)
             {
-                query += "Type = @p1 AND ";
+                query += "Value < @p1 AND ";
+            }
+            if (model.Min != null)
+            {
+                query += "Value > @p2 AND ";
+            }
+            if (model.Days != null)
+            {
+                query += "DAY([Date]) < @p3 AND ";
             }
             query += "1 = 1";
-            return applicationContext.Transactions.FromSql(query, model.Category, model.Type);
+            return applicationContext.Transactions.FromSql(query,model.TransactionType,model.Max, model.Min, model.Days);
+
         }
 
         public async Task Update(Transaction alteredTransaction)

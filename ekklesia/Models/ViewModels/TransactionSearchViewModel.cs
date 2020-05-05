@@ -1,5 +1,5 @@
 ﻿using ekklesia.Models.TransactionModel;
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ekklesia.Models.ViewModels
 {
@@ -7,11 +7,16 @@ namespace ekklesia.Models.ViewModels
     {
         public TransactionSearchViewModel()
         {
-            PageTitle = "Buscar Membro";
+            PageTitle = "Buscar Transação";           
         }
 
-        public TransactionType? Type { get; set; }
-        public string Category { get; set; }
+        public TransactionType? TransactionType { get; set; }
+
+        
+        public int? Max { get; set; }
+        public int? Min { get; set; }
+        public int? Days { get; set; }
+
         public string PageTitle { get; set; }
     }
 }

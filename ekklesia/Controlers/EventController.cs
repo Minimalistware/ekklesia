@@ -465,6 +465,13 @@ namespace ekklesia.Controlers
             return View();
         }
 
+        [HttpPost]
+        public ViewResult Search(EventSearchViewModel model)
+        {
+            var events = repository.Search(model);
+            return View("List", events);
+        }
+
         private async Task<CreateMeetingViewModel> ConfigureLists(CreateMeetingViewModel model, int Id)
         {
             foreach (var member in await memberRepository.GetMembers())

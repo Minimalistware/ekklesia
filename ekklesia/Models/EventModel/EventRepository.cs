@@ -16,6 +16,7 @@ namespace ekklesia.Models.EventModel
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
         Occasion Delete(int id);
+        IEnumerable<Occasion> Search(EventSearchViewModel model);
 
     }
 
@@ -109,5 +110,20 @@ namespace ekklesia.Models.EventModel
 
         }
 
+        public IEnumerable<Occasion> Search(EventSearchViewModel model)
+        {
+
+            var query = "SELECT * FROM dbo.Occasions WHERE ";
+            if (model.EventType != null)
+            {
+                query += "EventType = @p0 AND ";
+            }            
+            if (model.Days != null)
+            {
+                query += "DAY([Date]) < @p1 AND ";
+            }
+            query += "1 = 1";
+            return applicationContext.Occasions.FromSql(query, model.EventType,model.Days);
+        }
     }
 }
