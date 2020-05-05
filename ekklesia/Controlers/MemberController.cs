@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using ekklesia.Models;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -22,10 +23,10 @@ namespace ekklesia.Controlers
         }
 
         [AllowAnonymous]
-        public async Task<ViewResult> List()
+        public async Task<ViewResult> List(int pageNumber = 1)
         {
-            var members = await repository.GetMembers();
-            return View(members);
+            var paginatedList = await PaginatedList<Member>.CreateAsync(repository.Members(), pageNumber, 5);
+            return View(paginatedList);
         }
 
         [HttpGet]

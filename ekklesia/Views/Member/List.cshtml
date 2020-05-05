@@ -1,7 +1,12 @@
-﻿@model IEnumerable<Member>
+﻿@model PaginatedList<Member>
 
 @{
     ViewBag.Title = "Ekklésia";
+}
+
+@{
+    var prevDisabled = Model.PreviousPage ? "" : "disabled";
+    var nextDisabled = Model.NextPage ? "" : "disabled";
 }
 
 <div class="card">
@@ -66,18 +71,19 @@
     <div class="card-footer p-0">
         <nav aria-label="...">
             <ul class="pagination justify-content-end mt-3 mr-3">
-                <li class="page-item disabled">
-                    <span class="page-link">Previous</span>
+
+                <li class="page-item @prevDisabled">
+                    <a class="page-link " asp-action="List" asp-controller="Member"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)">
+                        Anterior
+                    </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-                    <span class="page-link">
-                        2<span class="sr-only">(current)</span>
-                    </span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+
+                <li class="page-item @nextDisabled">
+                    <a class="page-link" asp-action="List" asp-controller="Member"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)">
+                        Próximo
+                    </a>
                 </li>
             </ul>
         </nav>

@@ -1,5 +1,4 @@
 ﻿using ekklesia.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ namespace ekklesia.Models.MemberModel
     public interface IMemberRepository
     {
         Task<Member> GetMember(int id);
+        IQueryable<Member> Members();
         Task<IEnumerable<Member>> GetMembers();
         IEnumerable<Member> GetMembersInEvent(int id);
         Task Add(Member member);
@@ -50,6 +50,10 @@ namespace ekklesia.Models.MemberModel
             return await applicationContext.Members.FindAsync(id);
         }
 
+        public IQueryable<Member> Members()
+        {
+            return applicationContext.Members;
+        }
 
         public async Task<IEnumerable<Member>> GetMembers()
         {
