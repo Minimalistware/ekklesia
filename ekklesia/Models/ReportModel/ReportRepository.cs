@@ -11,9 +11,10 @@ namespace ekklesia.Models.ReportModel
     {
         Task<Report> GetReport(int id);
         Task<IEnumerable<Report>> GetReports();
+        IQueryable<Report> Reports();
         Task Add(Report report);
         Task Update(Report report);
-        IEnumerable<Report> Search(ReportSearchViewModel model);
+        IQueryable<Report> Search(ReportSearchViewModel model);
 
     }
     public class ReportRepository : IReportRepository
@@ -47,9 +48,24 @@ namespace ekklesia.Models.ReportModel
                 .ToListAsync();
         }
 
-        public IEnumerable<Report> Search(ReportSearchViewModel model)
+        public IQueryable<Report> Reports()
         {
-            throw new NotImplementedException();
+            return applicationContext.Reports.Include(r => r.Preacher);
+        }
+
+        public IQueryable<Report> Search(ReportSearchViewModel model)
+        {
+            var query = "SELECT * FROM dbo.Reports WHERE ";
+            if (model.ReportType != null)
+            {
+                query += "ReportType = @p0 AND ";
+            }
+            if (model.Months != null)
+            {
+                query += "MONTH([Date]) < @p1 AND ";
+            }
+            query += "1 = 1";
+            return applicationContext.Reports.FromSql(query, model.ReportType, model.Months).Include(r => r.Preacher);
         }
 
         public async Task Update(Report alteredReport)

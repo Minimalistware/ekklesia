@@ -12,12 +12,13 @@ namespace ekklesia.Models.TransactionModel
     {
 
         Task<Transaction> GetTransaction(int id);
+        IQueryable<Transaction> Transactions();
         Task<Transaction> GetTransactionWithOccasion(int id);
         Task<IList<Transaction>> GetTransactions();
         Task Add(Transaction transaction);
         Task Update(Transaction transaction);
         Task Delete(int id);
-        IEnumerable<Transaction> Search(TransactionSearchViewModel model);
+        IQueryable<Transaction> Search(TransactionSearchViewModel model);
 
     }
     public class TransactionRepository : ITransactionRepository
@@ -28,7 +29,6 @@ namespace ekklesia.Models.TransactionModel
         {
             this.applicationContext = applicationContext;
         }
-
 
 
         public async Task Add(Transaction transaction)
@@ -65,7 +65,7 @@ namespace ekklesia.Models.TransactionModel
             return await applicationContext.Transactions.ToListAsync();
         }
 
-        public IEnumerable<Transaction> Search(TransactionSearchViewModel model)
+        public IQueryable<Transaction> Search(TransactionSearchViewModel model)
         {
             var query = "SELECT * FROM dbo.Transactions WHERE ";
             if (model.TransactionType != null)
@@ -85,7 +85,7 @@ namespace ekklesia.Models.TransactionModel
                 query += "DAY([Date]) < @p3 AND ";
             }
             query += "1 = 1";
-            return applicationContext.Transactions.FromSql(query,model.TransactionType,model.Max, model.Min, model.Days);
+            return applicationContext.Transactions.FromSql(query, model.TransactionType, model.Max, model.Min, model.Days);
 
         }
 
@@ -96,5 +96,9 @@ namespace ekklesia.Models.TransactionModel
             await applicationContext.SaveChangesAsync();
         }
 
+        public IQueryable<Transaction> Transactions()
+        {
+            return applicationContext.Transactions;
+        }
     }
 }

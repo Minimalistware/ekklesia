@@ -1,4 +1,5 @@
-﻿using ekklesia.Models.EventModel;
+﻿using ekklesia.Models;
+using ekklesia.Models.EventModel;
 using ekklesia.Models.MemberModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -24,10 +25,10 @@ namespace ekklesia.Controlers
         }
 
         [AllowAnonymous]
-        public async Task<ViewResult> List()
+        public async Task<ViewResult> List(int pageNumber = 1)
         {
-            var events = await repository.GetEvents();
-            return View(events);
+            var paginatedList = await PaginatedList<Occasion>.CreateAsync(repository.Occasions(), pageNumber, 5);
+            return View(paginatedList);
         }
 
         [HttpGet]
@@ -466,10 +467,11 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public ViewResult Search(EventSearchViewModel model)
+        public async Task<ViewResult> Search(EventSearchViewModel model)
         {
             var events = repository.Search(model);
-            return View("List", events);
+            var paginatedList = await PaginatedList<Occasion>.CreateAsync(events, 1, 5);
+            return View("List", paginatedList);
         }
 
         private async Task<CreateMeetingViewModel> ConfigureLists(CreateMeetingViewModel model, int Id)

@@ -127,11 +127,11 @@ namespace ekklesia.Controlers
 
         [HttpPost]
         [AllowAnonymous]
-        public ViewResult Search(MemberSreachViewModel model)
+        public async Task<ViewResult> Search(MemberSreachViewModel model)
         {
-
             var members = repository.Search(model);
-            return View("List", members);
+            var paginatedList = await PaginatedList<Member>.CreateAsync(members, 1, 5);
+            return View("List", paginatedList);
         }
 
 

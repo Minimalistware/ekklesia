@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ekklesia.Models;
 using ekklesia.Models.EventModel;
 using ekklesia.Models.TransactionModel;
 using ekklesia.Models.ViewModels;
@@ -29,10 +30,10 @@ namespace ekklesia.Controlers
         }
 
         [AllowAnonymous]
-        public async Task<ViewResult> List()
+        public async Task<ViewResult> List(int pageNumber = 1)
         {
-            var transactions = await repository.GetTransactions();
-            return View(transactions);
+            var paginatedList = await PaginatedList<Transaction>.CreateAsync(repository.Transactions(), pageNumber, 5);
+            return View(paginatedList);
         }
 
         [HttpGet]
@@ -147,10 +148,11 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public ViewResult Search(TransactionSearchViewModel model)
+        public async Task<ViewResult> Search(TransactionSearchViewModel model)
         {
             var transactions = repository.Search(model);
-            return View("List", transactions);
+            var paginatedList = await PaginatedList<Transaction>.CreateAsync(transactions, 1, 5);
+            return View("List", paginatedList);
         }
 
         [HttpGet]

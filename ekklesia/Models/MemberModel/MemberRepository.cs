@@ -15,7 +15,7 @@ namespace ekklesia.Models.MemberModel
         Task Add(Member member);
         Task Update(Member member);
         Member Delete(int id);
-        IEnumerable<Member> Search(MemberSreachViewModel model);
+        IQueryable<Member> Search(MemberSreachViewModel model);
 
     }
     public class MemberRepository : IMemberRepository
@@ -68,7 +68,7 @@ namespace ekklesia.Models.MemberModel
               .Where(m => m.Meetings.Any(oc => oc.OccasionId == id));
         }
 
-        public IEnumerable<Member> Search(MemberSreachViewModel model)
+        public IQueryable<Member> Search(MemberSreachViewModel model)
         {
             var query = "SELECT * FROM dbo.Members WHERE ";
             if (model.Name != null)

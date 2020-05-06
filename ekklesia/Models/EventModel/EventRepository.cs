@@ -9,6 +9,7 @@ namespace ekklesia.Models.EventModel
     public interface IEventRepository
     {
         Task<IEnumerable<Occasion>> GetEvents();
+        IQueryable<Occasion> Occasions();
         Occasion GetEventWithItsMembers(EventType eventType, int Id);
         SundaySchool GetSundaySchoolWithItsMembers(int Id);
         Reunion GetReunionWithItsMembers(int Id);
@@ -16,7 +17,7 @@ namespace ekklesia.Models.EventModel
         Occasion Add(Occasion Event);
         Occasion Update(Occasion Event);
         Occasion Delete(int id);
-        IEnumerable<Occasion> Search(EventSearchViewModel model);
+        IQueryable<Occasion> Search(EventSearchViewModel model);
 
     }
 
@@ -51,6 +52,11 @@ namespace ekklesia.Models.EventModel
         public async Task<Occasion> GetEvent(int Id)
         {
             return await applicationContext.Occasions.FindAsync(Id);
+        }
+
+        public IQueryable<Occasion> Occasions()
+        {
+            return applicationContext.Occasions;
         }
 
         public async Task<IEnumerable<Occasion>> GetEvents()
@@ -110,20 +116,22 @@ namespace ekklesia.Models.EventModel
 
         }
 
-        public IEnumerable<Occasion> Search(EventSearchViewModel model)
+        public IQueryable<Occasion> Search(EventSearchViewModel model)
         {
 
             var query = "SELECT * FROM dbo.Occasions WHERE ";
             if (model.EventType != null)
             {
                 query += "EventType = @p0 AND ";
-            }            
+            }
             if (model.Days != null)
             {
                 query += "DAY([Date]) < @p1 AND ";
             }
             query += "1 = 1";
-            return applicationContext.Occasions.FromSql(query, model.EventType,model.Days);
+            return applicationContext.Occasions.FromSql(query, model.EventType, model.Days);
         }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using ekklesia.Models.ReportModel;
+﻿using ekklesia.Models;
+using ekklesia.Models.ReportModel;
 using ekklesia.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,11 @@ namespace ekklesia.Controlers
             this.reportBuilder = builder;
         }
 
-        public async Task<IActionResult> List()
+        [AllowAnonymous]
+        public async Task<ViewResult> List(int pageNumber = 1)
         {
-            var reports = await repository.GetReports();
-            return View(reports);
+            var paginatedList = await PaginatedList<Report>.CreateAsync(repository.Reports(), pageNumber, 5);
+            return View(paginatedList);
         }
 
         [HttpGet]
@@ -123,6 +125,15 @@ namespace ekklesia.Controlers
         public ViewResult Search()
         {
             return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ViewResult> Search(ReportSearchViewModel model)
+        {
+            var reports = repository.Search(model);
+            var paginatedList = await PaginatedList<Report>.CreateAsync(reports, 1, 5);
+            return View("List", paginatedList);
         }
 
         //private async Task<ViewResult> ReloadDataAndReturnView()
