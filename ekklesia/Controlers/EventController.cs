@@ -238,13 +238,17 @@ namespace ekklesia.Controlers
                     schoolmodel = await ConfigureLists(schoolmodel, schoolmodel.Id) as EditSundaySchoolViewModel;
                     return View("EditSundaySchool", schoolmodel);
                 case EventType.REUNIÃO:
-                    var reunionmodel = new EditReunionViewModel(occasion as Reunion);
-                    reunionmodel = await ConfigureLists(reunionmodel, reunionmodel.Id) as EditReunionViewModel;
+                    var reunionmodel = new ReunionEditViewModel(occasion as Reunion);
+                    reunionmodel = await ConfigureLists(reunionmodel, reunionmodel.Id) as ReunionEditViewModel;
                     return View("EditReunion", reunionmodel);
                 case EventType.BATISMO:
                     var baptismmodel = new BaptismEditViewModel(occasion as Baptism);
                     baptismmodel = await ConfigureLists(baptismmodel, baptismmodel.Id) as BaptismEditViewModel;
                     return View("EditBaptism", baptismmodel);
+                case EventType.CÉLULA:
+                    var cellmodel = new CellEditViewModel(occasion as Cell);
+                    return View("EditCell", cellmodel);
+
 
                 default:
                     return View();
@@ -303,7 +307,7 @@ namespace ekklesia.Controlers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditReunion(EditReunionViewModel model)
+        public async Task<IActionResult> EditReunion(ReunionEditViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -352,6 +356,20 @@ namespace ekklesia.Controlers
                     ModelState.AddModelError("Erro ao atualizar Batismo", ex.Message);
                 }
 
+                return RedirectToAction("list", "event");
+            }
+            return View("EditBaptism", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCell(CellEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cell = await repository.GetEvent(model.Id) as Cell;
+                cell.Date = model.Date;
+                cell.Convertions = model.Convertions;
+                repository.Update(cell);
                 return RedirectToAction("list", "event");
             }
             return View("EditBaptism", model);

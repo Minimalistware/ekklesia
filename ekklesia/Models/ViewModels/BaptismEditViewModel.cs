@@ -10,6 +10,7 @@ namespace ekklesia.Models.ViewModels
 
         public BaptismEditViewModel(Baptism baptism)
         {
+            PageTitle = "Editar Batismo";
             Id = baptism.Id;
             Date = baptism.Date;
             Place = baptism.Place;

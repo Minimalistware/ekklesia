@@ -1,11 +1,11 @@
 ﻿using ekklesia.Models.EventModel;
 namespace ekklesia.Models.ViewModels
 {
-    public class EditReunionViewModel : CreateReunionViewModel
+    public class ReunionEditViewModel : CreateReunionViewModel
     {
-        public EditReunionViewModel() { }
+        public ReunionEditViewModel() { }
 
-        public EditReunionViewModel(Reunion reunion, string pageTitle = "Editar Reunião")
+        public ReunionEditViewModel(Reunion reunion, string pageTitle = "Editar Reunião")
         {
             Id = reunion.Id;
             Date = reunion.Date;

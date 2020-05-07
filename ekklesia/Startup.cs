@@ -86,8 +86,7 @@ namespace ekklesia
                 app.UseDeveloperExceptionPage();
             }
             else
-            {
-                app.UseExceptionHandler("/Error");
+            {              
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 

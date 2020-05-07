@@ -1,0 +1,41 @@
+﻿@model IEnumerable<IdentityUser>
+
+@{
+    ViewBag.Title = "Ekklésia";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-8">
+                <h4>Membros</h4>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Email confirmado?</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.EmailConfirmed</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

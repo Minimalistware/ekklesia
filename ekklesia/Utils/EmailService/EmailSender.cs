@@ -1,9 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using MimeKit;
+﻿
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -25,41 +21,33 @@ namespace ekklesia.Utils.EmailService
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            try
+            // Credentials
+            var credentials = new NetworkCredential(_emailSettings.From, _emailSettings.Password);
+
+            // Mail message
+            var mail = new MailMessage()
             {
-                // Credentials
-                var credentials = new NetworkCredential(_emailSettings.From, _emailSettings.Password);
+                From = new MailAddress(_emailSettings.From, _emailSettings.UserName),
+                Subject = subject,
+                Body = $"<a href='{message}'>Clique aqui para confirmar seu email</a>",
+                IsBodyHtml = true
+            };
 
-                // Mail message
-                var mail = new MailMessage()
-                {
-                    From = new MailAddress(_emailSettings.From, _emailSettings.UserName),
-                    Subject = subject,
-                    Body = message,
-                    IsBodyHtml = true
-                };
+            mail.To.Add(new MailAddress(email));
 
-                mail.To.Add(new MailAddress(email));
-
-                // Smtp client
-                var client = new SmtpClient()
-                {
-                    Port = _emailSettings.Port,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Host = _emailSettings.Server,
-                    EnableSsl = true,
-                    Credentials = credentials
-                };
-
-                // Send it...         
-                client.Send(mail);
-            }
-            catch (Exception ex)
+            // Smtp client
+            var client = new SmtpClient()
             {
-                // TODO: handle exception
-                throw new InvalidOperationException(ex.Message);
-            }
+                Port = _emailSettings.Port,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Host = _emailSettings.Server,
+                EnableSsl = true,
+                Credentials = credentials
+            };
+
+            // Send it...         
+            client.Send(mail);
 
             return Task.CompletedTask;
         }

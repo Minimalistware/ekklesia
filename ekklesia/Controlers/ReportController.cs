@@ -117,7 +117,6 @@ namespace ekklesia.Controlers
                     return View();
             }
 
-
         }
 
         [HttpGet]
