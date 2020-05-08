@@ -1,23 +1,24 @@
 ﻿@if (ViewBag.ErrorTitle == null)
 {
-    <h3>
-        Um error ocerreu durante o processando da sua requisição.
-    </h3>
-    <div class="alert alert-danger">
-        <h5>Exception Message</h5>
-        <hr />
-        <p>@ViewBag.ErrorMessage</p>
+    <div class="jumbotron">
+        <h1 class="display-4">Um error ocerreu durante o processando da sua requisição.</h1>
+        <p class="lead">@ViewBag.ErrorMessage</p>
+        <hr class="my-4">
+        <a asp-action="list" asp-controller="member" class="btn btn-outline-success">
+            Voltar à página principal.
+        </a>
     </div>
 
 }
 else
 {
-    <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
-
-    <div class="alert alert-danger">
-        <h5>Exception Message</h5>
-        <hr />
-        <p>@ViewBag.ErrorMessage</p>
+    <div class="jumbotron">
+        <h1 class="display-4">@ViewBag.ErrorTitle</h1>
+        <p class="lead">@ViewBag.ErrorMessage</p>
+        <hr class="my-4">
+        <a asp-action="list" asp-controller="member" class="btn btn-outline-success">
+            Voltar à página principal.
+        </a>
     </div>
 }
 

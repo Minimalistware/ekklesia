@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -29,7 +27,9 @@ namespace ekklesia.Utils.EmailService
             {
                 From = new MailAddress(_emailSettings.From, _emailSettings.UserName),
                 Subject = subject,
-                Body = $"<a href='{message}'>Clique aqui para confirmar seu email</a>",
+                Body = $"<p>Esta mensagem foi enviada automaticamente. Por favor não responda esta mensagem.</p>" +
+                $"<br/>" +
+                $"<a href='{message}'>Clique aqui para confirmar seu email</a>",
                 IsBodyHtml = true
             };
 

@@ -1,8 +1,12 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "Não encontrado";
 }
 
-<h1>@ViewBag.ErrorMessage</h1>
-<a asp-action="list" asp-controller="member" class="btn btn-outline-success">
-    Voltar à página principal.
-</a>
+<div class="jumbotron">
+    <h1 class="display-4">@ViewBag.Title</h1>
+    <p class="lead">@ViewBag.ErrorMessage</p>
+    <hr class="my-4">
+    <a asp-action="list" asp-controller="member" class="btn btn-outline-success">
+        Voltar à página principal.
+    </a>
+</div>>

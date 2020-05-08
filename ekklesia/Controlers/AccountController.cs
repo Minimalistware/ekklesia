@@ -35,20 +35,22 @@ namespace ekklesia.Controlers
             if (ModelState.IsValid)
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
-                if (user != null && !user.EmailConfirmed)
+
+                if (user != null && !user.EmailConfirmed && (await userManager.CheckPasswordAsync(user, model.Password)))
                 {
                     ModelState.AddModelError(string.Empty, "Email não confirmado.");
-
                 }
 
-                var result = await signInManager.PasswordSignInAsync(model.Email
-                    , model.Password, model.RememberMe, false);
+                //var result = await signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
+                var succeeded = await signInManager.UserManager.CheckPasswordAsync(user, model.Password);
 
-                if (result.Succeeded)
+                if (succeeded)
                 {
-                    return RedirectToAction("list", "member");
+                    await signInManager.SignInAsync(user, false);
+                    return RedirectToAction("List", "Member");
                 }
-                ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
+                else { ModelState.AddModelError(string.Empty, "Tentativa de login inválida."); }
+
             }
             return View();
         }
@@ -57,7 +59,7 @@ namespace ekklesia.Controlers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("list", "member");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
@@ -134,7 +136,7 @@ namespace ekklesia.Controlers
             var result = await userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                return RedirectToAction("ListUser", "Account");
+                return RedirectToAction("ListUsers", "Account");
             }
 
             ViewBag.ErrorMessage = "Não foi possível confirmar o seu email.";
