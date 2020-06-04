@@ -23,7 +23,7 @@ namespace ekklesia.Controlers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
+        public ViewResult Login()
         {
             return View();
         }
@@ -119,8 +119,32 @@ namespace ekklesia.Controlers
                 , new { token, email = user.Email }
                 , Request.Scheme);
 
-            await emailSender.SendEmailAsync(user.Email, "Link de confirmação", confirmationLink);
+            var message = $"<p>Esta mensagem foi enviada automaticamente. Por favor não responda esta mensagem.</p>" +
+                                $"<br/>" +
+                                $"<a href='{confirmationLink}'>Clique aqui para confirmar seu email</a>";
+
+            await emailSender.SendEmailAsync(user.Email, "Link de confirmação", message);
         }
+
+        private async Task SendForgotPasswordEmail(IdentityUser user)
+        {
+            // Generate the reset password token
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Build the password reset link
+            var passwordResetLink = Url.Action(nameof(ResetPassword), "Account",
+                    new { token, email = user.Email }
+                    , Request.Scheme);
+
+            var message = $"<p>Esta mensagem foi enviada automaticamente. Por favor não responda esta mensagem.</p>" +
+                                $"<br/>" +
+                                $"<a href='{passwordResetLink}'>Clique aqui para redefinir a sua senha</a>";
+
+
+            await emailSender.SendEmailAsync(user.Email, "Link de redefinição", message);
+        }
+
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -143,13 +167,104 @@ namespace ekklesia.Controlers
             return View("Error");
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(string token, string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null || token == null)
+            {
+                ViewBag.ErrorMessage = $"O email {email} ou token {token} é inválido.";
+                return View("Error");
+            }
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ListUsers", "Account");
+            }
+
+            ViewBag.ErrorMessage = "Não foi possível confirmar o seu email.";
+            return View("Error");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user == null || model.Token == null)
+                {
+                    ViewBag.ErrorMessage = $"O email {model.Email} ou token {model.Token} é inválido.";
+                    return View("Error");
+                }
+
+                var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers", "Account");
+                }
+
+                ViewBag.ErrorMessage = "Não foi possível redefinir a sua senha";
+                return View("Error");
+            }
+
+            return View(model);
+
+        }
+
+
+
 
         [HttpGet]
-        public IActionResult ListUsers()
+        public ViewResult ListUsers()
         {
             var users = userManager.Users;
             return View(users);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ViewResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && await userManager.IsEmailConfirmedAsync(user))
+                {
+
+                    try
+                    {
+                        await SendForgotPasswordEmail(user);
+                    }
+                    catch (System.Exception ex)
+                    {
+
+                        ViewBag.ErrorMessage = ex.Message;
+                        return View("Error");
+                    }
+
+
+                    // Send the user to Forgot Password Confirmation view
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                // To avoid account enumeration and brute force attacks, don't
+                // reveal that the user does not exist or is not confirmed
+                return View("ForgotPasswordConfirmation");
+            }
+
+            return View(model);
+        }
     }
 }

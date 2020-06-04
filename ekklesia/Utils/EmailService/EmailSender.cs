@@ -27,9 +27,7 @@ namespace ekklesia.Utils.EmailService
             {
                 From = new MailAddress(_emailSettings.From, _emailSettings.UserName),
                 Subject = subject,
-                Body = $"<p>Esta mensagem foi enviada automaticamente. Por favor não responda esta mensagem.</p>" +
-                $"<br/>" +
-                $"<a href='{message}'>Clique aqui para confirmar seu email</a>",
+                Body = message,
                 IsBodyHtml = true
             };
 
