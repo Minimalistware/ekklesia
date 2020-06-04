@@ -32,12 +32,13 @@ After that, tag the heroku target image.
 docker tag ekklesia:1.2 registry.heroku.com/ekklesia-app/web
 ```
 
-Push the docker image to heroku.
+Pushing the docker image to heroku.
 
-```heroku container:push web -a ekklesia-app
+```
+heroku container:push web -a ekklesia-app
 ```
 
-Release the container on heroku.
+Releasing the container on heroku.
 
 ```
 heroku container:release web -a ekklesia-app
