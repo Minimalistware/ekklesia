@@ -12,17 +12,25 @@
             <div class="col-md-8">
                 <h4>Relatórios</h4>
             </div>
-            <div class="btn-group col-md-4 text-right">
-                <a sp-controller="report" asp-action="create" class="btn btn-primary">
-                    <i class="glyphicon glyphicon-user"></i>
-                    <span>Criar</span>
-                </a>
 
+            <!-- Example single danger button -->
+            <div class="btn-group col-md-4 text-right">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                    Criar Relatório
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" sp-controller="report" asp-action="CreateChildrenReport">Crianças</a>
+                    <a class="dropdown-item" sp-controller="report" asp-action="CreateWomenReport">Mulheres</a>
+                    <a class="dropdown-item" sp-controller="report" asp-action="CreateMenReport">Homens</a>                    
+                </div>
                 <a asp-controller="report" asp-action="search" class="btn btn-secondary">
                     <i class="glyphicon glyphicon-search"></i>
                     <span>Buscar</span>
                 </a>
             </div>
+
+
+
 
         </div>
     </div>
@@ -44,7 +52,7 @@
                 @foreach (var report in Model)
                 {
                     <tr>
-                        <td>@report.Date.ToString("d", culture)</td>
+                        <td>@report.Date.ToString("D", culture)</td>
                         <td>@report.ReportType</td>
                         <td>@report.Preacher.Name</td>
                         <td>@report.Income</td>

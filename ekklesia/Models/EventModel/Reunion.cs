@@ -23,9 +23,10 @@ namespace ekklesia.Models.EventModel
 
         public Reunion()
         {
-            this.PresentMembers = new List<OccasionMember>();
+            PresentMembers = new List<OccasionMember>();
             EventType = EventType.REUNIÃO;
-            
+            Date = DateTime.Now;
+            EndTime = DateTime.Now;
         }
 
         public Reunion(CreateReunionViewModel model)

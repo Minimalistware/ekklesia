@@ -1,0 +1,191 @@
+﻿@model GroupBasedReportViewModel
+
+@{
+    ViewBag.Title = "Relátorio de mulheres";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-8">
+            <h4>Novo Relátorio de crianças</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <form enctype="multipart/form-data" asp-controller="report" asp-action="CreateGroupBasedReport"
+              method="post" class="mt-3">
+            <input hidden asp-for="ReportType" />
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Date" class="col-form-label">Data</label>
+                    <div class="input-group">
+                        <input asp-for="Date" class="form-control" placeholder="Data">
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputAddress" class="col-form-label">Endereço</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inputAddress" placeholder="Endereço">
+                    </div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputAddress" class="col-form-label">Número</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inputNumber" placeholder="Ex. 666">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputAddress" class="col-form-label">Cidade</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inputCity" placeholder="Ex.: Belém">
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputAddress" class="col-form-label">CEP</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inputPostalCode" placeholder="Ex.: 66645040">
+                    </div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputAddress" class="col-form-label">UF</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inputUF" placeholder="Ex. PA">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-6">
+                    <label asp-for="PreacherId" class="col-form-label">Pastor</label>
+                    <div class="input-group">
+                        <select asp-for="PreacherId" class="custom-select mr-sm-2"
+                                asp-items="@Model.AllMembers">
+                            <option value="0">Selecione um membro</option>
+                        </select>
+                        <span asp-validation-for="PreacherId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label asp-for="CoordinatorId" class="col-form-label">Coordenador</label>
+                    <div class="input-group">
+                        <select asp-for="CoordinatorId" class="custom-select mr-sm-2"
+                                asp-items="@Model.AllMembers">
+                            <option value="0">Selecione um membro</option>
+                        </select>
+                        <span asp-validation-for="CoordinatorId" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group col-md-4">
+                    <label asp-for="Reunions" class="col-form-label">N° de reuniões no mês</label>
+                    <div class="input-group">
+                        <input asp-for="Reunions" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Convertions" class="col-form-label">N° de conversões a Jesus</label>
+                    <div class="input-group">
+                        <input asp-for="Convertions" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="ExternalCults" class="col-form-label">N° de cultos externos</label>
+                    <div class="input-group">
+                        <input asp-for="ExternalCults" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label asp-for="CellsNumber" class="col-form-label">N° de Células</label>
+                    <div class="input-group">
+                        <input asp-for="CellsNumber" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Baptized" class="col-form-label">N° de batizados nas águas</label>
+                    <div class="input-group">
+                        <input asp-for="Baptized" class="form-control" disabled>
+
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="MeetingsWithTheCoordination" class="col-form-label">N° de reuniões com a Coordenação</label>
+                    <div class="input-group">
+                        <input asp-for="MeetingsWithTheCoordination" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="NumberOfVisits" class="col-form-label"> N° de visitas</label>
+                    <div class="input-group">
+                        <input asp-for="NumberOfVisits" class="form-control" placeholder="Visitas">
+                        <span asp-validation-for="NumberOfVisits" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label asp-for="PreviousMonth" class="col-form-label">Saldo do mês anterior</label>
+                    <div class="input-group">
+                        <input asp-for="PreviousMonth" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Income" class="col-form-label">Receita</label>
+                    <div class="input-group">
+                        <input asp-for="Income" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Expense" class="col-form-label">Despesa</label>
+                    <div class="input-group">
+                        <input asp-for="Expense" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Tenth" class="col-form-label">Dízimo</label>
+                    <div class="input-group">
+                        <input asp-for="Tenth" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Balance" class="col-form-label">Saldo atual</label>
+                    <div class="input-group">
+                        <input asp-for="Balance" class="form-control" readonly />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Criar</button>
+                    <a asp-controller="report" asp-action="list" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

@@ -9,6 +9,7 @@ namespace ekklesia.Models.TransactionModel
         public Expenditure()
         {
             TransactionType = TransactionType.DESPESA;
+            this.Date = DateTime.Now;
         }
 
         [Required]

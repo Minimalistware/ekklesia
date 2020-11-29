@@ -39,13 +39,11 @@
             </thead>
 
             <tbody>
-                @{
-                    var culture = new System.Globalization.CultureInfo("pt-BR");
-                }
+                @{var culture = new System.Globalization.CultureInfo("pt-BR"); }
                 @foreach (var transaction in Model)
                 {
                     <tr>
-                        <td>@transaction.Date.ToString("d", culture)</td>
+                        <td>@transaction.Date.ToString("D", culture)</td>
                         <td>@transaction.Value</td>
 
                         @switch (transaction.TransactionType)

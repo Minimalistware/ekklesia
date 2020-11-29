@@ -25,7 +25,7 @@ namespace ekklesia.Controlers
         [AllowAnonymous]
         public async Task<ViewResult> List(int pageNumber = 1)
         {
-            var paginatedList = await PaginatedList<Member>.CreateAsync(repository.Members(), pageNumber, 5);
+            var paginatedList = await PaginatedList<Member>.CreateAsync(repository.Members(), pageNumber, 10);
             return View(paginatedList);
         }
 

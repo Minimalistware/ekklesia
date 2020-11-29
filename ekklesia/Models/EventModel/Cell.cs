@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.ViewModels;
+using System;
 
 namespace ekklesia.Models.EventModel
 {
@@ -7,6 +8,7 @@ namespace ekklesia.Models.EventModel
         public Cell()
         {
             EventType = EventType.CÉLULA;
+            Date = DateTime.Now;
         }
 
         public Cell(CellCreateViewModel model)

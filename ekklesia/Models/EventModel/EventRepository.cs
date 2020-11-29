@@ -56,7 +56,9 @@ namespace ekklesia.Models.EventModel
 
         public IQueryable<Occasion> Occasions()
         {
-            return applicationContext.Occasions;
+            return applicationContext.Occasions
+                .OrderByDescending(o => o.Date.Year)
+                .ThenByDescending(o => o.Date.Month);
         }
 
         public async Task<IEnumerable<Occasion>> GetEvents()

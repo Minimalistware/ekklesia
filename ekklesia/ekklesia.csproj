@@ -11,6 +11,7 @@
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>eb51f310-b103-408f-b8d8-c08f3a777017</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ApplicationIcon>wwwroot\Images\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

@@ -98,7 +98,9 @@ namespace ekklesia.Models.TransactionModel
 
         public IQueryable<Transaction> Transactions()
         {
-            return applicationContext.Transactions;
+            return applicationContext.Transactions
+                .OrderByDescending(o => o.Date.Year)
+                .ThenByDescending(o => o.Date.Month);
         }
     }
 }

@@ -11,11 +11,15 @@ namespace ekklesia.Models.ViewModels
         [Required]
         public RevenueType RevenueType { get; set; }
 
-        public RevenueCreateViewModel() { }
+        public RevenueCreateViewModel()
+        {
+            this.Date = DateTime.Now;
+        }
 
         public RevenueCreateViewModel(HashSet<SelectListItem> events)
         {
             AllEvents = events;
+            this.Date = DateTime.Now;
         }
 
         public RevenueCreateViewModel(Revenue revenue)

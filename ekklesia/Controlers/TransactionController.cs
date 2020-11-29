@@ -32,7 +32,7 @@ namespace ekklesia.Controlers
         [AllowAnonymous]
         public async Task<ViewResult> List(int pageNumber = 1)
         {
-            var paginatedList = await PaginatedList<Transaction>.CreateAsync(repository.Transactions(), pageNumber, 5);
+            var paginatedList = await PaginatedList<Transaction>.CreateAsync(repository.Transactions(), pageNumber, 10);
             return View(paginatedList);
         }
 
@@ -202,10 +202,10 @@ namespace ekklesia.Controlers
             var asyncevents = await eventRepository.GetEvents();
 
             var eventsList = asyncevents
-                            .OrderBy(e => e.Date)
-                            .ToList()
-                            .Take(eventsNumber);
-
+                                    .OrderByDescending(o => o.Date.Year)
+                                    .ThenByDescending(o => o.Date.Month)
+                                    .ToList()
+                                    .Take(eventsNumber);
 
 
             HashSet<SelectListItem> occasions = new HashSet<SelectListItem>();

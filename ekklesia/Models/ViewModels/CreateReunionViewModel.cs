@@ -15,6 +15,7 @@ namespace ekklesia.Models.ViewModels
         public CreateReunionViewModel(HashSet<SelectListItem> allMembers)
         {
             AllMembers = allMembers;
+
         }
 
         [Required]

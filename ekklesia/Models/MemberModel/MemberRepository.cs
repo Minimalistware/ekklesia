@@ -52,7 +52,7 @@ namespace ekklesia.Models.MemberModel
 
         public IQueryable<Member> Members()
         {
-            return applicationContext.Members;
+            return applicationContext.Members.OrderBy(m => m.Name);
         }
 
         public async Task<IEnumerable<Member>> GetMembers()

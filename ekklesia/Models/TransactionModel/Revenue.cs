@@ -7,6 +7,7 @@ namespace ekklesia.Models.TransactionModel
         public Revenue()
         {
             TransactionType = TransactionType.RECEITA;
+            this.Date = DateTime.Now;
         }
 
         public RevenueType RevenueType { get; set; }

@@ -12,7 +12,7 @@ namespace ekklesia.Models.ReportModel
 {
     public interface IReportBuilder
     {
-        void FilloutGroupReport(GroupBasedReportViewModel model);
+        Task<GroupBasedReportViewModel> FilloutGroupReport(GroupBasedReportViewModel model);
     }
 
     public class ReportBuilder : IReportBuilder
@@ -25,11 +25,12 @@ namespace ekklesia.Models.ReportModel
         }
 
 
-        public async void FilloutGroupReport(GroupBasedReportViewModel model)
+        public async Task<GroupBasedReportViewModel> FilloutGroupReport(GroupBasedReportViewModel model)
         {
             FilloutBaseReport(model);
 
             var cults = applicationContext.Occasions.OfType<Cult>()
+                .Where(o => o.Date > DateTime.Today.AddMonths(-1))
                 .Where(c => c.CultType.ToString() == model.ReportType.ToString());
 
             //ATIVIDADES PARA EVENTOS
@@ -38,18 +39,27 @@ namespace ekklesia.Models.ReportModel
             model.CellsNumber = await applicationContext.Occasions.OfType<Cell>().CountAsync();
 
             model.Baptized = await applicationContext.Occasions.OfType<Baptism>()
+                .Where(b => b.Date > DateTime.Today.AddMonths(-1))
                  .Include(b => b.Baptizeds)
                  .ThenInclude(oc => oc.Member)
                  .CountAsync();
-                        
+
             model.Reunions = await applicationContext.Occasions.OfType<Reunion>()
-                .Where(r => r.ReunionType.Equals(ReunionType.DOCÊNCIA))
+                .Where(r => r.Date > DateTime.Today.AddMonths(-1))
+                .Where(r => r.ReunionType.Equals(ReunionType.LIDERANÇA))
                 .CountAsync();
+
+            model.MeetingsWithTheCoordination = await applicationContext.Occasions.OfType<Reunion>()
+                .Where(b => b.Date > DateTime.Today.AddMonths(-1))
+                 .Where(r => r.ReunionType.Equals(ReunionType.PEDAGÓGICA))
+                .CountAsync();
+
+            return model;
         }
 
         public async void FilloutBiblicalReport(CellBasedReportViewModel model)
         {
-            FilloutBaseReport(model);
+            //FilloutBaseReport(model);
 
             var cells = applicationContext.Occasions.OfType<Cell>();
 
@@ -65,7 +75,7 @@ namespace ekklesia.Models.ReportModel
 
         public async void FilloutCellReport(BiblicalBasedReportViewModel model)
         {
-            FilloutBaseReport(model);
+            //FilloutBaseReport(model);
 
             var biblicalschool = applicationContext.Occasions.OfType<SundaySchool>();
 
@@ -83,47 +93,55 @@ namespace ekklesia.Models.ReportModel
                 Task.Factory.StartNew(() => FillOutTransactionBaseReport(model))
             };
 
-            Task.WaitAll(tasks);          
-            
+            Task.WaitAll(tasks);
+
         }
 
-        private async void FillOutMembersBaseReport(ReportCreateViewModel model)
+        private async Task FillOutMembersBaseReport(ReportCreateViewModel model)
         {
             model.AllMembers = await GetAllMembersAsSelectList();
         }
 
-        private async void FillOutEventBaseReport(ReportCreateViewModel model)
+        private async Task FillOutEventBaseReport(ReportCreateViewModel model)
         {
-            model.Reunions = await applicationContext.Occasions.OfType<Reunion>().CountAsync();
-            
+            model.Reunions = await applicationContext.Occasions.OfType<Reunion>()
+                .Where(o => o.Date > DateTime.Today.AddMonths(-1))
+                .CountAsync();
+            model.Reunions = await applicationContext.Occasions.OfType<Cell>()
+                .Where(o => o.Date > DateTime.Today.AddMonths(-1))
+                .CountAsync();
+
+
             var occasions = applicationContext.Occasions.OfType<Cult>()
+                .Where(o => o.Date > DateTime.Today.AddMonths(-1))
                  .Where(c => c.CultType.ToString() == model.ReportType.ToString());
 
-            model.Convertions = await occasions.SumAsync(c => c.Convertions);            
+            model.Convertions = await occasions.SumAsync(c => c.Convertions);
 
         }
 
-        private async void FillOutTransactionBaseReport(ReportCreateViewModel model)
+        private async Task FillOutTransactionBaseReport(ReportCreateViewModel model)
         {
             var cults = applicationContext.Occasions
                              .OfType<Cult>()
+                             .Where(o => o.Date > DateTime.Today.AddMonths(-1))
                              .Where(c => c.CultType.ToString() == model.ReportType.ToString());
 
-            var trasaction = from c in cults
-                             join t in applicationContext.Transactions on c.Id equals t.OccasionId
-                             where t.Date > DateTime.Today.AddMonths(-1)
-                             select t;
+            var trasactions = from c in cults
+                              join t in applicationContext.Transactions on c.Id equals t.OccasionId
+                              where t.Date > DateTime.Today.AddMonths(-1)
+                              select t;
 
 
             //Fill out income
-            var income = await trasaction
+            var income = await trasactions
                 .Where(t => t.TransactionType == TransactionType.RECEITA)
                 .SumAsync(t => t.Value);
 
             model.Income = income;
 
             //Fill out expense
-            var expense = await trasaction
+            var expense = await trasactions
                 .Where(t => t.TransactionType == TransactionType.DESPESA)
                 .SumAsync(t => t.Value);
 
@@ -131,14 +149,14 @@ namespace ekklesia.Models.ReportModel
 
             //Fill out tenth
 
-            trasaction = from c in cults
-                         join t in applicationContext.Transactions.OfType<Revenue>()
-                         .Where(t => t.RevenueType == RevenueType.DÍZIMO)
-                         on c.Id equals t.OccasionId
-                         where t.Date > DateTime.Today.AddMonths(-1)
-                         select t;
+            trasactions = from c in cults
+                          join t in applicationContext.Transactions.OfType<Revenue>()
+                          .Where(t => t.RevenueType == RevenueType.DÍZIMO)
+                          on c.Id equals t.OccasionId
+                          where t.Date > DateTime.Today.AddMonths(-1)
+                          select t;
 
-            model.Tenth = await trasaction.SumAsync(t => t.Value);
+            model.Tenth = await trasactions.SumAsync(t => t.Value);
 
             //Fill out balance
             model.Balance = income - expense;

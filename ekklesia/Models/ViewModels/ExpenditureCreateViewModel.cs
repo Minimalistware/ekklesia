@@ -12,11 +12,13 @@ namespace ekklesia.Models.ViewModels
     {
         public ExpenditureCreateViewModel()
         {
+            this.Date = DateTime.Now;
         }
 
         public ExpenditureCreateViewModel(HashSet<SelectListItem> events)
         {
             AllEvents = events;
+            this.Date = DateTime.Now;
         }
 
         [Required]

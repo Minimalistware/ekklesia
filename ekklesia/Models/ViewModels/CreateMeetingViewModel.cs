@@ -1,5 +1,6 @@
 ﻿using ekklesia.Models.MemberModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +13,7 @@ namespace ekklesia.Models.ViewModels
             PresentMembers = new HashSet<Member>();
             SelectedMembers = new HashSet<int>();
             AllMembers = new HashSet<SelectListItem>();
+            Date = DateTime.Now;
         }
         
         [Required]

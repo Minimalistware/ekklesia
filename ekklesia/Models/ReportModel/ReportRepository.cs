@@ -37,6 +37,8 @@ namespace ekklesia.Models.ReportModel
             return await applicationContext.Reports
                 .Include(r => r.Preacher)
                 .Include(r => r.Coordinator)
+                .OrderByDescending(o => o.Date.Year)
+                .ThenByDescending(o => o.Date.Month)
                 .SingleOrDefaultAsync(r => r.Id == id);
 
         }
@@ -45,12 +47,17 @@ namespace ekklesia.Models.ReportModel
         {
             return await applicationContext.Reports
                 .Include(r => r.Preacher)
+                .OrderByDescending(o => o.Date.Year)
+                .ThenByDescending(o => o.Date.Month)
                 .ToListAsync();
         }
 
         public IQueryable<Report> Reports()
         {
-            return applicationContext.Reports.Include(r => r.Preacher);
+            return applicationContext.Reports
+                .Include(r => r.Preacher)
+                .OrderByDescending(o => o.Date.Year)
+                .ThenByDescending(o => o.Date.Month);
         }
 
         public IQueryable<Report> Search(ReportSearchViewModel model)

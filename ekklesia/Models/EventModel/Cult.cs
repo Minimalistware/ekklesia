@@ -1,4 +1,5 @@
 ﻿using ekklesia.Models.ViewModels;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,6 +11,7 @@ namespace ekklesia.Models.EventModel
         public Cult()
         {
             EventType = EventType.CULTO;
+            Date = DateTime.Now;
         }
 
         public Cult(CreateCultViewModel model)

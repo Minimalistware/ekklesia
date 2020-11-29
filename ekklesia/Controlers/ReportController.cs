@@ -21,7 +21,7 @@ namespace ekklesia.Controlers
         [AllowAnonymous]
         public async Task<ViewResult> List(int pageNumber = 1)
         {
-            var paginatedList = await PaginatedList<Report>.CreateAsync(repository.Reports(), pageNumber, 5);
+            var paginatedList = await PaginatedList<Report>.CreateAsync(repository.Reports(), pageNumber, 10);
             return View(paginatedList);
         }
 
@@ -34,18 +34,31 @@ namespace ekklesia.Controlers
             var youngViewModel = new YoungBasedReportViewModel();
             var biblicalViewModel = new BiblicalBasedReportViewModel();
 
-
-            reportBuilder.FilloutGroupReport(childrenViewModel);
-            reportBuilder.FilloutGroupReport(menViewModel);
-            reportBuilder.FilloutGroupReport(womenViewModel);
-
-            ViewBag.childrenViewModel = childrenViewModel;
-            ViewBag.menViewModel = menViewModel;
-            ViewBag.womenViewModel = womenViewModel;
-            ViewBag.youngViewModel = youngViewModel;
-            ViewBag.biblicalViewModel = biblicalViewModel;
-
             return View("Create");
+        }
+
+        [HttpGet]
+        public async Task<ViewResult> CreateChildrenReport()
+        {
+            var model = new GroupBasedReportViewModel(ReportType.CRIANÇAS);
+            model = await reportBuilder.FilloutGroupReport(model);
+            return View("CreateChildrenReport", model);
+        }
+
+        [HttpGet]
+        public async Task<ViewResult> CreateMenReport()
+        {
+            var model = new GroupBasedReportViewModel(ReportType.HOMENS);
+            model = await reportBuilder.FilloutGroupReport(model);
+            return View("CreateMenReport", model);
+        }
+
+        [HttpGet]
+        public async Task<ViewResult> CreateWomenReport()
+        {
+            var model = new GroupBasedReportViewModel(ReportType.MULHERES);
+            model = await reportBuilder.FilloutGroupReport(model);
+            return View("CreateWomenReport", model);
         }
 
 
@@ -135,14 +148,6 @@ namespace ekklesia.Controlers
             return View("List", paginatedList);
         }
 
-        //private async Task<ViewResult> ReloadDataAndReturnView()
-        //{
-        //    HashSet<SelectListItem> members = await GetAllMembers();
-        //    ViewBag.childrenViewModel = new GroupBasedReportViewModel(ReportType.CRIANÇAS, members);
-        //    ViewBag.menViewModel = new GroupBasedReportViewModel(ReportType.HOMENS, members);
-        //    ViewBag.womenViewModel = new GroupBasedReportViewModel(ReportType.MULHERES, members);
-        //    return View("Create");
-        //}
 
     }
 }
